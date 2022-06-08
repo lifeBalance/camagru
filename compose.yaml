@@ -1,0 +1,34 @@
+services:
+  web:
+    depends_on:
+      - db
+    build:
+      context: ./dockerfiles
+      dockerfile: apache
+    volumes:
+      - ./htdocs:/var/www/html
+    ports:
+      - 80:80
+      - 443:443
+  phpmyadmin:
+    depends_on:
+      - db
+      - web
+    image: phpmyadmin:latest
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: camagru
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
+    cap_add:
+      - SYS_NICE
+    volumes:
+      - './db_data:/var/lib/mysql'
