@@ -1,9 +1,9 @@
 # The Router
-A commmon design flaw that dates back to the times of the wild wild web, is writing our web app so that individual scripts handle each URL request. For example, we'd have a `login.php` script to handle a request made agains `foo.com/login`, and so on. Why is that a bad idea? Think about what do we have to if our app has to deal with 100 different routes, write 100 files?
+A common design flaw that dates back to the times of the wild wild web, is writing our app so that individual scripts handle each URL request. For example, we'd have a `login.php` script to handle a request made agains `foo.com/login`, and so on. Why is that a bad idea? Think about what would you have to do, if your app has to deal with 100 different routes, write 100 files?
 
 <p align="center"><img src="./images/pasta.jpg" height="250" /></p>
 
-Matching URLs to individual scripts quickly becomes **unmaintainable**.
+Matching URLs to individual scripts quickly becomes repetitive and **unmaintainable**.
 
 ## The Front Controller
 The [front controller](https://en.wikipedia.org/wiki/Front_controller) is another design pattern that allows us to have a **single entry-point** in our application. Instead of mapping **URLs** to **individual scripts**, **all requests** (no matter their URLs) will go through the same file, `index.php`.
@@ -33,7 +33,7 @@ Now point your browser towards http://localhost/index.php?hello=world
 
 > You can even remove the `index.php` part (http://localhost/?hello=world), because **by default**, it's the file that Apache serves from our webroot.
 
-Bottom line, whatever we write after the `?` sign, is available under `$_SERVER['QUERY_STRING']`.
+You should be seeing the `hello=world`, or whatever query string you write. Bottom line, whatever we write after the `?` sign, is available under `$_SERVER['QUERY_STRING']`.
 
 ### Pretty URLs
 Apart from being able to remove the **front controller** from the URLs, adding a bit of server configuration we should be able of removing the first `?`, so that instead of http://localhost/?/posts?page=1 we get http://localhost/posts?page=1
@@ -94,13 +94,16 @@ Now you can run the tests we run at the end of the last section.
 ### Autoloading
 Having the `Router` class in a **separate file** (`Router.class.php`) allows us for [automatic loading](https://www.php.net/manual/en/language.oop5.autoload.php), so that the `Router` class doesn't have to be explicitely required in the **front controller** (it can be autoloaded with the other core components of our app).
 
-
 ### A Routing Table
-There are a lot of ways of writing the **routing logic** for our application. Google around and you'll find really sophisticated ways of doing that, for example using regular expressions mapped to regular expressions.
+There are a lot of ways of writing the **routing logic** for our application. Google around and you'll find really **sophisticated ways** (but cool tho) of doing that, for example using regular expressions mapped to regular expressions.
 
 <p align="center"><img src="./images/believe.gif" height="250" /></p>
 
-Since this application is a school project with just a few routes, creating a hardcoded list of routes should be more than enough. Again, routing consists on:
+Since this application is a school project with just a few routes, creating a hardcoded list of routes should be more than enough.
+
+<p align="center"><img src="./images/routing_table.jpg" height="250" /></p>
+
+Again, routing consists on:
 
 1. Parsing the URL's query string (route).
 2. Map its sections to a class and a method (controller and action).
@@ -116,10 +119,19 @@ A routing table is a hardcoded table that maps **routes** to **controllers/actio
 
 Each **controller** will be a class, and each **action** a method within this class. Note that we're not naively matching routes against scripts.
 
+### A Design choice
+When designing our app, we have to make a design choice about how are we gonna structure our URLs:
+
+<p align="center"><img src="./images/url_routing.png" height="250" /></p>
+
+The approach described in the diagram above is just one of many choices. Remember, you are the master of your app.
+
+<p align="center"><img src="./images/power.jpg" height="250" /></p>
+
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
 
 <!-- navigation -->
 [home]: #
-[back]: ./README/mvc.md
-[next]: #
+[back]: ./mvc.md
+[next]: ./db.md

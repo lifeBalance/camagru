@@ -21,7 +21,10 @@ But since already made frameworks were forbidden for this project, I figured I h
 
 Next are my notes about what I learned while doing so (as you may have already realized, expect lots of memes):
 
+* [A dockerized LAMP stack](./README/docker_lamp.md)
 * [What the heck is MVC, really](./README/mvc.md)
+* [Routing](./README/router.md)
+* [The DB-jeebees](./README/db.md)
 
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
@@ -29,4 +32,4 @@ Next are my notes about what I learned while doing so (as you may have already r
 <!-- navigation -->
 [home]: #
 [back]: #
-[next]: ./README/mvc.md
+[next]: ./README/docker_lamp.md
