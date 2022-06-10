@@ -1,12 +1,13 @@
 <?php
-class Pics
+class Pics extends Controller
 {
     public function index()
     {
         echo 'you are in Pics/index';
     }
-    public function edit($params)
+
+    public function edit($id = 0)
     {
-        echo "you are in Pics/edit: $params";
+        echo '(' . getcwd() . ") you are in Pics/edit: $id";
     }
 }

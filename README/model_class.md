@@ -68,4 +68,4 @@ The `Model` class is a good place to define methods that will be used later on b
 <!-- navigation -->
 [home]: ../README.md
 [back]: ./router.md
-[next]: #
+[next]: ./workflow.md
