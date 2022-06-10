@@ -3,7 +3,7 @@ A common design flaw that dates back to the times of the wild wild web, is writi
 
 <p align="center"><img src="./images/pasta.jpg" height="250" /></p>
 
-Matching URLs to individual scripts quickly becomes repetitive and **unmaintainable**.
+Matching URLs to individual scripts is known as **file-based routing**, and it quickly becomes an **unmaintainable** nightmare.
 
 ## The Front Controller
 The [front controller](https://en.wikipedia.org/wiki/Front_controller) is another design pattern that allows us to have a **single entry-point** in our application. Instead of mapping **URLs** to **individual scripts**, **all requests** (no matter their URLs) will go through the same file, `index.php`.
@@ -94,7 +94,7 @@ Now you can run the tests we run at the end of the last section.
 ### Autoloading
 Having the `Router` class in a **separate file** (`Router.class.php`) allows us for [automatic loading](https://www.php.net/manual/en/language.oop5.autoload.php), so that the `Router` class doesn't have to be explicitely required in the **front controller** (it can be autoloaded with the other core components of our app).
 
-### A Routing Table
+### First try: A Routing Table
 There are a lot of ways of writing the **routing logic** for our application. Google around and you'll find really **sophisticated ways** (but cool tho) of doing that, for example using regular expressions mapped to regular expressions.
 
 <p align="center"><img src="./images/believe.gif" height="250" /></p>
@@ -110,14 +110,30 @@ Again, routing consists on:
 
 A routing table is a hardcoded table that maps **routes** to **controllers/actions**. It's a simple way of routing the requests contained in the query strings to the proper scripts in our app. For example:
 
-|     Route      | Controller | Action  |
-| -------------- | ---------- | ------- |
-| `/`            | `Home`     | `index` |
-| `/posts`       | `Posts`    | `index` |
-| `/post/3`      | `Posts`    | `show`  |
-| `/post/edit/3` | `Posts`    | `edit`  |
+|     Route     | Controller | Action  |
+| ------------- | ---------- | ------- |
+| `/`           | `Home`     | `index` |
+| `/posts`      | `Posts`    | `index` |
+| `/post/`      | `Posts`    | `show`  |
+| `/post/edit/` | `Posts`    | `edit`  |
 
 Each **controller** will be a class, and each **action** a method within this class. Note that we're not naively matching routes against scripts.
+
+## Second try: Parsing URLs
+As soon as I finished the **routing table**, I realized that it wasn't gonna cut it. Check the following table:
+
+|     Route      | Controller | Action |
+| -------------- | ---------- | ------ |
+| `/post/3`      | `Posts`    | `show` |
+| `/post/edit/3` | `Posts`    | `edit` |
+
+How was I supposed to handle passing down arguments to the **actions**? So I took another slightly more complex approach, which consists on parsing the query string in the URL, extracting:
+
+* The **controller**.
+* The **action**.
+* The **parameters**.
+
+Once the controller was extracted, I just had to load the file that contains its class definition (had to capitalize the controller name using [ucwords](https://www.php.net/manual/en/function.ucwords) to match the filenames). Then instantiate the controller class, and invoke the **action**, passing down the **parameters** (if any).
 
 ### A Design choice
 When designing our app, we have to make a design choice about how are we gonna structure our URLs:

@@ -24,7 +24,7 @@ Next are my notes about what I learned while doing so (expect lots of memes).
 * [A dockerized LAMP stack](./README/docker_lamp.md)
 * [What the heck is MVC, really](./README/mvc.md)
 * [Routing](./README/router.md)
-* [That model is giving me the DB-jeebies](./README/db.md)
+* [That model is giving me the DB-jeebies](./README/model_class.md)
 
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
