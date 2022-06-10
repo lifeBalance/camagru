@@ -25,11 +25,12 @@ class Router {
                     unset($url[2]);
                 }
             } else {
-                $this->action = 'index';// set DEFAULT action
+                $this->action = 'index';        // set DEFAULT action
             }
         } else {
             require_once '../app/controllers/Pics.class.php';
             $this->controller = new Pics();     // set DEFAULT controller
+            $this->action = 'index';            // set DEFAULT action
         }
         // call the whole thing
         call_user_func_array([$this->controller, $this->action], $this->params);

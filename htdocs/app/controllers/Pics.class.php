@@ -1,9 +1,6 @@
 <?php
 class Pics
 {
-    public function __construct()
-    {
-    }
     public function index()
     {
         echo 'you are in Pics/index';

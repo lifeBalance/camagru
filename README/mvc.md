@@ -14,7 +14,7 @@ If you find yourself mixing up logic to access the database and displaying the r
 
 <p align="center"><img src="./images/spaguetti.jpg" height="250" /></p>
 
-Web frameworks are there to protect you from shooting yourself in the foot.
+Web frameworks are there to protect you from shooting yourself in the foot. Or at least to protect you from feeling regretti with your bowl of spaguetti (meaning your app, dawg :joy:).
 
 ## The Big Picture
 Nothing like a good diagram to get the party started:
