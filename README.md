@@ -19,12 +19,12 @@ But since already made frameworks were forbidden for this project, I figured I h
 
 <p align="center"><img src="./README/images/cook.jpg" height="250" /></p>
 
-Next are my notes about what I learned while doing so (as you may have already realized, expect lots of memes):
+Next are my notes about what I learned while doing so (expect lots of memes).
 
 * [A dockerized LAMP stack](./README/docker_lamp.md)
 * [What the heck is MVC, really](./README/mvc.md)
 * [Routing](./README/router.md)
-* [The DB-jeebees](./README/db.md)
+* [That model is giving me the DB-jeebies](./README/db.md)
 
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]

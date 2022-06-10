@@ -65,9 +65,9 @@ Your browser will show whatever route you search for:
 | http://localhost/foo              | Requested "foo"              |
 | http://localhost/foo=bar/spam=baz | Requested "foo=bar/spam=baz" |
 
-Note that we don't even need the `?` at the beginning of our query string.
+Note how now, we don't even need the `?` at the beginning of our query string.
 
-<p align="center"><img src="./images/pretty_urls.jpg" height="250" /></p>
+<img src="./images/pretty_urls.jpg" height="250" />
 
 ## Router
 Routing a request is just parsing a **query string** and use its components to call an **action** (method) within a **controller** (class). To understand the simplicity behind all this, add the following to your `Router.class.php`:
@@ -132,6 +132,6 @@ The approach described in the diagram above is just one of many choices. Remembe
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
 
 <!-- navigation -->
-[home]: #
+[home]: ../README.md
 [back]: ./mvc.md
-[next]: ./db.md
+[next]: ./model_class.md

@@ -1,12 +1,17 @@
 <?php
 
-define('APPROOT', dirname(dirname(__FILE__)));
-define('URLROOT', 'http://localhost');
-define('SITENAME', 'camagru');
-define('VERSION', '1.0.0');
+require_once('../app/config/database.php');
 
-// autoload core classes
-spl_autoload_register(function ($className)
+function setup_db()
 {
-    require_once('../app/core/'. $className .'.class.php');
-});
+    try {
+        $dbh = new PDO( $GLOBALS['DB_DSN'],
+                        $GLOBALS['DB_USER'],
+                        $GLOBALS['DB_PASS'],
+                        $GLOBALS['DB_OPTS']);
+        $dbh->exec(file_get_contents($GLOBALS['DB_SETUP_FILE']));
+    } catch(PDOException $e){
+        die ($e->getMessage());
+    }
+    return $dbh;
+}

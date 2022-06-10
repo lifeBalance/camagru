@@ -172,7 +172,8 @@ $dbh = new PDO($dsn,
               '1234',
               $options);
 
-$dbh->exec($sql);
+$dbh->exec('CREATE DATABASE `camagru`');
+
 die('DB has been set the fuck up!');
 ?>
 ```

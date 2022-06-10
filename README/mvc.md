@@ -9,6 +9,13 @@ Some practical advantages of this approach are:
 
 * **Maintainable** code: if your browser is informing you about an SQL syntax error, you know exactly what folder and files where to look for it. Any new developer that is added to the team, knows at once where everything goes (assuming that she's familiar with MVC). Also, since the app's UI is kept in different folders (views), designers can be working on the **UI** without messing with files that contain backend functionality.
 
+## Do I need it?
+If you find yourself mixing up logic to access the database and displaying the retrieved data, all in the same file, you're violating one of the most basic principles of software development: **separation of concerns**. At the beginning of a project, it's tempting to start coding fast, mixing up business and presentation logic all together.
+
+<p align="center"><img src="./images/spaguetti.jpg" height="250" /></p>
+
+Web frameworks are there to protect you from shooting yourself in the foot.
+
 ## The Big Picture
 Nothing like a good diagram to get the party started:
 
@@ -18,7 +25,7 @@ Nothing like a good diagram to get the party started:
 
   * Interacts with the database.
   * Communicates with the **controller** logic.
-  * Sometimes, also interact with the **views**.
+  * Implemented by a class with a **singular** name, e.g. `Post`.
 
 * **View**: This refers to the UI that the users interact with in her browser. Basically the markup (including CSS and JS) with embedded **dynamic values** passed down by the **controller**.
 
@@ -27,6 +34,7 @@ Nothing like a good diagram to get the party started:
   * Receives and manages input from the user (URL requests).
   * Communicates with the **model** to get data from.
   * Pass requested data to the **view**.
+  * Implemented by a class with a **plural** name, e.g. `Posts`.
 
 ## MVP
 MVC was created in the late 1970s for developing **desktop applications** that implemented GUIs. Over time it has been **widely adopted** as a design paradigm for Web applications in major programming languages. Several web frameworks have been created that enforce the pattern. It also has resulted in several mutations of the original MVC pattern.
@@ -42,7 +50,7 @@ As you can see, there's a new component labeled as **router**. This is where we 
 * Stick to the **MVC** concept and consider the **routing** as part of the **controller**.
 * Rethink the classic **MVC** as a modern [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture, (where **P** stands for **presenter**) in which the **presenter** takes the role of a (distributed) controller. In other words the middle-man between the **models** and the **views**.
 
-<p align="center"><img src="./images/da_real_mvp.png" height="250" /></p>
+<p align="center"><img src="./images/da_real_mvp.jpg" height="250" /></p>
 
 > Imho, I don't think it's worthy spending time trying to pedantically define your design choice. The important part is to agree on some **blueprint** (better if it's a well known one) and stick to it.
 
@@ -91,5 +99,5 @@ We have to configure our webserver so that this folder (and not our project fold
 
 <!-- navigation -->
 [home]: ../README.md
-[back]: ../README.md
+[back]: ./docker_lamp.md
 [next]: ./router.md
