@@ -49,18 +49,39 @@ One of the arguments required by the `PDO` constructor is a [DSN](https://en.wik
 
 * The database **driver**.
 * The **host**, which in my case is the name of the **Docker container** where the MySQL service is running.
-* The **database name**, which is **optional**.
-* The **charset**, also **optional**.
-* The **port**, **optional** as well.
-* The **unix_socket**, which as you may have guessed, it's **optional**.
+* And **optionally**:
+
+    * The **name** of an **existing database**.
+    * The **charset**, also **optional**.
+    * The **port**, **optional** as well.
+    * The **unix_socket**, which as you may have guessed, it's **optional**.
 
 In our `getDB()` function we used two different `dsn` strings:
 
-* In the `try` clause we were trying to connect to an **existing database**. For that reason, we specified the **db name**, for connections to an already existing database.
+* In the `try` clause we were trying to connect to an **existing database**, so we must specify the **db name**.
 * But in the `catch` clause, we check for a **non-existing database** exception. In this case, we have to omit the database name, obviously!
 
 ## Other methods
-The `Model` class is a good place to define methods that will be used later on by the models to retrieve and store data from and to the database.
+The `Model` class is a good place to define methods that will be used later on by the models to retrieve and store data from and to the database. Some actions common to all models would be:
+
+* Perform an SQL query that returns one of something (a user, a <del>dick</del>pic, etc).
+* An SQL query that returns all of something (a list of posts, a list of comments, etc).
+* Another one query that returns true if a record is found in a table; false otherwise.
+
+I hope you get the idea ;-)
+
+## A Model
+Let's say our app is gonna have users (duh!), and we need a `User` model. We could test out the `getDB()` method inside a `getUsers()` mmmmethod:
+```php
+public function getUsers()
+{
+    $db = static::getDB();
+    $stmt = $db->query('SELECT * FROM users');
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+```
+
+The method above would return a list of users that a given controller would use to pass it down to a **view**. The static `getDB()` superclass method opens a gate to the database that is use in the `User` model to extract whatever data we need.
 
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]

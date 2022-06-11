@@ -12,9 +12,9 @@ abstract class Controller
             die('Model does not exist!<br>');
     }
 
-    protected function render(string $view, array $data)
+    protected function render($view, $data)
     {
-        extract($data);
+        extract($data); // To access variables by name in our views.
         if (is_readable('../app/views/' . $view . '.php'))
             require_once('../app/views/' . $view . '.php');
         else

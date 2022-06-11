@@ -3,7 +3,8 @@ class Pics extends Controller
 {
     public function index()
     {
-        echo 'you are in Pics/index';
+        $this->render('pics/index', 
+                        ['title' => 'Public Gallery']);
     }
 
     public function edit($id = 0)

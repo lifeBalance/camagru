@@ -8,4 +8,5 @@
     <title><?php echo SITENAME; ?></title>
 </head>
 <body>
-    <h1><?php echo SITENAME; ?></h1>
+    <?php require APPROOT . '/app/views/common/navbar.php'; ?>
+    <div class="container">
