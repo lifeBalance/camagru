@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
 <h2><?php echo $title; ?></h2>
-<p>(5 <sub><s>dick</s></sub>pics per page)</p>
+<p>You're editing pic #<? echo $id; ?></p>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>

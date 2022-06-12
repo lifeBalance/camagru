@@ -1,7 +1,7 @@
 <?php
 
-require_once('../app/config/database.php');
-require_once('../app/config/setup.php');
+// Include the script that contains the setup_db() function
+require_once DB_SETUP_SCRIPT;
 
 abstract class Model
 {

@@ -1,28 +1,30 @@
 <?php
 class User extends Model
 {
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = static::getDB();
+    }
+
     public function getUsers()
     {
-        $db = static::getDB();
-        $stmt = $db->query('SELECT * FROM users');
+        $stmt = $this->db->query('SELECT * FROM users');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function login($email, $password)
+    public function authenticate($email, $password)
     {
-        $db = static::getDB();
-        $stmt = $db->prepare('SELECT * FROM users WHERE email = :email');
-        $stmt->execute([
-            'email' => $email
-        ]);
-        return $stmt->fetch();
+        $foundUser = $this->findByEmail($email);
+        if ($foundUser && $foundUser->password === $password)
+            return $foundUser;
     }
 
     public function findByEmail($email)
     {
-        $db = static::getDB();
-        $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 }

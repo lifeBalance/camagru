@@ -1,14 +1,16 @@
 <?php
 class Users extends Controller
 {
+    private $userModel;
+
     public function __construct()
     {
-        $this->user = $this->load('User');
+        $this->userModel = $this->load('User');
     }
     public function test()
     {
-        $data = $this->user->getUsers();
-        $this->render('users/test', $data);
+        $foundUsers = $this->userModel->getUsers();
+        $this->render('users/test', $foundUsers);
     }
 
     public function edit($params)
@@ -19,28 +21,49 @@ class Users extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->user->findByEmail($_POST['email'])) {
-                // success
-                $data = [
-                    'email' => 'logged in dawg',
-                    'password' => 'logged in dawg',
-                ];
-                $this->render('users/login', $data);
+            // Sanitize Form input data
+            $formData = [
+                'email' => $_POST['email'],
+                'password' => $_POST['password'],
+            ];
+
+            // Authenticate user (Check her password)
+            $authenticatedUser = $this->userModel->authenticate($formData['email'], $formData['password']);
+            
+            // Authentication success
+            if ($authenticatedUser) {
+                $this->createUserSession($authenticatedUser);
+                header('Location: ' . URLROOT);
+            // Authentication failure
             } else {
-                // failure
-                $data = [
-                    'email' => 'dafak is that?',
-                    'password' => 'dafak is that?',
+                $formData = [
+                    'email' => 'Who dafak is that?',
+                    'password' => 'Who dafak is that?',
                 ];
-                $this->render('users/login', $data);
+                $this->render('users/login', $formData);
             }
+        // Not a POST request (user just reloaded page)
         } else {
-            // load EMPTY form (user just reloaded page)
-            $data = [
+            // Load EMPTY form 
+            $formData = [
                 'email' => 'boop',
                 'password' => 'boop',
             ];
-            $this->render('users/login', $data);
+            $this->render('users/login', $formData);
         }
+    }
+
+    public function logout()
+    {
+        session_destroy();
+        header('Location: ' . URLROOT);
+    }
+
+    public function createUserSession($foundUser)
+    {
+        $_SESSION['user'] = array(
+            'user_id'   => $foundUser->id,
+            'email'     => $foundUser->email,
+            'username'  => $foundUser->username);
     }
 }

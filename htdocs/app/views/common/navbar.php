@@ -1,12 +1,9 @@
 <nav>
   <h1><a href="<?php echo URLROOT;?>"><?php echo SITENAME; ?></a></h1>
   <ul>
-  <?php if (isset($_SESSION['user_id'])) : ?>
+  <?php if (isset($_SESSION['user'])) : ?>
     <li>
-      <a><?php echo 'Welcome ' . $_SESSION['name']; ?></a>
-    </li>
-    <li>
-      <a href="<?php echo URLROOT; ?>/users/logout">Log out</a>
+      <p><?php echo 'Welcome ' . $_SESSION['user']['username']; ?>! <a href="<?php echo URLROOT; ?>/users/logout">Log out</a></p>
     </li>
   <?php else : ?>
     <li>

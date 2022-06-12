@@ -1,4 +1,4 @@
-<?php require APPROOT . '/app/views/common/header.php'; ?>
+<?php require APPROOT . '/views/common/header.php'; ?>
 
 <h2>Login</h2>
 <form action="<? echo URLROOT; ?>/users/login" method="post">
@@ -24,4 +24,4 @@
     </div>
 </form>
 
-<?php require APPROOT . '/app/views/common/footer.php'; ?>
+<?php require APPROOT . '/views/common/footer.php'; ?>

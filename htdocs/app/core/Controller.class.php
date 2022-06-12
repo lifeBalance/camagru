@@ -4,20 +4,22 @@ abstract class Controller
 {
     protected function load(string $model)
     {
-        if (is_readable('../app/models/' . $model . '.class.php')) {
-            require_once('../app/models/' . $model . '.class.php');
+        $modelFile = APPROOT . '/models/' . $model . '.class.php';
+        if (is_readable($modelFile)) {
+            require_once($modelFile);
             return new $model();
         }
         else
-            die('Model does not exist!<br>');
+            die($modelFile . ' model does not exist!<br>');
     }
 
     protected function render($view, $data)
     {
         extract($data); // To access variables by name in our views.
-        if (is_readable('../app/views/' . $view . '.php'))
-            require_once('../app/views/' . $view . '.php');
+        $viewFile = APPROOT . '/views/' . $view . '.php';
+        if (is_readable($viewFile))
+            require_once($viewFile);
         else
-            die('View does not exist!<br>');
+            die($viewFile . 'view does not exist!<br>');
     }
 }
