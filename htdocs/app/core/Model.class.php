@@ -13,11 +13,11 @@ abstract class Model
         {
             try {
                 // Connect to existing database
-                $dbh = new PDO('mysql:host='. $GLOBALS['DB_HOST'] . ';dbname=' . $GLOBALS['DB_NAME'],
+                $dbh = new \PDO('mysql:host='. $GLOBALS['DB_HOST'] . ';dbname=' . $GLOBALS['DB_NAME'],
                 $GLOBALS['DB_USER'],
                 $GLOBALS['DB_PASS'],
                 $GLOBALS['DB_OPTS']);
-            } catch(PDOException $e){
+            } catch(\PDOException $e){
                 if ($e->getCode() == 1049)  // Code 1049: db does not exist.
                     // Set up database
                     $dbh = setup_db();

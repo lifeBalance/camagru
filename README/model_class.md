@@ -62,7 +62,7 @@ In our `getDB()` function we used two different `dsn` strings:
 * But in the `catch` clause, we check for a **non-existing database** exception. In this case, we have to omit the database name, obviously!
 
 ## Other methods
-The `Model` class is a good place to define methods that will be used later on by the models to retrieve and store data from and to the database. Some actions common to all models would be:
+The abstract `Model` class is a good place to define methods that will be used later on by the models to retrieve and store data from and to the database. Some actions common to all models would be:
 
 * Perform an SQL query that returns one of something (a user, a <del>dick</del>pic, etc).
 * An SQL query that returns all of something (a list of posts, a list of comments, etc).
@@ -73,12 +73,18 @@ I hope you get the idea ;-)
 ## A Model
 Let's say our app is gonna have users (duh!), and we need a `User` model. We could test out the `getDB()` method inside a `getUsers()` mmmmethod:
 ```php
-public function getUsers()
-{
-    $db = static::getDB();
-    $stmt = $db->query('SELECT * FROM users');
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = static::getDB();
+    }
+
+    public function getUsers()
+    {
+        $stmt = $this->db->query('SELECT * FROM users');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 ```
 
 The method above would return a list of users that a given controller would use to pass it down to a **view**. The static `getDB()` superclass method opens a gate to the database that is use in the `User` model to extract whatever data we need.
@@ -89,4 +95,4 @@ The method above would return a list of users that a given controller would use 
 <!-- navigation -->
 [home]: ../README.md
 [back]: ./router.md
-[next]: ./workflow.md
+[next]: ./controller_class.md

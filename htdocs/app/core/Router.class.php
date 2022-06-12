@@ -1,4 +1,5 @@
 <?php
+
 class Router {
     protected $controller;
     protected $action;

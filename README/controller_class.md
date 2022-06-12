@@ -35,4 +35,4 @@ As you can see, the `index` method (known as action in MVC) is using the abstrac
 <!-- navigation -->
 [home]: ../README.md
 [back]: ./model_class.md
-[next]: ./controller_class.md
+[next]: ./views.md

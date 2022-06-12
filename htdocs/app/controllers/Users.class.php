@@ -1,21 +1,34 @@
 <?php
+
 class Users extends Controller
 {
     private $userModel;
+    private $errors = [];
 
     public function __construct()
     {
         $this->userModel = $this->load('User');
     }
-    public function test()
-    {
-        $foundUsers = $this->userModel->getUsers();
-        $this->render('users/test', $foundUsers);
-    }
 
-    public function edit($params)
+    public function register()
     {
-        echo '(' . getcwd() . ") you are in Users/edit: $params";
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!$this->userModel->save($_POST)) {
+                array_push($this->errors, 'existing user');
+                // do something with the error
+            } else
+                $this->redirect('/');
+        // Not a POST request (user just reloaded page)
+        } else {
+            // Load EMPTY form 
+            $formData = [
+                'email'         => '',
+                'username'      => '',
+                'password'      => '',
+                'pwdConfirm'    => '',
+            ];
+            $this->render('users/register', $formData);
+        }
     }
 
     public function login()
@@ -33,12 +46,12 @@ class Users extends Controller
             // Authentication success
             if ($authenticatedUser) {
                 $this->createUserSession($authenticatedUser);
-                header('Location: ' . URLROOT);
+                $this->redirect('/');
             // Authentication failure
             } else {
                 $formData = [
-                    'email' => 'Who dafak is that?',
-                    'password' => 'Who dafak is that?',
+                    'email' => $_POST['email'],
+                    'password' => '',
                 ];
                 $this->render('users/login', $formData);
             }
@@ -46,8 +59,8 @@ class Users extends Controller
         } else {
             // Load EMPTY form 
             $formData = [
-                'email' => 'boop',
-                'password' => 'boop',
+                'email' => '',
+                'password' => '',
             ];
             $this->render('users/login', $formData);
         }
@@ -56,7 +69,7 @@ class Users extends Controller
     public function logout()
     {
         session_destroy();
-        header('Location: ' . URLROOT);
+        $this->redirect('/');
     }
 
     public function createUserSession($foundUser)

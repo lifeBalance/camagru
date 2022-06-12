@@ -1,4 +1,5 @@
 <?php
+
 class Pics extends Controller
 {
     public function index()

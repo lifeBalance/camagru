@@ -29,5 +29,3 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
     cap_add:
       - SYS_NICE
-    volumes:
-      - './db_data:/var/lib/mysql'
