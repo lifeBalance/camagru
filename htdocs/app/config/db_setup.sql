@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `username`    VARCHAR(50) NOT NULL,
     `email`       VARCHAR(255) UNIQUE NOT NULL,
     `pwd_hash`    VARCHAR(255) NOT NULL,
-    `confirmed`   BOOLEAN NOT NULL DEFAULT 0
+    `confirmed`   BOOLEAN NOT NULL DEFAULT 0,
+    `push_notif`  VARCHAR(7) NOT NULL DEFAULT 'checked'
 );
 
 INSERT INTO `users` (`id`, `username`, `email`, `pwd_hash`, `confirmed`)

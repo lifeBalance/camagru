@@ -2,13 +2,13 @@
 
 class User extends Model
 {
-    public $errors = [];
+    public          $errors = [];
 
     public function __construct()
     {
     }
 
-    public function save($data)
+    public function new($data)/// RENAME ACTION TO NEW!!!
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;
@@ -25,13 +25,48 @@ class User extends Model
                 return false;
             }
             $pwd_hash = password_hash($this->password, PASSWORD_DEFAULT);
+            $notif = empty($_POST['pushNotif']) ? '' : 'checked';
             $db = static::getDB();
-            $sql = 'INSERT INTO users (username, email, pwd_hash)
-                    VALUES (:username, :email, :pwd_hash)';
+            $sql = 'INSERT INTO users (username, email, pwd_hash, push_notif)
+                    VALUES (:username, :email, :pwd_hash, :push_notif)';
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':pwd_hash', $pwd_hash, PDO::PARAM_STR);
+            $stmt->bindValue(':push_notif', $notif, PDO::PARAM_STR);
+            return $stmt->execute();
+        } else
+            return false;
+    }
+
+    public function edit($data, $id)
+    {
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
+        }
+        // Fill errors array (if there's any errors in the form) 
+        $this->validateRegisterForm();
+
+        // No errors in the form
+        if (empty($this->errors)) {
+            $pwd_hash = password_hash($this->password, PASSWORD_DEFAULT);
+            $notif = isset($this->pushNotif) ? 'checked' : '';
+
+            $db = static::getDB();
+
+            // Update user row
+            $sql = 'UPDATE users
+                    SET username    = :username,
+                        email       = :email,
+                        pwd_hash    = :pwd_hash,
+                        push_notif  = :push_notif
+                    WHERE id = :id';
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':username',   $this->username,    PDO::PARAM_STR);
+            $stmt->bindValue(':email',      $this->email,       PDO::PARAM_STR);
+            $stmt->bindValue(':pwd_hash',   $pwd_hash,          PDO::PARAM_STR);
+            $stmt->bindValue(':push_notif', $notif,             PDO::PARAM_STR);
+            $stmt->bindValue(':id',         $id,                PDO::PARAM_INT);
             return $stmt->execute();
         } else
             return false;
@@ -78,12 +113,13 @@ class User extends Model
                 $this->errors['pwd_err'] = 'wrong password';
                 return false;
             }
-            else if ($foundUser->confirmed == false) {
-                $this->errors['email_confirm'] = 'please confirm your account';
-                return false;
-            }
-            else
+            // else if ($foundUser->confirmed == false) {
+            //     $this->errors['email_confirm'] = 'please confirm your account';
+            //     return false;
+            // }
+            else {
                 return $foundUser;
+            }
         } else {
             $this->errors['email_err'] = 'user does not exist';
             return false;
@@ -95,6 +131,14 @@ class User extends Model
         $db = static::getDB();
         $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function findById($id)
+    {
+        $db = static::getDB();
+        $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 }

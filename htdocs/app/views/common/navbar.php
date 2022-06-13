@@ -3,7 +3,7 @@
   <ul>
   <?php if (isset($_SESSION['username'])) : ?>
     <li>
-      <p><?php echo 'Welcome ' . $_SESSION['username']; ?>! <a href="<?php echo URLROOT; ?>/users/logout">Log out</a></p>
+      <p><?php echo 'Welcome <a href="'. URLROOT .'/users/settings">' . $_SESSION['username'] . '!</a> | <a href="' . URLROOT . '/users/logout">Log out</a>'; ?></p>
     </li>
   <?php else : ?>
     <li>

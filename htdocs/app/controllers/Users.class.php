@@ -12,13 +12,15 @@ class Users extends Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->userModel->save($_POST) === false) {
-                 // Load EMPTY form 
+            if ($this->userModel->new($_POST) === false) {
+                 // Load FAULTY form
                 $formData = [
+                    'title'         => 'register',
                     'email'         => $_POST['email'],
                     'username'      => $_POST['username'],
                     'password'      => $_POST['password'],
-                    'pwdConfirm'    => $_POST['pwdConfirm'],
+                    'pwd_confirm'   => $_POST['pwd_confirm'],
+                    'pushNotif'     => empty($_POST['pushNotif']) ? '' : 'checked',
                     'errors'        => $this->userModel->errors,
                 ];
                 $this->render('users/register', $formData);
@@ -30,10 +32,12 @@ class Users extends Controller
         } else {
             // Load EMPTY form 
             $formData = [
+                'title'         => 'register',
                 'email'         => '',
                 'username'      => '',
                 'password'      => '',
                 'pwdConfirm'    => '',
+                'pushNotif'     => 'checked',
             ];
             $this->render('users/register', $formData);
         }
@@ -47,21 +51,35 @@ class Users extends Controller
             
             // Authentication success
             if ($authenticatedUser) {
-                $data = [
-                    'success' => 'login successful'
-                ];
-                $this->createUserSession($authenticatedUser);
-                $this->redirect('/', $data);
+                if ($authenticatedUser->confirmed) {
+                    $data = [
+                        'title'     => 'gallery',
+                        'success'   => 'login successful'
+                    ];
+                    $this->createUserSession($authenticatedUser);
+                    $this->render('pics/index', $data);
+                } else {
+                    $errors = [
+                        'email_confirm' => 'please confirm your account'
+                    ];
+                    $data = [
+                        'title'     => 'gallery',
+                        'errors'   => $errors
+                    ];
+                    $this->render('pics/index', $data);
+                }
             // Authentication failure
             } else {
                 if (isset($this->userModel->errors['email_confirm'])) {
                     $data = [
+                        'title'     => 'login',
                         'email'     => '',
                         'password'  => '',
                         'errors'    => $this->userModel->errors,
                     ];
                 } else {
                     $data = [
+                        'title'     => 'login',
                         'email'     => $_POST['email'],
                         'password'  => $_POST['password'],
                         'errors'    => $this->userModel->errors,
@@ -73,8 +91,9 @@ class Users extends Controller
         } else {
             // Load EMPTY form 
             $formData = [
-                'email' => '',
-                'password' => '',
+                'title'     => 'login',
+                'email'     => '',
+                'password'  => '',
             ];
             $this->render('users/login', $formData);
         }
@@ -105,5 +124,50 @@ class Users extends Controller
         session_regenerate_id(true);    // Prevent session-fixation attacks!
         $_SESSION['user_id'] = $foundUser->id;
         $_SESSION['username'] = $foundUser->username;
+    }
+
+    public function isLoggedIn()
+    {
+        return isset($_SESSION['user_id']);
+    }
+
+    public function settings()
+    {
+        // If it's logged in
+        if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'GET') {
+            $user = $this->userModel->findById($_SESSION['user_id']);
+            $formData = [
+                'title'         => 'settings',
+                'email'         => $user->email,
+                'username'      => $user->username,
+                'password'      => '',
+                'pwdConfirm'    => '',
+                'pushNotif'     => $user->push_notif,
+            ];
+            $this->render('users/settings', $formData);
+        }
+        else if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->userModel->edit($_POST, $_SESSION['user_id']) === false) {
+                // Load FAULTY form
+                $formData = [
+                    'title'         => 'settings',
+                    'email'         => $_POST['email'],
+                    'username'      => $_POST['username'],
+                    'password'      => '',
+                    'pwdConfirm'    => '',
+                    'pushNotif'     => isset($_POST['pushNotif']) ? 'checked' : '',
+                    'errors'        => $this->userModel->errors,
+                ];
+                $this->render('users/settings', $formData);
+            } else {
+                $data = [
+                    'title' => 'gallery',
+                    'success' => 'Your account settings have been updated',
+                ];
+                $this->render('pics/index', $data);
+            }
+        } else {
+            $this->redirect('/');
+        }
     }
 }

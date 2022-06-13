@@ -12,7 +12,7 @@
     <?php endif; ?>
 </ul>
 
-<form action="<? echo URLROOT; ?>/users/register" method="post">
+<form action="<? echo URLROOT; ?>/users/settings" method="post">
     <div>
         <label for="username"><sup>*</sup>Username: </label>
         <input id="username" type="text" name="username" value="<?php echo $username; ?>" placeholder="username">
@@ -34,12 +34,12 @@
     </div>
 
     <div>
-        <label for="pushNotif"><sup>*</sup>Email Notifications </label>
+        <label for="pushNotif">Email Notifications </label>
         <input id="pushNotif" type="checkbox"  <?php echo $pushNotif; ?> name="pushNotif">
     </div>
 
     <div>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Update">
     </div>
 </form>
 

@@ -1,19 +1,15 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
-<h2>Login</h2>
+<h2><?php echo $title; ?></h2>
 <!-- flash messages -->
 <ul>
     <?php if(isset($errors)) : ?>
         <? foreach ($errors as $k => $v) : ?>
-            <li>
-                <p><? echo $v; ?></p>
-            </li>
+            <? echo '<li>' . $v . '</li>'; ?>
         <? endforeach; ?>
     <?php endif; ?>
     <?php if(isset($success)) : ?>
-        <li>
-            <p><? echo $success; ?></p>
-        </li>
+        <? echo '<li>' . $success . '</li>'; ?>
     <?php endif; ?>
 </ul>
 <form action="<? echo URLROOT; ?>/users/login" method="post">
