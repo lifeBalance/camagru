@@ -1,6 +1,17 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
 <h2>Register</h2>
+<!-- flash messages -->
+<ul>
+    <?php if(isset($errors)) : ?>
+        <? foreach ($errors as $k => $v) : ?>
+            <li>
+                <p><? echo $v; ?></p>
+            </li>
+        <? endforeach; ?>
+    <?php endif; ?>
+</ul>
+
 <form action="<? echo URLROOT; ?>/users/register" method="post">
     <div>
         <label for="username"><sup>*</sup>Username: </label>
