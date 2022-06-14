@@ -3,16 +3,16 @@
 <h2><?php echo $title; ?></h2>
 <!-- flash messages -->
 <ul>
-    <?php if(isset($errors)) : ?>
-        <? foreach ($errors as $k => $v) : ?>
-            <li>
-                <p><? echo $v; ?></p>
-            </li>
-        <? endforeach; ?>
-    <?php endif; ?>
+<?php if(isset($flashes)) : ?>
+    <? foreach ($flashes as $flash) : ?>
+        <li>
+            <p><? echo $flash; ?></p>
+        </li>
+    <? endforeach; ?>
+<?php endif; ?>
 </ul>
 
-<form action="<? echo URLROOT; ?>/users/register" method="post">
+<form action="<? echo URLROOT . '/users/' . $title; ?>" method="post">
     <div>
         <label for="username"><sup>*</sup>Username: </label>
         <input id="username" type="text" name="username" value="<?php echo $username; ?>" placeholder="username">
@@ -35,7 +35,8 @@
 
     <div>
         <label for="pushNotif"><sup>*</sup>Email Notifications </label>
-        <input id="pushNotif" type="checkbox"  <?php echo $pushNotif; ?> name="pushNotif">
+        <input id="pushNotif" type="checkbox"  
+        <?php if(isset($pushNotif)) echo $pushNotif; ?> name="pushNotif">
     </div>
 
     <div>

@@ -4,18 +4,18 @@ class Pics extends Controller
 {
     public function index()
     {
-        $this->render(  'pics/index', 
-                        [
-                            'title' => 'Public Gallery'
-                        ]);
+        $data = [
+            'title' => 'gallery'
+        ];
+        $this->render('pics/index', $data);
     }
 
     public function edit($id = 0)
     {
-        $this->render(  'pics/pic', 
-                        [
-                            'title' => 'Editing',
-                            'id' => $id
-                        ]);
+        $data = [
+            'title' => 'editing',
+            'id' => $id
+        ];
+        $this->render('pics/pic', $data);
     }
 }

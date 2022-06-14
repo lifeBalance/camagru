@@ -4,14 +4,14 @@
 
 <!-- flash messages -->
 <ul>
-    <?php if(isset($errors)) : ?>
-        <? foreach ($errors as $k => $v) : ?>
-            <? echo '<li>' . $v . '</li>'; ?>
+    <?php if(isset($flashes)) : ?>
+        <? foreach ($flashes as $flash) : ?>
+            <? echo '<li>' . $flash . '</li>'; ?>
         <? endforeach; ?>
     <?php endif; ?>
-    <?php if(isset($success)) : ?>
+    <!-- <?php if(isset($success)) : ?>
         <? echo '<li>' . $success . '</li>'; ?>
-    <?php endif; ?>
+    <?php endif; ?> -->
 </ul>
 <p>(5 <sub><s>dick</s></sub>pics per page)</p>
 

@@ -12,20 +12,19 @@ class Users extends Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->userModel->new($_POST) === false) {
+            // Sanitize data
+            $formData = $this->sanitize($_POST);
+            if ($this->userModel->new($formData) === false) {
                  // Load FAULTY form
-                $formData = [
+                $data = [
                     'title'         => 'register',
-                    'email'         => $_POST['email'],
-                    'username'      => $_POST['username'],
-                    'password'      => $_POST['password'],
-                    'pwd_confirm'   => $_POST['pwd_confirm'],
-                    'pushNotif'     => empty($_POST['pushNotif']) ? '' : 'checked',
-                    'errors'        => $this->userModel->errors,
+                    'flashes'       => $this->userModel->errors,
                 ];
-                $this->render('users/register', $formData);
+                $this->render('users/register', array_merge($data, $formData));
             } else {
-                $data['confirm'] = 'check your email to confirm your account';
+                $data = [
+                    'confirm' => 'check your email to confirm your account'
+                ];
                 $this->redirect('/', $data);
             }
         // Not a POST request (user just reloaded page)
@@ -43,28 +42,42 @@ class Users extends Controller
         }
     }
 
+    public function sanitize($formData)
+    {
+        $sanitizedForm = [
+            'email'         => filter_var($formData['email'], FILTER_SANITIZE_EMAIL),
+            'username'      => filter_var($formData['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'password'      => filter_var($formData['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'pwdConfirm'    => filter_var($formData['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'pushNotif'     => isset($formData['pushNotif']) ? 'checked' : '',
+        ];
+        return $sanitizedForm;
+    }
+
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize data
+            $sanitizedForm = [
+                'email'     => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+                'password'  => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            ];
             // Authenticate user (Check her password)
-            $authenticatedUser = $this->userModel->authenticate($_POST);
+            $authenticatedUser = $this->userModel->authenticate($sanitizedForm);
             
             // Authentication success
             if ($authenticatedUser) {
                 if ($authenticatedUser->confirmed) {
                     $data = [
                         'title'     => 'gallery',
-                        'success'   => 'login successful'
+                        'flashes'   => ['login successful'],
                     ];
                     $this->createUserSession($authenticatedUser);
                     $this->render('pics/index', $data);
                 } else {
-                    $errors = [
-                        'email_confirm' => 'please confirm your account'
-                    ];
                     $data = [
                         'title'     => 'gallery',
-                        'errors'   => $errors
+                        'flashes'   => ['please confirm your account']
                     ];
                     $this->render('pics/index', $data);
                 }
@@ -75,14 +88,14 @@ class Users extends Controller
                         'title'     => 'login',
                         'email'     => '',
                         'password'  => '',
-                        'errors'    => $this->userModel->errors,
+                        'flashes'   => $this->userModel->errors,
                     ];
                 } else {
                     $data = [
                         'title'     => 'login',
                         'email'     => $_POST['email'],
                         'password'  => $_POST['password'],
-                        'errors'    => $this->userModel->errors,
+                        'flashes'   => $this->userModel->errors,
                     ];
                 }
                 $this->render('users/login', $data);
@@ -99,7 +112,7 @@ class Users extends Controller
         }
     }
 
-    public function logout()
+    public function logout($data = [])
     {
         // Unset all of the session variables.
         $_SESSION = array();
@@ -115,8 +128,9 @@ class Users extends Controller
         }
         // Finally, destroy the session.
         session_destroy();
-
-        $this->redirect('/');
+        if (empty($data))
+            $data = ['title' => 'gallery'];
+        $this->render('pics/index', $data);
     }
 
     public function createUserSession($foundUser)
@@ -133,7 +147,7 @@ class Users extends Controller
 
     public function settings()
     {
-        // If it's logged in
+        // If it's logged in: GET request
         if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'GET') {
             $user = $this->userModel->findById($_SESSION['user_id']);
             $formData = [
@@ -144,28 +158,35 @@ class Users extends Controller
                 'pwdConfirm'    => '',
                 'pushNotif'     => $user->push_notif,
             ];
-            $this->render('users/settings', $formData);
+            $this->render('users/register', $formData);
         }
+        // If it's logged in: POST request
         else if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->userModel->edit($_POST, $_SESSION['user_id']) === false) {
+            // Sanitize data
+            $formData = $this->sanitize($_POST);
+            $oldAccount = $this->userModel->findById($_SESSION['user_id']);
+
+            if ($this->userModel->edit($formData, $_SESSION['user_id']) === false) {
                 // Load FAULTY form
-                $formData = [
-                    'title'         => 'settings',
-                    'email'         => $_POST['email'],
-                    'username'      => $_POST['username'],
-                    'password'      => '',
-                    'pwdConfirm'    => '',
-                    'pushNotif'     => isset($_POST['pushNotif']) ? 'checked' : '',
-                    'errors'        => $this->userModel->errors,
+                $data = [
+                    'title'     => 'settings',
+                    'flashes'   => $this->userModel->errors,
                 ];
-                $this->render('users/settings', $formData);
+                $this->render('users/register', array_merge($formData, $data));
             } else {
+                $newAccount = $this->userModel->findById($_SESSION['user_id']);
                 $data = [
                     'title' => 'gallery',
-                    'success' => 'Your account settings have been updated',
+                    'flashes' => ['Your account settings have been updated'],
                 ];
+                $_SESSION['username'] = $newAccount->username;
+                if ($oldAccount->email != $newAccount->email) {
+                    array_push($data['flashes'], 'check your email to confirm your account');
+                    $this->logout($data);
+                }
                 $this->render('pics/index', $data);
             }
+        // Can't access the form if logged out!
         } else {
             $this->redirect('/');
         }

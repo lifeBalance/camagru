@@ -4,9 +4,7 @@ class User extends Model
 {
     public          $errors = [];
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function new($data)/// RENAME ACTION TO NEW!!!
     {
@@ -25,7 +23,7 @@ class User extends Model
                 return false;
             }
             $pwd_hash = password_hash($this->password, PASSWORD_DEFAULT);
-            $notif = empty($_POST['pushNotif']) ? '' : 'checked';
+            $notif = isset($this->pushNotif) ? 'checked' : '';
             $db = static::getDB();
             $sql = 'INSERT INTO users (username, email, pwd_hash, push_notif)
                     VALUES (:username, :email, :pwd_hash, :push_notif)';
@@ -75,27 +73,29 @@ class User extends Model
     public function validateRegisterForm()
     {
         if (empty($this->username))
-            $this->errors['username_err'] = 'name is required';
+            array_push($this->errors, 'name is required');
+        if (strlen($this->username) > 150)
+            array_push($this->errors, 'username max. 50 characters long');
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false)
-            $this->errors['email_err'] = 'email is required';
+            array_push($this->errors, 'email is required');
         if (empty($this->password))
-            $this->errors['password_err'] = 'password is required';
+            array_push($this->errors, 'password is required');
         else if (strlen($this->password) < 6)
-            $this->errors['pwd_len_err'] = 'password must be at least 6 characters long';
+            array_push($this->errors, 'password must be at least 6 characters long');
         else if (preg_match('/.*[a-z]+.*/i', $this->password) == 0)
-            $this->errors['pwd_letter_err'] = 'password needs at least 1 letter';
+            array_push($this->errors, 'password needs at least 1 letter');
         else if (preg_match('/.*\d+.*/i', $this->password) == 0)
-            $this->errors['pwd_digit_err'] = 'password needs at least 1 number';
+            array_push($this->errors, 'password needs at least 1 number');
         else if ($this->password != $this->pwdConfirm)
-            $this->errors['pwd_confirm_err'] = "passwords don't match";
+            array_push($this->errors, "passwords don't match");
     }
 
     public function validateLoginForm()
     {
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false)
-            $this->errors['email_err'] = 'email is required';
+            array_push($this->errors, 'email is required');
         if (empty($this->password))
-            $this->errors['password_err'] = 'password is required';
+            array_push($this->errors, 'password is required');
     }
 
     public function authenticate($data)
@@ -110,18 +110,14 @@ class User extends Model
         $foundUser = $this->findByEmail($this->email);
         if ($foundUser) {
             if (!password_verify($this->password, $foundUser->pwd_hash)) {
-                $this->errors['pwd_err'] = 'wrong password';
+                array_push($this->errors, 'wrong password');
                 return false;
             }
-            // else if ($foundUser->confirmed == false) {
-            //     $this->errors['email_confirm'] = 'please confirm your account';
-            //     return false;
-            // }
             else {
                 return $foundUser;
             }
         } else {
-            $this->errors['email_err'] = 'user does not exist';
+            array_push($this->errors, 'user does not exist');
             return false;
         }
     }
