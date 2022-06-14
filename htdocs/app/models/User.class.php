@@ -73,7 +73,7 @@ class User extends Model
     {
         if (empty($data['username']))
             array_push($this->errors, 'name is required');
-        if (strlen($data['username']) > 150)
+        if (strlen($data['username']) > 50)
             array_push($this->errors, 'username max. 50 characters long');
         if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false)
             array_push($this->errors, 'email is required');

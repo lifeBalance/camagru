@@ -162,7 +162,6 @@ class Users extends Controller
         }
         // If it's logged in: POST request
         else if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'POST') {
-            // var_dump($_POST);
             // Sanitize data
             $formData = $this->sanitize($_POST);
             $oldAccount = $this->userModel->findById($_SESSION['user_id']);
