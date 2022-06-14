@@ -156,12 +156,13 @@ class Users extends Controller
                 'username'      => $user->username,
                 'password'      => '',
                 'pwdConfirm'    => '',
-                'pushNotif'     => $user->push_notif,
+                'pushNotif'     => !empty($user->push_notif) ? 'checked' : '',
             ];
             $this->render('users/register', $formData);
         }
         // If it's logged in: POST request
         else if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'POST') {
+            // var_dump($_POST);
             // Sanitize data
             $formData = $this->sanitize($_POST);
             $oldAccount = $this->userModel->findById($_SESSION['user_id']);
