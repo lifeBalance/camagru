@@ -11,3 +11,12 @@
     <?php require APPROOT . '/views/common/navbar.php'; ?>
     <hr>
     <div class="container">
+        <!-- flash messages -->
+        <ul>
+            <?php if(Flash::beFlashes()) : ?>
+                <? $flashes = Flash::getFlashes() ?>
+                <? foreach ($flashes as $flash) : ?>
+                    <? echo '<li>' . $flash . '</li>'; ?>
+                <? endforeach; ?>
+            <?php endif; ?>
+        </ul>

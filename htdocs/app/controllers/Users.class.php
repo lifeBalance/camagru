@@ -9,29 +9,54 @@ class Users extends Controller
         $this->userModel = $this->load('User');
     }
 
+    public function send_email($data) {
+        $to = $data['email'];
+        $subject = 'Confirm you Camagru account, biatch';
+        $user = $this->userModel->findByEmail("$to");
+        $message = 'Click <a href="http://localhost/users/confirm/' . $user->token . '">here</a> to confirm your account.';
+        $headers = array(
+            'From' => 'webmaster@localhost',
+            'Reply-To' => 'webmaster@localhost',
+            'X-Mailer' => 'PHP/' . phpversion()
+        );
+        mail($to, $subject, $message, $headers);
+    }
+
+    public function confirm($token)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if ($this->userModel->verifyToken($token)) {
+                Flash::addFlashes(['Account confirmed!']);
+                $this->redirect('/');
+            } else {
+                Flash::addFlashes('That token is a bullshit');
+                $this->redirect('/');
+            }
+        }
+        // $user = $this->userModel->findByEmail($data['email']);
+
+    }
+
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $formData = $this->sanitize($_POST);
+            array_merge($formData, ['action' => 'Register']);
             if ($this->userModel->new($formData) === false) {
-                 // Load FAULTY form
-                $data = [
-                    'title'         => 'register',
-                    'flashes'       => $this->userModel->errors,
-                ];
-                $this->render('users/register', array_merge($data, $formData));
+                // Load FAULTY form
+                Flash::addFlashes($this->userModel->errors);
+                $this->render('users/register', $formData);
             } else {
-                $data = [
-                    'confirm' => 'check your email to confirm your account'
-                ];
-                $this->redirect('/', $data);
+                Flash::addFlashes(['check your email to confirm your account']);
+                // SEND CONFIRMATION EMAIL
+                $this->redirect('/');
             }
         // Not a POST request (user just reloaded page)
         } else {
             // Load EMPTY form 
             $formData = [
-                'title'         => 'register',
+                'action'         => 'register',
                 'email'         => '',
                 'username'      => '',
                 'password'      => '',
@@ -68,43 +93,28 @@ class Users extends Controller
             // Authentication success
             if ($authenticatedUser) {
                 if ($authenticatedUser->confirmed) {
-                    $data = [
-                        'title'     => 'gallery',
-                        'flashes'   => ['login successful'],
-                    ];
+                    Flash::addFlashes(['login successful']);
                     $this->createUserSession($authenticatedUser);
-                    $this->render('pics/index', $data);
+                    $this->redirect('/');
+                // Authenticated but email NOT CONFIRMED (can't let you in dawg)
                 } else {
-                    $data = [
-                        'title'     => 'gallery',
-                        'flashes'   => ['please confirm your account']
-                    ];
-                    $this->render('pics/index', $data);
+                    Flash::addFlashes(['please confirm your account']);
+                    $this->redirect('/');
                 }
             // Authentication failure
             } else {
-                if (isset($this->userModel->errors['email_confirm'])) {
-                    $data = [
-                        'title'     => 'login',
-                        'email'     => '',
-                        'password'  => '',
-                        'flashes'   => $this->userModel->errors,
-                    ];
-                } else {
-                    $data = [
-                        'title'     => 'login',
-                        'email'     => $_POST['email'],
-                        'password'  => $_POST['password'],
-                        'flashes'   => $this->userModel->errors,
-                    ];
-                }
+                Flash::addFlashes($this->userModel->errors);
+                $data = [
+                    'title'     => 'login',
+                    'email'     => $sanitizedForm['email'],
+                    'password'  => '',
+                ];
                 $this->render('users/login', $data);
             }
         // Not a POST request (user just reloaded page)
         } else {
             // Load EMPTY form 
             $formData = [
-                'title'     => 'login',
                 'email'     => '',
                 'password'  => '',
             ];
@@ -128,9 +138,14 @@ class Users extends Controller
         }
         // Finally, destroy the session.
         session_destroy();
-        if (empty($data))
-            $data = ['title' => 'gallery'];
-        $this->render('pics/index', $data);
+
+        $this->redirect('/users/flashlogout');
+    }
+
+    public function flashlogout()
+    {
+        Flash::addFlashes(['see ya later dawg!']);
+        $this->redirect('/');
     }
 
     public function createUserSession($foundUser)
@@ -151,40 +166,36 @@ class Users extends Controller
         if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'GET') {
             $user = $this->userModel->findById($_SESSION['user_id']);
             $formData = [
-                'title'         => 'settings',
+                'action'         => 'settings',
                 'email'         => $user->email,
                 'username'      => $user->username,
                 'password'      => '',
                 'pwdConfirm'    => '',
                 'pushNotif'     => ($user->push_notif) ? 'checked' : '',
             ];
-            $this->render('users/register', $formData);
+            $this->render('users/settings', $formData);
         }
         // If it's logged in: POST request
-        else if ($this->isLoggedIn() &&$_SERVER['REQUEST_METHOD'] == 'POST') {
+        else if ($this->isLoggedIn() && $_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $formData = $this->sanitize($_POST);
+            array_merge($formData, ['action' => 'settings']);
             $oldAccount = $this->userModel->findById($_SESSION['user_id']);
 
             if ($this->userModel->edit($formData, $_SESSION['user_id']) === false) {
                 // Load FAULTY form
-                $data = [
-                    'title'     => 'settings',
-                    'flashes'   => $this->userModel->errors,
-                ];
-                $this->render('users/register', array_merge($formData, $data));
+                Flash::addFlashes($this->userModel->errors);
+                $this->render('users/settings', $formData);
             } else {
                 $newAccount = $this->userModel->findById($_SESSION['user_id']);
-                $data = [
-                    'title' => 'gallery',
-                    'flashes' => ['Your account settings have been updated'],
-                ];
+                Flash::addFlashes(['Your account settings have been updated']);
                 $_SESSION['username'] = $newAccount->username;
                 if ($oldAccount->email != $newAccount->email) {
-                    array_push($data['flashes'], 'check your email to confirm your account');
-                    $this->logout($data);
+                    // SEND CONFIRMATION EMAIL
+                    Flash::addFlashes(['check your email to confirm your account']);
+                    $this->logout();
                 }
-                $this->render('pics/index', $data);
+                $this->redirect('/');
             }
         // Can't access the form if logged out!
         } else {

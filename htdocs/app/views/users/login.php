@@ -1,14 +1,7 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
-<h2><?php echo $title; ?></h2>
-<!-- flash messages -->
-<ul>
-    <?php if(isset($flashes)) : ?>
-        <? foreach ($flashes as $flash) : ?>
-            <? echo '<li>' . $flash . '</li>'; ?>
-        <? endforeach; ?>
-    <?php endif; ?>
-</ul>
+<h2>Login</h2>
+
 <form action="<? echo URLROOT; ?>/users/login" method="post">
     <div>
         <label for="email"><sup>*</sup>Email: </label>
@@ -28,6 +21,11 @@
         <div>
             <p>Not registered dawg?
             <a href="<?php echo URLROOT; ?>/users/register">Create account!</a></p>
+        </div>
+
+        <div>
+            <p>Forgot your password?
+            <a href="<?php echo URLROOT; ?>/users/new_pwd">Request a new one!</a></p>
         </div>
     </div>
 </form>
