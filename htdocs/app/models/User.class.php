@@ -19,10 +19,10 @@ class User extends Model
                 return false;
             }
             $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
-            if (isset($data['pushNotif']) && strlen($data['pushNotif']) > 0)
-                $notif =  'checked';
+            if (isset($data['pushNotif']) && $data['pushNotif'] == 'on')
+                $notif = true;
             else
-                $notif = '';
+                $notif = false;
             $db = static::getDB();
             $sql = 'INSERT INTO users (username, email, pwd_hash, push_notif)
                     VALUES (:username, :email, :pwd_hash, :push_notif)';
@@ -30,7 +30,7 @@ class User extends Model
             $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
             $stmt->bindValue(':pwd_hash', $pwd_hash, PDO::PARAM_STR);
-            $stmt->bindValue(':push_notif', $notif, PDO::PARAM_STR);
+            $stmt->bindValue(':push_notif', $notif, PDO::PARAM_BOOL);
             return $stmt->execute();
         } else
             return false;
@@ -44,10 +44,10 @@ class User extends Model
         // No errors in the form
         if (empty($this->errors)) {
             $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
-            if (isset($data['pushNotif']) && strlen($data['pushNotif']) > 0)
-                $notif =  'checked';
+            if (isset($data['pushNotif']) && $data['pushNotif'] == 'on')
+                $notif = true;
             else
-                $notif = '';
+                $notif = false;
 
             $db = static::getDB();
 
@@ -62,7 +62,7 @@ class User extends Model
             $stmt->bindValue(':username',   $data['username'],    PDO::PARAM_STR);
             $stmt->bindValue(':email',      $data['email'],       PDO::PARAM_STR);
             $stmt->bindValue(':pwd_hash',   $pwd_hash,          PDO::PARAM_STR);
-            $stmt->bindValue(':push_notif', $notif,             PDO::PARAM_STR);
+            $stmt->bindValue(':push_notif', $notif,             PDO::PARAM_BOOL);
             $stmt->bindValue(':id',         $id,                PDO::PARAM_INT);
             return $stmt->execute();
         } else

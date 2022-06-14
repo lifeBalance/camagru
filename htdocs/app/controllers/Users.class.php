@@ -36,7 +36,7 @@ class Users extends Controller
                 'username'      => '',
                 'password'      => '',
                 'pwdConfirm'    => '',
-                'pushNotif'     => 'checked',
+                'pushNotif'     => 'on',
             ];
             $this->render('users/register', $formData);
         }
@@ -49,7 +49,7 @@ class Users extends Controller
             'username'      => filter_var($formData['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'password'      => filter_var($formData['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'pwdConfirm'    => filter_var($formData['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'pushNotif'     => isset($formData['pushNotif']) ? 'checked' : '',
+            'pushNotif'     => isset($formData['pushNotif']) ? 'on' : '',
         ];
         return $sanitizedForm;
     }
@@ -156,7 +156,7 @@ class Users extends Controller
                 'username'      => $user->username,
                 'password'      => '',
                 'pwdConfirm'    => '',
-                'pushNotif'     => !empty($user->push_notif) ? 'checked' : '',
+                'pushNotif'     => ($user->push_notif) ? 'checked' : '',
             ];
             $this->render('users/register', $formData);
         }
