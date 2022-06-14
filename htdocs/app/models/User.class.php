@@ -31,7 +31,8 @@ class User extends Model
             $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
             $stmt->bindValue(':pwd_hash', $pwd_hash, PDO::PARAM_STR);
             $stmt->bindValue(':push_notif', $notif, PDO::PARAM_BOOL);
-            return $stmt->execute();
+            $stmt->execute();
+            return $this->findByEmail($data['email']);
         } else
             return false;
     }
@@ -135,5 +136,12 @@ class User extends Model
         $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+    
+    public function generateToken($email)
+    {
+        $db = static::getDB();
+        $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
+        
     }
 }

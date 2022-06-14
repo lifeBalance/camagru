@@ -9,11 +9,11 @@ class Users extends Controller
         $this->userModel = $this->load('User');
     }
 
-    public function send_email($data) {
-        $to = $data['email'];
+    public function send_email($user) {
+        $to = $user->email;
         $subject = 'Confirm you Camagru account, biatch';
-        $user = $this->userModel->findByEmail("$to");
-        $message = 'Click <a href="http://localhost/users/confirm/' . $user->token . '">here</a> to confirm your account.';
+        $token = $this->userModel->generateToken($user->email);
+        $message = 'Click <a href="http://localhost/users/confirm/' . $token . '">here</a> to confirm your account.';
         $headers = array(
             'From' => 'webmaster@localhost',
             'Reply-To' => 'webmaster@localhost',
@@ -43,13 +43,15 @@ class Users extends Controller
             // Sanitize data
             $formData = $this->sanitize($_POST);
             array_merge($formData, ['action' => 'Register']);
-            if ($this->userModel->new($formData) === false) {
+            $user = $this->userModel->new($formData);
+            if ($user === false) {
                 // Load FAULTY form
                 Flash::addFlashes($this->userModel->errors);
                 $this->render('users/register', $formData);
             } else {
                 Flash::addFlashes(['check your email to confirm your account']);
                 // SEND CONFIRMATION EMAIL
+                $this->send_email($user);
                 $this->redirect('/');
             }
         // Not a POST request (user just reloaded page)
@@ -122,7 +124,7 @@ class Users extends Controller
         }
     }
 
-    public function logout($data = [])
+    public function logout()
     {
         // Unset all of the session variables.
         $_SESSION = array();
