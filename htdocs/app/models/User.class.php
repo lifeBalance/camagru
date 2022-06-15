@@ -140,8 +140,36 @@ class User extends Model
     
     public function generateToken($email)
     {
+        $token = new Token();
+        $hash = $token->getHash();
+
         $db = static::getDB();
-        $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
-        
+        $sql = 'UPDATE users
+                SET confirm_hash = :confirm_hash
+                WHERE email = :email';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':confirm_hash', $hash, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        if ($stmt->execute())
+            return $hash;
+        else
+            return false;
+    }
+
+    public function verifyToken($token)
+    {
+        $db = static::getDB();
+        $stmt = $db->prepare("SELECT * FROM users WHERE confirm_hash = ?");
+        $stmt->execute([$token]);
+        if ($stmt->fetch(PDO::FETCH_OBJ))
+        {
+            $sql = 'UPDATE users
+                    SET confirmed = :confirmed
+                    WHERE confirm_hash = :confirm_hash';
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':confirmed', true, PDO::PARAM_BOOL);
+            $stmt->bindValue(':confirm_hash', $token, PDO::PARAM_STR);
+            return $stmt->execute();
+        }
     }
 }

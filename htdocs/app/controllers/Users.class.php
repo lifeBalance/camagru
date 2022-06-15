@@ -9,32 +9,72 @@ class Users extends Controller
         $this->userModel = $this->load('User');
     }
 
-    public function send_email($user) {
+    public function confirm($user = null)
+    {
+        if ($user) {
+            $this->send_mail($user);
+        } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize data
+            $sanitizedForm = [
+                'email'     => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+                'password'  => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            ];
+            // Authenticate user (Check her password)
+            $authenticatedUser = $this->userModel->authenticate($sanitizedForm);
+
+            // Authentication success
+            if ($authenticatedUser) {
+                $this->send_mail($authenticatedUser);
+            } else {
+                Flash::addFlashes($this->userModel->errors);
+                // Load EMPTY form 
+                $formData = [
+                    'email'     => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+                    'password'  => '',
+                ];
+                $this->render('users/confirm', $formData);
+            }
+        } else {
+            // Load EMPTY form 
+            $formData = [
+                'email'     => '',
+                'password'  => '',
+            ];
+            $this->render('users/confirm', $formData);
+        }
+    }
+
+    public function send_mail($user)
+    {
         $to = $user->email;
         $subject = 'Confirm you Camagru account, biatch';
         $token = $this->userModel->generateToken($user->email);
-        $message = 'Click <a href="http://localhost/users/confirm/' . $token . '">here</a> to confirm your account.';
-        $headers = array(
-            'From' => 'webmaster@localhost',
-            'Reply-To' => 'webmaster@localhost',
-            'X-Mailer' => 'PHP/' . phpversion()
-        );
-        mail($to, $subject, $message, $headers);
+        $message = 'Click <a href="http://localhost/users/activate/' . $token . '">here</a> to confirm your account..\n';
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= 'From: <info@camagru.hive>' . "\r\n";
+
+        if (mail("<$to>", $subject, $message, $headers)) {
+            Flash::addFlashes(['Confirmation mail is on the way!']);
+        } else {
+            var_dump([$to, $subject, $token, $message]);
+            exit();
+            Flash::addFlashes(['Confirmation mail is a piece of shit!']);
+        }
+        $this->redirect('/');
     }
 
-    public function confirm($token)
+    public function activate($token)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if ($this->userModel->verifyToken($token)) {
-                Flash::addFlashes(['Account confirmed!']);
-                $this->redirect('/');
+                Flash::addFlashes(['Account confirmed. You can log in!']);
+                $this->redirect('/users/login');
             } else {
-                Flash::addFlashes('That token is a bullshit');
-                $this->redirect('/');
+                Flash::addFlashes(['That token is a bullshit']);
+                $this->redirect('/users/confirm');
             }
         }
-        // $user = $this->userModel->findByEmail($data['email']);
-
     }
 
     public function register()
@@ -42,7 +82,7 @@ class Users extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $formData = $this->sanitize($_POST);
-            array_merge($formData, ['action' => 'Register']);
+            array_merge($formData, ['action' => 'register']);
             $user = $this->userModel->new($formData);
             if ($user === false) {
                 // Load FAULTY form
@@ -51,7 +91,7 @@ class Users extends Controller
             } else {
                 Flash::addFlashes(['check your email to confirm your account']);
                 // SEND CONFIRMATION EMAIL
-                $this->send_email($user);
+                $this->confirm($user);
                 $this->redirect('/');
             }
         // Not a POST request (user just reloaded page)

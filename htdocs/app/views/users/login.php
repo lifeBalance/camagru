@@ -25,7 +25,11 @@
 
         <div>
             <p>Forgot your password?
-            <a href="<?php echo URLROOT; ?>/users/new_pwd">Request a new one!</a></p>
+            <a href="<?php echo URLROOT; ?>/users/newpwd">Request a new one!</a></p>
+        </div>
+        <div>
+            <p>No confirmation email?
+            <a href="<?php echo URLROOT; ?>/users/confirm">Request a new one!</a></p>
         </div>
     </div>
 </form>
