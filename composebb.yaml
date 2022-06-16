@@ -1,0 +1,38 @@
+services:
+  apache:
+    container_name: apache
+    image: httpd:2.4.54-bullseye
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./htdocs:/usr/local/apache2/htdocs
+      # - ./docker/config_files/httpd.conf:/usr/local/apache2/conf/httpd.conf
+  php:
+    container_name: php
+    image: php:7.4-fpm-buster
+    restart: always
+    # build:
+      # context: ./docker/php_dockerfile
+      # - ./docker/config_files/msmtp.conf:/etc/mail/msmtp.conf
+      # - ./docker/config_files/sendmail.conf:/etc/mail/sendmail.conf
+      # - ./docker/config_files/php.ini-development:/usr/local/etc/php/php.ini-development
+      # - ./docker/config_files/docker-php-entrypoint:/usr/local/bin/docker-php-entrypoint
+  phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      - mysql
+      - php
+    image: phpmyadmin:5.1.3-apache
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.29-debian
+    restart: always
+    environment:
+      MYSQL_DATABASE: camagru
+      MYSQL_ROOT_PASSWORD: 1234

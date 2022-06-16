@@ -14,9 +14,9 @@
         <!-- flash messages -->
         <ul>
             <?php if(Flash::beFlashes()) : ?>
-                <? $flashes = Flash::getFlashes() ?>
-                <? foreach ($flashes as $flash) : ?>
-                    <? echo '<li>' . $flash . '</li>'; ?>
-                <? endforeach; ?>
+                <?php $flashes = Flash::getFlashes() ?>
+                <?php foreach ($flashes as $flash) : ?>
+                    <?php echo '<li>' . $flash . '</li>'; ?>
+                <?php endforeach; ?>
             <?php endif; ?>
         </ul>

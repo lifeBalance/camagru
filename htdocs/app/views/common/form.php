@@ -1,4 +1,4 @@
-<form action="<? echo URLROOT . '/users/' . $action; ?>" method="post">
+<form action="<?php echo URLROOT . '/users/' . $action; ?>" method="post">
     <div>
         <label for="username"><sup>*</sup>Username: </label>
         <input id="username" type="text" name="username" value="<?php echo $username; ?>" placeholder="username">

@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `camagru`;
+CREATE DATABASE `camagru`;
 
 USE `camagru`;
 

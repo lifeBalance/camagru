@@ -52,7 +52,7 @@ class Users extends Controller
         $message = 'Click <a href="http://localhost/users/activate/' . $token . '">here</a> to confirm your account..\n';
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= 'From: <info@camagru.hive>' . "\r\n";
+        $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
 
         if (mail("<$to>", $subject, $message, $headers)) {
             Flash::addFlashes(['Confirmation mail is on the way!']);

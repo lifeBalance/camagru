@@ -124,6 +124,7 @@ class User extends Model
 
     public function findByEmail($email)
     {
+        // var_dump($email);
         $db = static::getDB();
         $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);

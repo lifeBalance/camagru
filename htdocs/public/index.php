@@ -1,11 +1,11 @@
 <?php
 
-// session_start();
+session_start();
 
-// require_once '../app/core/bootstrap.php';
+// phpinfo();
+require_once '../app/core/bootstrap.php';
 
-// $router = new Router();
-phpinfo();
+$router = new Router();
 // $tos = [
 //     "42jaiver42@gmail.com",
 //     "yagele7071@qqhow.com",
@@ -20,6 +20,6 @@ phpinfo();
 //     if (mail($to,$subject,$txt,$headers))
 //         echo "Success: $to";
 //     else
-//         echo "Woops: $to";
+//         echo "Woops: $to<br>";
 // }
 // echo 'hi';

@@ -1,21 +1,19 @@
 services:
   php-apache:
-    container_name: php-apache
     depends_on:
       - mysql
     build:
       context: ./docker/php_apache_dockerfile
     volumes:
       - ./htdocs:/var/www/html
-      # - ./docker/config_files/msmtp.conf:/etc/mail/msmtp.conf
-      # - ./docker/config_files/sendmail.conf:/etc/mail/sendmail.conf
-      - ./docker/config_files/php.ini-development:/usr/local/etc/php/php.ini-development
-      # - ./docker/config_files/docker-php-entrypoint:/usr/local/bin/docker-php-entrypoint
+      - ./docker/config_files/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/php_apache_dockerfile/msmtprc:/etc/msmtprc
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
     ports:
       - 80:80
       - 443:443
   phpmyadmin:
-    container_name: phpmyadmin
     depends_on:
       - mysql
       - php-apache
@@ -26,15 +24,7 @@ services:
       PMA_HOST: mysql
       PMA_PORT: 3306
   mysql:
-    container_name: mysql
     image: mysql:8.0.29-debian
     restart: always
     environment:
-      MYSQL_DATABASE: camagru
       MYSQL_ROOT_PASSWORD: 1234
-    cap_add:
-      - SYS_NICE
-    # volumes:
-    #   - './db_data:/var/lib/mysql'
-  # sendmail:
-  #   image: pigeosolutions/docker-sendmail

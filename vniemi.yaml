@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    environment:
+      - ALLOW_OVERRIDE=true
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./src/:/var/www/html/
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    user: '1000:1000'
+    environment:
+      APACHE_RUN_USER: '#1000'
+      APACHE_RUN_GROUP: '#1000'
+
+  db:
+    image: mysql:8.0.29
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: artemis843
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
