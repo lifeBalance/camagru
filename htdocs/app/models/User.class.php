@@ -164,13 +164,25 @@ class User extends Model
         $stmt->execute([$token]);
         if ($stmt->fetch(PDO::FETCH_OBJ))
         {
-            $sql = 'UPDATE users
-                    SET confirmed = :confirmed
-                    WHERE confirm_hash = :confirm_hash';
+            $sql = 'UPDATE  users
+                    SET     confirmed       = :confirmed
+                    WHERE   confirm_hash    = :confirm_hash';
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':confirmed', true, PDO::PARAM_BOOL);
             $stmt->bindValue(':confirm_hash', $token, PDO::PARAM_STR);
             return $stmt->execute();
         }
+    }
+
+    public function confirmEmail($email, $yesNo)
+    {
+        $db = static::getDB();
+        $sql = 'UPDATE  users
+                SET     confirmed   = :confirmed
+                WHERE   email       = :email';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':confirmed', $yesNo, PDO::PARAM_BOOL);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        return $stmt->execute();
     }
 }

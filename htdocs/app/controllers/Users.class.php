@@ -9,11 +9,9 @@ class Users extends Controller
         $this->userModel = $this->load('User');
     }
 
-    public function confirm($user = null)
+    public function confirm()
     {
-        if ($user) {
-            $this->send_mail($user);
-        } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $sanitizedForm = [
                 'email'     => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
@@ -24,7 +22,16 @@ class Users extends Controller
 
             // Authentication success
             if ($authenticatedUser) {
-                $this->send_mail($authenticatedUser);
+                if ($this->send_mail($authenticatedUser->email)) {
+                    Flash::addFlashes([
+                        'Confirmation mail is on the way!' => 'success'
+                    ]);
+                } else {
+                    Flash::addFlashes([
+                        "Don't hold your breath waiting for the email, dawg!" => 'error'
+                    ]);
+                }
+                $this->redirect('/');
             } else {
                 Flash::addFlashes($this->userModel->errors);
                 // Load EMPTY form 
@@ -44,23 +51,17 @@ class Users extends Controller
         }
     }
 
-    public function send_mail($user)
+    public function send_mail($email)
     {
-        $to = $user->email;
         $subject = 'Confirm you Camagru account, biatch';
-        $token = $this->userModel->generateToken($user->email);
+        $token = $this->userModel->generateToken($email);
         $message = 'Click <a href="http://localhost/users/activate/' . $token .
                     '">here</a> to confirm your account..' . "\r\n";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
 
-        if (mail("<$to>", $subject, $message, $headers)) {
-            Flash::addFlashes(['Confirmation mail is on the way!' => 'success']);
-        } else {
-            Flash::addFlashes(["Don't hold your breath waiting for the email!" => 'error']);
-        }
-        $this->redirect('/');
+        return mail("<$email>", $subject, $message, $headers);
     }
 
     public function activate($token)
@@ -85,13 +86,15 @@ class Users extends Controller
             $user = $this->userModel->new($formData);
             if ($user === false) {
                 Flash::addFlashes($this->userModel->errors);
-
                 // Load FAULTY form
                 $this->render('users/register', $formData);
             } else {
-                Flash::addFlashes(['check your email to confirm your account' => 'success']);
                 // SEND CONFIRMATION EMAIL
-                $this->confirm($user);
+                if ($this->send_mail($user->email)) {
+                    Flash::addFlashes(['Confirmation mail is on the way!' => 'success']);
+                } else {
+                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'error']);
+                }
                 $this->redirect('/');
             }
         // Not a POST request (user just reloaded page)
@@ -190,6 +193,12 @@ class Users extends Controller
         $this->redirect('/');
     }
 
+    public function flashconfirm()
+    {
+        Flash::addFlashes(['see ya later dawg!' => 'success']);
+        $this->redirect('/');
+    }
+
     public function createUserSession($foundUser)
     {
         session_regenerate_id(true);    // Prevent session-fixation attacks!
@@ -221,21 +230,34 @@ class Users extends Controller
         else if ($this->isLoggedIn() && $_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $formData = $this->sanitize($_POST);
-            array_merge($formData, ['action' => 'settings']);
-            $oldAccount = $this->userModel->findById($_SESSION['user_id']);
+            array_merge($formData, ['action' => 'settings']); // Form view's action
+            $oldSettings = $this->userModel->findById($_SESSION['user_id']);
 
             if ($this->userModel->edit($formData, $_SESSION['user_id']) === false) {
                 // Load FAULTY form
                 Flash::addFlashes($this->userModel->errors);
                 $this->render('users/settings', $formData);
             } else {
-                $newAccount = $this->userModel->findById($_SESSION['user_id']);
-                Flash::addFlashes(['Your account settings have been updated']);
-                $_SESSION['username'] = $newAccount->username;
-                if ($oldAccount->email != $newAccount->email) {
-                    // SEND CONFIRMATION EMAIL
-                    Flash::addFlashes(['check your email to confirm your account' => 'warning']);
-                    $this->logout();
+                $newSettings = $this->userModel->findById($_SESSION['user_id']);
+                Flash::addFlashes(['Your account settings have been updated' => 'warning']);
+                $_SESSION['username'] = $newSettings->username; // For 'Welcome X' msg
+
+                // Log out the user is the email setting was changed!
+                if ($oldSettings->email != $newSettings->email) {
+                    // Set account to not confirmed
+                    $this->userModel->confirmEmail($newSettings->email, false);
+                    // Send confirmation token and log the user out
+                    if ($this->send_mail($newSettings->email)) {
+                        Flash::addFlashes([
+                            'Your account settings have been updated' => 'warning',
+                            'Confirmation mail is on the way!' => 'success'
+                        ]);
+                    } else {
+                        Flash::addFlashes([
+                            'Your account settings have been updated' => 'warning',
+                            "Don't hold your breath waiting for the email, dawg!" => 'error'
+                        ]);
+                    }
                 }
                 $this->redirect('/');
             }
