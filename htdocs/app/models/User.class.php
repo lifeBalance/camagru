@@ -15,7 +15,7 @@ class User extends Model
         if (empty($this->errors)) {
             // Check that the email doesn't exist in the database!!!
             if ($this->findByEmail($data['email'])) {
-                array_push($this->errors, $this->errors['user with that email already exists'] = 'error');
+                $this->errors['user with that email already exists'] = 'error';
                 return false;
             }
             $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -170,8 +170,9 @@ class User extends Model
             return false;
     }
 
-    public function verifyToken($token)
+    public function verifyToken($params)
     {
+        $token = $params[0];
         $db = static::getDB();
         $stmt = $db->prepare("SELECT * FROM users WHERE token = ?");
         $stmt->execute([$token]);

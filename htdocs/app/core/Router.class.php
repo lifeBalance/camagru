@@ -8,56 +8,52 @@ class Router {
     public function __construct()
     {
         $url = $this->getUrl();
-        // set CONTROLLER (first array element)
-        if (isset($url[0]) && file_exists('../app/controllers/' . ucwords($url[0]) . '.class.php')) {
-            $className = ucwords($url[0]);
-            require_once '../app/controllers/' . $className . '.class.php';
-            $this->controller = new $className();
-            unset($url[0]);
-            
-            // set ACTION (second array element)
-            if (isset($url[1]) && is_callable(array($this->controller, $url[1]))) {
-                $this->action = $url[1];
-                unset($url[1]);
+        // Set CONTROLLER (first array element)
+        if (!empty($url[0])) {
+            if (file_exists('../app/controllers/' . ucwords($url[0]) . '.class.php')) {
+                $className = ucwords($url[0]);
+                require_once '../app/controllers/' . $className . '.class.php';
+                $this->controller = new $className();
 
-                // set action PARAMS (third array element)
-                if (isset($url[2])) {
-                    $this->params = array_values($url);
-                    unset($url[2]);
+                // Set ACTION (second array element)
+                if (!empty($url[1]) && is_callable(array($this->controller, $url[1]))) {
+                    $this->action = $url[1];
+
+                    // Set action PARAMS (third array element)
+                    if (!empty($url[2]))
+                        $this->params = array_slice($url, 2);
+                    // Call the Controller/Action passing the parameters
+                    call_user_func_array([$this->controller, $this->action], [$this->params]);
+                } else {
+                    $this->notfound();
                 }
             } else {
-                $this->action = 'index';        // set DEFAULT action
+                $this->notfound();
             }
         } else {
-            require_once '../app/controllers/Pics.class.php';
-            $this->controller = new Pics();     // set DEFAULT controller
-            $this->action = 'index';            // set DEFAULT action
+            require_once('../app/views/pics/index.php');
         }
-        // call the whole thing
-        call_user_func_array([$this->controller, $this->action], $this->params);
+    }
+
+    protected function notfound()
+    {
+        http_response_code(404);
+        require_once('../app/views/404.php');
+        die();
     }
 
     protected function getUrl() {
-        // if (isset($_SERVER['QUERY_STRING'])) {
-        //     $url = rtrim($_SERVER['QUERY_STRING'], '/');
-        //     $url = filter_var($url, FILTER_SANITIZE_URL);
-        //     // Remove query string variables (?foo=bar) from the end of the URL
-        //     if ($url != '') {
-        //         $parts = explode('&', $url, 2);
-    
-        //         if (strpos($parts[0], '=') === false)
-        //             $url = $parts[0];
-        //         else
-        //             $url = '';
-        //     }
-        //     $url = explode('/', $url);
-        //     return $url;
-        // }
         if (isset($_SERVER['QUERY_STRING'])) {
-            $url = rtrim($_SERVER['QUERY_STRING']);
+            // Trim whitespace at the end
+            $url = rtrim($_SERVER['QUERY_STRING'], '/');
+            // Replace ? by & (?foo=bar becomes &foo=bar)
             $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
-            return $url;
+            // Remove anything after &
+            $url = preg_replace('/&.*/', '', $url);
+            // Remove anything after =
+            $url = preg_replace('/=.*/', '', $url);
+            // Explode the string into parts using the '/' as separator
+            return  explode('/', $url);
         }
     }
 }

@@ -10,9 +10,10 @@ class Users extends Controller
     }
 
     // Default Action
-    public function index()
+    public function index($args = [])
     {
-        $this->render('pics/index', []);
+        var_dump($args);
+        // $this->render('pics/index', []);
     }
 
     public function confirm()
@@ -28,7 +29,11 @@ class Users extends Controller
 
             // Authentication success
             if ($authenticatedUser) {
-                if ($this->send_mail($authenticatedUser->email, 'Activate your account', 'activate')) {
+                if ($authenticatedUser->confirmed) {
+                    Flash::addFlashes([
+                        'Your account is already confirmed. Go log in!' => 'success'
+                    ]);
+                } else if ($this->send_mail($authenticatedUser->email, 'Activate your account', 'activate')) {
                     Flash::addFlashes([
                         'Activation mail is on the way!' => 'success'
                     ]);
@@ -227,8 +232,9 @@ class Users extends Controller
         }
     }
 
-    public function resetpwd($token)
+    public function resetpwd($args)
     {
+        $token = $args[0];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize form
             $data = [
