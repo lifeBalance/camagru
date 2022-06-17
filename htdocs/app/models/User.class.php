@@ -138,6 +138,19 @@ class User extends Model
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+
+    public function updatePwd($token, $pwd)
+    {
+        $db = static::getDB();
+        $sql = 'UPDATE  users
+                SET     pwd_hash    = :pwd_hash
+                WHERE   token       = :token';
+        $stmt = $db->prepare($sql);
+        $pwd_hash = password_hash($pwd, PASSWORD_DEFAULT);
+        $stmt->bindValue(':pwd_hash', $pwd_hash, PDO::PARAM_STR);
+        $stmt->bindValue(':token', $token, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
     
     public function generateToken($email)
     {
@@ -146,10 +159,10 @@ class User extends Model
 
         $db = static::getDB();
         $sql = 'UPDATE users
-                SET confirm_hash = :confirm_hash
-                WHERE email = :email';
+                SET     token = :token
+                WHERE   email = :email';
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':confirm_hash', $hash, PDO::PARAM_STR);
+        $stmt->bindValue(':token', $hash, PDO::PARAM_STR);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         if ($stmt->execute())
             return $hash;
@@ -160,16 +173,16 @@ class User extends Model
     public function verifyToken($token)
     {
         $db = static::getDB();
-        $stmt = $db->prepare("SELECT * FROM users WHERE confirm_hash = ?");
+        $stmt = $db->prepare("SELECT * FROM users WHERE token = ?");
         $stmt->execute([$token]);
         if ($stmt->fetch(PDO::FETCH_OBJ))
         {
             $sql = 'UPDATE  users
-                    SET     confirmed       = :confirmed
-                    WHERE   confirm_hash    = :confirm_hash';
+                    SET     confirmed   = :confirmed
+                    WHERE   token       = :token';
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':confirmed', true, PDO::PARAM_BOOL);
-            $stmt->bindValue(':confirm_hash', $token, PDO::PARAM_STR);
+            $stmt->bindValue(':token', $token, PDO::PARAM_STR);
             return $stmt->execute();
         }
     }

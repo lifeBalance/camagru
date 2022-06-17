@@ -38,18 +38,24 @@ class Router {
     }
 
     protected function getUrl() {
-        if (isset($_SERVER['QUERY_STRING'])) {
-            $url = rtrim($_SERVER['QUERY_STRING'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            // Remove query string variables (?foo=bar) from the end of the URL
-            if ($url != '') {
-                $parts = explode('&', $url, 2);
+        // if (isset($_SERVER['QUERY_STRING'])) {
+        //     $url = rtrim($_SERVER['QUERY_STRING'], '/');
+        //     $url = filter_var($url, FILTER_SANITIZE_URL);
+        //     // Remove query string variables (?foo=bar) from the end of the URL
+        //     if ($url != '') {
+        //         $parts = explode('&', $url, 2);
     
-                if (strpos($parts[0], '=') === false)
-                    $url = $parts[0];
-                else
-                    $url = '';
-            }
+        //         if (strpos($parts[0], '=') === false)
+        //             $url = $parts[0];
+        //         else
+        //             $url = '';
+        //     }
+        //     $url = explode('/', $url);
+        //     return $url;
+        // }
+        if (isset($_SERVER['QUERY_STRING'])) {
+            $url = rtrim($_SERVER['QUERY_STRING']);
+            $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);
             return $url;
         }

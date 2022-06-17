@@ -9,6 +9,12 @@ class Users extends Controller
         $this->userModel = $this->load('User');
     }
 
+    // Default Action
+    public function index()
+    {
+        $this->render('pics/index', []);
+    }
+
     public function confirm()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,9 +28,9 @@ class Users extends Controller
 
             // Authentication success
             if ($authenticatedUser) {
-                if ($this->send_mail($authenticatedUser->email)) {
+                if ($this->send_mail($authenticatedUser->email, 'Activate your account', 'activate')) {
                     Flash::addFlashes([
-                        'Confirmation mail is on the way!' => 'success'
+                        'Activation mail is on the way!' => 'success'
                     ]);
                 } else {
                     Flash::addFlashes([
@@ -45,18 +51,18 @@ class Users extends Controller
             // Load EMPTY form 
             $formData = [
                 'email'     => '',
-                'password'  => '',
+                'password'  => ''
             ];
             $this->render('users/confirm', $formData);
         }
     }
 
-    public function send_mail($email)
+    public function send_mail($email, $subject, $action)
     {
-        $subject = 'Confirm you Camagru account, biatch';
+        $subject = $subject;
         $token = $this->userModel->generateToken($email);
-        $message = 'Click <a href="http://localhost/users/activate/' . $token .
-                    '">here</a> to confirm your account..' . "\r\n";
+        $message = 'Click <a href="http://localhost/users/' . $action . '/' . 
+                    $token . '">here</a> to: <b>' . $subject . "</b>.\r\n";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
@@ -68,7 +74,7 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if ($this->userModel->verifyToken($token)) {
-                Flash::addFlashes(['Account confirmed. You can log in!' => 'success']);
+                Flash::addFlashes(['Account activated. You can log in!' => 'success']);
                 $this->redirect('/users/login');
             } else {
                 Flash::addFlashes(['That token is a bullshit' => 'error']);
@@ -90,8 +96,8 @@ class Users extends Controller
                 $this->render('users/register', $formData);
             } else {
                 // SEND CONFIRMATION EMAIL
-                if ($this->send_mail($user->email)) {
-                    Flash::addFlashes(['Confirmation mail is on the way!' => 'success']);
+                if ($this->send_mail($user->email, 'Activate your account', 'activate')) {
+                    Flash::addFlashes(['Activation mail is on the way!' => 'success']);
                 } else {
                     Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'error']);
                 }
@@ -193,10 +199,66 @@ class Users extends Controller
         $this->redirect('/');
     }
 
-    public function flashconfirm()
+    public function newpwd()
     {
-        Flash::addFlashes(['see ya later dawg!' => 'success']);
-        $this->redirect('/');
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize form
+            $data = [
+                'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+            ];
+            // Render errors if any
+            if ($this->userModel->findByEmail($data['email']))
+            {
+                if ($this->send_mail($data['email'], 'Reset your password', 'resetpwd'))
+                    Flash::addFlashes(['Reset password email is on its way!' => 'success']);
+                else
+                    Flash::addFlashes(["Don't hold your breath waiting for that email!" => 'error']);
+                $this->redirect('/');
+            } else {
+                Flash::addFlashes(['Wrong user!' => 'error']);
+                $this->redirect('/users/newpwd');
+            }
+            // Send email with token for pwd reset
+        } else {
+            $data = [
+                'email' => ''
+            ];
+            $this->render('users/email_form', $data);
+        }
+    }
+
+    public function resetpwd($token)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize form
+            $data = [
+                'password' => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pwdConfirm' => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'token' => filter_var($token, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            ];
+            // Submit if both pwd match
+            if ($data['password'] == $data['pwdConfirm'])
+            {
+                // Update the password of user with that token
+                if ($this->userModel->updatePwd($data['token'], $data['password'])) {
+                    Flash::addFlashes(['Password has been changed!' => 'success']);
+                    Flash::addFlashes(['You can now log in!' => 'success']);
+                    $this->redirect('/');
+                } else {
+                    // Redirect to root if something went wrong
+                    Flash::addFlashes(['That token was a bullshit!' => 'error']);
+                    $this->redirect('/');
+                }
+            }
+        } else {
+            // Render form to input new pwd
+            $data = [
+                'password' => '',
+                'pwdConfirm' => '',
+                'token'     => $token
+            ];
+            $this->render('users/pwd_form', $data);
+        }
     }
 
     public function createUserSession($foundUser)
@@ -247,7 +309,7 @@ class Users extends Controller
                     // Set account to not confirmed
                     $this->userModel->confirmEmail($newSettings->email, false);
                     // Send confirmation token and log the user out
-                    if ($this->send_mail($newSettings->email)) {
+                    if ($this->send_mail($newSettings->email, 'Update your new settings', 'activate')) {
                         Flash::addFlashes([
                             'Your account settings have been updated' => 'warning',
                             'Confirmation mail is on the way!' => 'success'

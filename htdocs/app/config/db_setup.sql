@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `pwd_hash`      VARCHAR(255) NOT NULL,
     `confirmed`     BOOLEAN NOT NULL DEFAULT 0,
     `push_notif`    BOOLEAN NOT NULL DEFAULT 1,
-    `confirm_hash`  VARCHAR(64) UNIQUE NULL
+    `token`         VARCHAR(64) UNIQUE NULL
 );
 
 INSERT INTO `users` (`id`, `username`, `email`, `pwd_hash`, `confirmed`)
