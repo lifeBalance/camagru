@@ -6,8 +6,8 @@ class Flash
     {
         if (!isset($_SESSION['flashes']))
             $_SESSION['flashes'] = [];
-        foreach ($msgs as $msg)
-            array_push($_SESSION['flashes'], $msg);
+        foreach ($msgs as $msg => $type)
+            $_SESSION['flashes'][$msg] = $type;
     }
 
     public static function getFlashes()

@@ -49,17 +49,16 @@ class Users extends Controller
         $to = $user->email;
         $subject = 'Confirm you Camagru account, biatch';
         $token = $this->userModel->generateToken($user->email);
-        $message = 'Click <a href="http://localhost/users/activate/' . $token . '">here</a> to confirm your account..\n';
+        $message = 'Click <a href="http://localhost/users/activate/' . $token .
+                    '">here</a> to confirm your account..' . "\r\n";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
 
         if (mail("<$to>", $subject, $message, $headers)) {
-            Flash::addFlashes(['Confirmation mail is on the way!']);
+            Flash::addFlashes(['Confirmation mail is on the way!' => 'success']);
         } else {
-            var_dump([$to, $subject, $token, $message]);
-            exit();
-            Flash::addFlashes(['Confirmation mail is a piece of shit!']);
+            Flash::addFlashes(["Don't hold your breath waiting for the email!" => 'error']);
         }
         $this->redirect('/');
     }
@@ -68,10 +67,10 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if ($this->userModel->verifyToken($token)) {
-                Flash::addFlashes(['Account confirmed. You can log in!']);
+                Flash::addFlashes(['Account confirmed. You can log in!' => 'success']);
                 $this->redirect('/users/login');
             } else {
-                Flash::addFlashes(['That token is a bullshit']);
+                Flash::addFlashes(['That token is a bullshit' => 'error']);
                 $this->redirect('/users/confirm');
             }
         }
@@ -85,11 +84,12 @@ class Users extends Controller
             array_merge($formData, ['action' => 'register']);
             $user = $this->userModel->new($formData);
             if ($user === false) {
-                // Load FAULTY form
                 Flash::addFlashes($this->userModel->errors);
+
+                // Load FAULTY form
                 $this->render('users/register', $formData);
             } else {
-                Flash::addFlashes(['check your email to confirm your account']);
+                Flash::addFlashes(['check your email to confirm your account' => 'success']);
                 // SEND CONFIRMATION EMAIL
                 $this->confirm($user);
                 $this->redirect('/');
@@ -135,12 +135,12 @@ class Users extends Controller
             // Authentication success
             if ($authenticatedUser) {
                 if ($authenticatedUser->confirmed) {
-                    Flash::addFlashes(['login successful']);
+                    Flash::addFlashes(['login successful' => 'success']);
                     $this->createUserSession($authenticatedUser);
                     $this->redirect('/');
                 // Authenticated but email NOT CONFIRMED (can't let you in dawg)
                 } else {
-                    Flash::addFlashes(['please confirm your account']);
+                    Flash::addFlashes(['please confirm your account' => 'warning']);
                     $this->redirect('/');
                 }
             // Authentication failure
@@ -186,7 +186,7 @@ class Users extends Controller
 
     public function flashlogout()
     {
-        Flash::addFlashes(['see ya later dawg!']);
+        Flash::addFlashes(['see ya later dawg!' => 'success']);
         $this->redirect('/');
     }
 
@@ -234,7 +234,7 @@ class Users extends Controller
                 $_SESSION['username'] = $newAccount->username;
                 if ($oldAccount->email != $newAccount->email) {
                     // SEND CONFIRMATION EMAIL
-                    Flash::addFlashes(['check your email to confirm your account']);
+                    Flash::addFlashes(['check your email to confirm your account' => 'warning']);
                     $this->logout();
                 }
                 $this->redirect('/');

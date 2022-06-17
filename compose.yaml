@@ -3,11 +3,11 @@ services:
     depends_on:
       - mysql
     build:
-      context: ./docker/php_apache_dockerfile
+      context: ./docker/php_apache
     volumes:
       - ./htdocs:/var/www/html
-      - ./docker/config_files/000-default.conf:/etc/apache2/sites-available/000-default.conf
-      - ./docker/php_apache_dockerfile/msmtprc:/etc/msmtprc
+      - ./docker/php_apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/php_apache/msmtprc:/etc/msmtprc
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     ports:

@@ -15,8 +15,8 @@
         <ul>
             <?php if(Flash::beFlashes()) : ?>
                 <?php $flashes = Flash::getFlashes() ?>
-                <?php foreach ($flashes as $flash) : ?>
-                    <?php echo '<li>' . $flash . '</li>'; ?>
+                <?php foreach ($flashes as $msg => $class) : ?>
+                    <?php echo '<li class="flash ' . $class. '">' . $msg . '</li>'; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         </ul>
