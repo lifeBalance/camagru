@@ -6,6 +6,17 @@ class User extends Model
 
     public function __construct() {}
 
+    /**
+     * Create a new user in the 'users' table:
+     *      - Validate the data in the submitted "Register" form.
+     *      - Fill the 'errors' array in case of invalid fields.
+     *      - Check that the submitted email doesn't already exist in the db.
+     *      - Hash the password before writing it.
+     *
+     * @param data  The (sanitized) data from the "register" form. 
+     *
+     * @return An associative array containing the user; or false;
+     */
     public function new($data)/// RENAME ACTION TO NEW!!!
     {
         // Fill errors array (if there's any errors in the form) 
@@ -37,6 +48,18 @@ class User extends Model
             return false;
     }
 
+    /**
+     * Update a user row in the 'users' table with new intel from the 
+     * "Settings" form:
+     *      - Validate the data in the submitted "settings" form.
+     *      - Fill the 'errors' array in case of invalid fields using the
+     *      'validateRegisterForm' method.
+     *      - Write the new user settings to db if there's no errors.
+     *
+     * @param data  The (sanitized) data from the "settings" form. 
+     *
+     * @return True/false;
+     */
     public function edit($data, $id)
     {
         // Fill errors array (if there's any errors in the form) 
@@ -70,6 +93,14 @@ class User extends Model
             return false;
     }
 
+    /**
+     * Helper method to validate the (sanitized) fields in either the "register"
+     * or the "settings" forms. fill the 'errors' property array in case of
+     * errors.
+     * 
+     * @param data  The (sanitized) data from either the "register" or
+     *              "settings" form. 
+     */
     public function validateRegisterForm($data)
     {
         if (empty($data['username']))
@@ -90,6 +121,10 @@ class User extends Model
             $this->errors["passwords don't match"] = 'error';
     }
 
+    /**
+     * Helper method to validate the (sanitized) fields in either the "login"
+     * form. Fill the 'errors' property array in case of errors.
+     */
     public function validateLoginForm()
     {
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false)
@@ -98,6 +133,10 @@ class User extends Model
             $this->errors['password is required'] = 'error';
     }
 
+    /**
+     * Helper method to validate the (sanitized) fields in either the "login"
+     * form. Fill the 'errors' property array in case of errors.
+     */
     public function authenticate($data)
     {
         foreach ($data as $key => $value) {
@@ -122,6 +161,13 @@ class User extends Model
         }
     }
 
+    /**
+     * Helper method to find a user using her email.
+     * 
+     * @param email  The (sanitized) email.
+     * 
+     * @return Mixed Associative array containing the user; or false;
+     */
     public function findByEmail($email)
     {
         // var_dump($email);
@@ -131,6 +177,13 @@ class User extends Model
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    /**
+     * Helper method to find a user using her id.
+     * 
+     * @param email  The (sanitized) id.
+     * 
+     * @return Mixed Associative array containing the user; or false;
+     */
     public function findById($id)
     {
         $db = static::getDB();
@@ -139,6 +192,15 @@ class User extends Model
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    /**
+     * Helper method to update a user's password using its 'pwd' argument.
+     * Locate the user in the db using its 'token' argument.
+     * 
+     * @param token  The (sanitized) hashed token.
+     * @param pwd  The (sanitized) NEW password.
+     * 
+     * @return Boolena True/false;
+     */
     public function updatePwd($token, $pwd)
     {
         $db = static::getDB();
@@ -151,7 +213,15 @@ class User extends Model
         $stmt->bindValue(':token', $token, PDO::PARAM_STR);
         return $stmt->execute();
     }
-    
+
+    /**
+     * Update a user's token in the db with a newly generated one. Locate the
+     * user in the db using its 'email' argument.
+     * 
+     * @param email  The (sanitized) user's email.
+     * 
+     * @return Mixed The token itself/false;
+     */
     public function generateToken($email)
     {
         $token = new Token();
@@ -170,6 +240,15 @@ class User extends Model
             return false;
     }
 
+    /**
+     * Use the token (contained in 'params') to confirm the users account
+     * if a match is found in the db.
+     * 
+     * @param params Array of values in the query string passed down 
+     *               by the router.
+     * 
+     * @return Bool True/false;
+     */
     public function verifyToken($params)
     {
         $token = $params[0];
@@ -188,6 +267,15 @@ class User extends Model
         }
     }
 
+    /**
+     * Helper method to set the value of the `confirmed' column in the db. confirm the users account
+     * if a match is found in the db.
+     * 
+     * @param email Email of the user.
+     * @param yesNo The value of the 'confirmed' column.
+     * 
+     * @return Bool True/false;
+     */
     public function confirmEmail($email, $yesNo)
     {
         $db = static::getDB();

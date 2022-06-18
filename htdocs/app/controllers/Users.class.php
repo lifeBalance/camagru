@@ -9,13 +9,15 @@ class Users extends Controller
         $this->userModel = $this->load('User');
     }
 
-    // Default Action
-    public function index($args = [])
-    {
-        var_dump($args);
-        // $this->render('pics/index', []);
-    }
-
+    /**
+     * GET requests: 
+     *      - Render the user's account confirmation form.
+     * POST requests:
+     *      - Check if the submitted email/password belong to a real user and:
+     *          - Send activation email if the account is not confirmed.
+     *          - Flash a message is the account is already confirmed.
+     *      - In case of error, re-render the user's account confirmation form.
+     */
     public function confirm()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -62,6 +64,15 @@ class Users extends Controller
         }
     }
 
+    /**
+     * Send emails to users.
+     *
+     * @param email     Email address of the user. 
+     * @param subject   Subject of the email.
+     * @param action    One of: 
+     *
+     * @return true or false
+     */
     public function send_mail($email, $subject, $action)
     {
         $subject = $subject;
@@ -75,6 +86,14 @@ class Users extends Controller
         return mail("<$email>", $subject, $message, $headers);
     }
 
+    /**
+     * Use the token argument to call the 'verifyToken' method on the user 
+     * model. Flashes informative message depending on if the account was
+     * successfully activated, or the token was invalid.
+     *
+     * @param token     The token contained in the email.
+     *
+     */
     public function activate($token)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -88,6 +107,16 @@ class Users extends Controller
         }
     }
 
+    /**
+     * GET requests: 
+     *      - Render an empty account registration form.
+     * POST requests:
+     *      - Save valid user details in the database.
+     *      - Re-render incomplete form in case of errors.
+     *      - Send confirmation email.
+     *      - Flash informative messages according to the outcome of any
+     *      of the operations described above.
+     */
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -123,6 +152,13 @@ class Users extends Controller
         }
     }
 
+    /**
+     * Sanitize all the fields in the new account form.
+     * 
+     * @param formData  The $POST request
+     * 
+     * @return Array with the sanitized form fields.
+     */
     public function sanitize($formData)
     {
         $sanitizedForm = [
@@ -135,6 +171,19 @@ class Users extends Controller
         return $sanitizedForm;
     }
 
+    /**
+     * GET requests: 
+     *      - Render an empty login form.
+     * POST requests:
+     *      - Sanitize user details before authenticate them in the database.
+     *      - Re-render incomplete form in case of errors.
+     *      - Flash informative message in case of:
+     *          - Successful login.
+     *          - Authentication errors.
+     *          - Non-activated accounts.
+     * 
+     * @param formData  The $POST request
+     */
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -178,6 +227,10 @@ class Users extends Controller
         }
     }
 
+    /**
+     * Empty the session global and call the 'flashlogout' helper to inform
+     * the user about having been logged out.
+     */
     public function logout()
     {
         // Unset all of the session variables.
@@ -198,12 +251,29 @@ class Users extends Controller
         $this->redirect('/users/flashlogout');
     }
 
+    /**
+     * Helper function that calls 'addFlashes' to be able to inform the user
+     * about having been logged out.
+     */
     public function flashlogout()
     {
         Flash::addFlashes(['see ya later dawg!' => 'success']);
         $this->redirect('/');
     }
 
+    /**
+     * Handle "Forgot your password?" requests.
+     *
+     * GET requests: 
+     *      - Render an empty request new password form.
+     * POST requests:
+     *      - Sanitize user email before searching in the database.
+     *      - Re-render incomplete form in case of errors.
+     *      - Flash informative message in case of:
+     *          - Non-existing user.
+     *          - Reset password email sent successfully.
+     *          - Error when sending email.
+     */
     public function newpwd()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -232,6 +302,20 @@ class Users extends Controller
         }
     }
 
+    /**
+     * Handle when the user clicks on 'Reset your password' link (on email).
+     *
+     * GET requests: 
+     *      - Render an empty "reset your password" form.
+     * POST requests:
+     *      - Sanitize user's email, password and token
+     *      before handling them to the model.
+     *      - Re-render empty form in case of errors.
+     *      - Flash informative message in case of:
+     *          - Non-matching passwords.
+     *          - Password updated successfully.
+     *          - Error when updating db (invalid token).
+     */
     public function resetpwd($args)
     {
         $token = $args[0];
@@ -267,6 +351,11 @@ class Users extends Controller
         }
     }
 
+    /**
+     * Helper function to create user session.
+     *
+     * @param   foundUser User found in the database
+     */
     public function createUserSession($foundUser)
     {
         session_regenerate_id(true);    // Prevent session-fixation attacks!
@@ -274,11 +363,30 @@ class Users extends Controller
         $_SESSION['username'] = $foundUser->username;
     }
 
+
+    /**
+     * Helper function to check if a user is logged in using the session.
+     *
+     * @return   true/false
+     */
     public function isLoggedIn()
     {
         return isset($_SESSION['user_id']);
     }
 
+    /**
+     * Handle user settings modification requests (user must be logged in).
+     *
+     * GET requests (if user is logged in):
+     *      - Render a semi-filled "user settings" form.
+     * POST requests (if user is logged in):
+     *      - Sanitize form fields before handling them to the user model.
+     *      - Re-render empty form in case of errors.
+     *      - Send activation email in case a new email was added.
+     *      - Flash informative message in case of:
+     *          - Settings updated successfully.
+     *          - Activation email sent successfully (or not).
+     */
     public function settings()
     {
         // If it's logged in: GET request
