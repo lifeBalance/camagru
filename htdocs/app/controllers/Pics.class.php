@@ -5,19 +5,27 @@ class Pics extends Controller
     public function upload($params)
     {
         $data = [
-            'title' => 'gallery'
+            'title' => 'pic it, boi!',
+            'scripts' => [
+                'main.js',
+                'newpic.js',
+            ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $uploads_dir = UPLOADS_DIR;
             if ($_FILES["dickpic"]["error"] == UPLOAD_ERR_OK) {
                 // Get name of the temporary server-side stored file (/tmp)
                 $tmp_name = $_FILES["dickpic"]["tmp_name"];
-                // Generate unique filename (uniqid())
+                // Generate unique filename
                 $name = uniqid();
                 // Get extension of the file
                 $ext = $this->get_extension($tmp_name);
                 // Validate file: type, size, etc
                 move_uploaded_file($tmp_name, "$uploads_dir/$name.$ext");
+                Flash::addFlashes([
+                    'pic uploaded!' => 'success'
+                ]);
+                $this->redirect('/');
             }   else {
                 echo 'Error: ' . $_FILES["dickpic"]["error"];
             }
