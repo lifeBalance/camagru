@@ -6,7 +6,9 @@ services:
       context: ./docker/php_apache
     volumes:
       - ./htdocs:/var/www/html
+      - ./docker/php_apache/apache2.conf:/etc/apache2/apache2.conf
       - ./docker/php_apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/php_apache/php-sendmail.ini:/usr/local/etc/php/conf.d/php-sendmail.ini
       - ./docker/php_apache/msmtprc:/etc/msmtprc
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
