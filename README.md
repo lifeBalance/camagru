@@ -26,6 +26,7 @@ Next are my notes about what I learned while doing so (expect lots of memes).
 * [Routing](./README/router.md)
 * [That model gives me the DB-jeebies](./README/model_class.md)
 * [Models, views, controllers: the MVC workflow](./README/workflow.md)
+* [Webcam Snapshots](./README/camera.md)
 
 - [] Learn how to setup a sendmail container. Mb smtp? (https://marlam.de/)
 

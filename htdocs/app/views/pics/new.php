@@ -3,8 +3,8 @@
 <h2><?php echo $title; ?></h2>
 <form action="<?php echo URLROOT . '/pics/upload'; ?>" method="post" enctype="multipart/form-data">
     <div id="picContainer">
-        <img src="" alt="" id="picPreview">
         <!-- img preview will be inserted here -->
+        <img src="" alt="" id="picPreview">
     </div>
 
     <div>
