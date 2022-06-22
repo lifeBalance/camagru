@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
       picPreview.setAttribute('id', 'picPreview');
       picPreview.setAttribute("style", "width:500px");
       picPreview.setAttribute('src',  window.URL.createObjectURL(fileInput.files[0]));
-      previewBox.appendChild(picPreview);
+      previewBox.insertBefore(picPreview, previewBox.firstChild);
     } else {
       picPreview.setAttribute('src',  window.URL.createObjectURL(fileInput.files[0]));
     }

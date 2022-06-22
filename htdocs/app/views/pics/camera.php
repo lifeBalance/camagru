@@ -3,25 +3,26 @@
 <h2><?php echo $title; ?></h2>
 <div class="container">
   <main>
-    <div id="previewBox">
+    <div id="previewBox" hidden>
       <!-- canvas and video will toggle when button is pressed -->
       <canvas id="canvas" hidden></canvas>
       <video id="video" autoplay width="640" height="480"></video>
       <br>
       <button id="snapBtn">Pic it!</button>
-    </div>
+      <br>
 
-    <!-- Form to upload the pic -->
-    <form action="<?php echo URLROOT . '/pics/camera'; ?>" id="form">
-      <input type="submit" name="upload" value="Upload" id="submit">
-    </form>
+      <!-- Form to upload the pic -->
+      <form action="<?php echo URLROOT . '/pics/camera'; ?>" id="form">
+        <input type="submit" name="upload" value="Upload" id="submit">
+      </form>
+    </div>
 
     <!-- Dinamically load the stickers -->
     <div class="stickers">
       <?php
         $images = glob('assets/stickers/' . "*.png");
         foreach ($images as $img)
-          echo '<img src="' . URLROOT . "/$img" . '" alt="">';
+          echo '<img src="' . URLROOT . "/$img" . '" class="sticker">';
       ?>
     </div>
   </main>

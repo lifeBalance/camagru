@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form        = document.getElementById('form');
   const submit      = document.getElementById('submit');
   const canvas      = document.getElementById('canvas');
+  const previewBox  = document.getElementById('previewBox');
   const context     = canvas.getContext('2d');
   let   imageData;
   let   formData;

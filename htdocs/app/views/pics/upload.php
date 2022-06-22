@@ -4,15 +4,14 @@
 <div class="container">
 
   <main>
-    <div id="previewBox">
+    <div id="previewBox" hidden>
       <!-- image for edit/preview will be inserted here -->
+      <form action="<?php echo URLROOT . '/pics/upload'; ?>" method="post" enctype="multipart/form-data" id="form">
+        <input type="file" name="dickpic" id="fileInput">
+        <br>
+        <input type="submit" name="upload" value="Upload">
+      </form>
     </div>
-
-    <form action="<?php echo URLROOT . '/pics/upload'; ?>" method="post" enctype="multipart/form-data" id="form">
-      <input type="file" name="dickpic" id="fileInput">
-      <br>
-      <input type="submit" name="upload" value="Upload">
-    </form>
 
     <!-- Dinamically load the stickers -->
     <div class="stickers">

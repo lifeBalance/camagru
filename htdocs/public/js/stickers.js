@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Highlight selected sticker; add them to 'selected' array
   all.forEach((sticker) => {
     sticker.addEventListener('click', (event) => {
+      previewBox.hidden = false;
       // Do not delete the last sticker (at least one stays).
       if (event.target.style.border && selectedStickers.length > 1) {
         event.target.style.border = '';

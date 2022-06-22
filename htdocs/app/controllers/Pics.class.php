@@ -30,6 +30,9 @@ class Pics extends Controller
                 echo 'Error: ' . $_FILES["dickpic"]["error"];
             }
         } else {
+            Flash::addFlashes([
+                'Select a sticker please!' => 'warning'
+            ]);
             $this->render('pics/upload', $data);
         }
     }
@@ -41,6 +44,7 @@ class Pics extends Controller
             'scripts' => [
                 'main.js',
                 'camera.js',
+                'stickers.js',
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -57,6 +61,9 @@ class Pics extends Controller
             }
             $this->redirect('/');
         } else {
+            Flash::addFlashes([
+                'Select a sticker please!' => 'warning'
+            ]);
             $this->render('pics/camera', $data);
         }
     }
