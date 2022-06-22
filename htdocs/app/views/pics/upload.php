@@ -4,11 +4,11 @@
 <div class="container">
 
   <main>
-    <div id="preview">
-      <!-- canvas for edit/preview will be inserted here -->
+    <div id="previewBox">
+      <!-- image for edit/preview will be inserted here -->
     </div>
 
-    <form action="<?php echo URLROOT . '/pics/upload'; ?>" method="post" enctype="multipart/form-data">
+    <form action="<?php echo URLROOT . '/pics/upload'; ?>" method="post" enctype="multipart/form-data" id="form">
       <input type="file" name="dickpic" id="fileInput">
       <br>
       <input type="submit" name="upload" value="Upload">
@@ -19,7 +19,7 @@
       <?php
         $images = glob('assets/stickers/' . "*.png");
         foreach ($images as $img)
-        echo '<img src="' . URLROOT . "/$img" . '" alt="">';
+        echo '<img src="' . URLROOT . "/$img" . '" class="sticker">';
         ?>
     </div>
   </main>

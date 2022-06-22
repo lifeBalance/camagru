@@ -8,7 +8,8 @@ class Pics extends Controller
             'title' => 'pic it, boi!',
             'scripts' => [
                 'main.js',
-                'newpic.js',
+                'upload.js',
+                'stickers.js',
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -29,7 +30,7 @@ class Pics extends Controller
                 echo 'Error: ' . $_FILES["dickpic"]["error"];
             }
         } else {
-            $this->render('pics/new', $data);
+            $this->render('pics/upload', $data);
         }
     }
 
@@ -53,8 +54,8 @@ class Pics extends Controller
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
                 ]);
-                $this->redirect('/');
             }
+            $this->redirect('/');
         } else {
             $this->render('pics/camera', $data);
         }

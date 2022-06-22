@@ -1,30 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Select 'div' element (parent of 'canvas' preview).
-  const preview = document.getElementById('preview');
-  const video   = document.getElementById('video');
-  const canvas  = document.createElement('canvas');
-  const snap    = document.getElementById('snap');
-  const form    = document.getElementById('form');
-  const submit  = document.getElementById('submit');
-  const context = canvas.getContext('2d');
+  const video       = document.getElementById('video');
+  const snapBtn     = document.getElementById('snapBtn');
+  const form        = document.getElementById('form');
+  const submit      = document.getElementById('submit');
+  const canvas      = document.getElementById('canvas');
+  const context     = canvas.getContext('2d');
   let   imageData;
   let   formData;
 
+  // Set measurements of the canvas
+  canvas.width = video.width;
+  canvas.height = video.height;
   // Event listener/handler for the button to take the pic
-  snap.addEventListener('click', function () {
-    canvas.width = video.width;
-    canvas.height = video.height;
-    context.drawImage(video, 0, 0, video.width, video.height);
-    preview.appendChild(canvas);
+  snapBtn.addEventListener('click', function () {
+    // Toggle video and canvas once pics are taken
+    if (canvas.hidden) {
+      context.drawImage(video, 0, 0, video.width, video.height);
+      video.hidden = true;
+      canvas.hidden = false;
+      snapBtn.textContent = 'No likey?'
+      // Put the data of the canvas on a variable
+      imageData = canvas.toDataURL();
+    } else {
+      canvas.hidden = true;
+      video.hidden = false;
+      snapBtn.textContent = 'Pic it!'
+    }
   });
 
   // Event listener/handler for the button to upload the pic
   submit.addEventListener('click', function (e) {
     // Stop the default event (submitting form) when clicking on 'upload'
     e.preventDefault();
-
-    // Put the data of the canvas on a variable
-    imageData = canvas.toDataURL();
 
     // Put the data in a FormData object
     formData = new FormData();

@@ -3,16 +3,12 @@
 <h2><?php echo $title; ?></h2>
 <div class="container">
   <main>
-    <div class="webcam">
-      <!-- Webcam stream -->
+    <div id="previewBox">
+      <!-- canvas and video will toggle when button is pressed -->
+      <canvas id="canvas" hidden></canvas>
       <video id="video" autoplay width="640" height="480"></video>
       <br>
-      <button id="snap">Pic it!</button>
-    </div>
-
-    <!-- Snapshot will show up here -->
-    <div id="preview">
-      <!-- canvas for edit/preview snapshot goes here -->
+      <button id="snapBtn">Pic it!</button>
     </div>
 
     <!-- Form to upload the pic -->
@@ -30,6 +26,7 @@
     </div>
   </main>
 
+  <!-- Area for the user's taken pics -->
   <div class="sidebar">
     <!-- Dinamically load the user's taken pics -->
   </div>
