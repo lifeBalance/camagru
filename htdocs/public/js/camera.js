@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Select 'div' element (parent of 'canvas' preview).
+  const preview = document.getElementById('preview');
   const video   = document.getElementById('video');
-  const canvas  = document.getElementById('canvas');
+  const canvas  = document.createElement('canvas');
   const snap    = document.getElementById('snap');
   const form    = document.getElementById('form');
   const submit  = document.getElementById('submit');
@@ -9,8 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let   formData;
 
   // Event listener/handler for the button to take the pic
-  snap.addEventListener('click', function (params) {
-    context.drawImage(video, 0, 0, 640, 480);
+  snap.addEventListener('click', function () {
+    canvas.width = video.width;
+    canvas.height = video.height;
+    context.drawImage(video, 0, 0, video.width, video.height);
+    preview.appendChild(canvas);
   });
 
   // Event listener/handler for the button to upload the pic
@@ -20,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Put the data of the canvas on a variable
     imageData = canvas.toDataURL();
-    
+
     // Put the data in a FormData object
     formData = new FormData();
     formData.append('img', imageData);

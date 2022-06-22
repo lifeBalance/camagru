@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add event listener/handler to 'file input' element.
   fileInput.addEventListener('change', function (e) {
     reader.onload = function(event){
-        img.onload = function(){
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img,0,0);
-        }
-        img.src = event.target.result;
+      img.onload = function(){
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+      }
+      img.src = event.target.result;
     }
     reader.readAsDataURL(e.target.files[0]);
     preview.appendChild(canvas);
