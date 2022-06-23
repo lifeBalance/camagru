@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       body: formData,
     })
-    .then(response => response.text())
+    .then(response => {
+      window.location.assign(response.url);
+    })
     .then(data => {
       return data;
     })

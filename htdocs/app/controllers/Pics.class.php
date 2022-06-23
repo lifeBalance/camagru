@@ -55,7 +55,7 @@ class Pics extends Controller
                     'pic uploaded!' => 'success'
                 ]);
                 $this->redirect('/');
-                exit();
+                // die();
             }
         } else {
             Flash::addFlashes([

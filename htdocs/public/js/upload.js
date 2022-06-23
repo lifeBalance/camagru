@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Put the data in a FormData object
     formData = new FormData();
-    console.log(canvas.toDataURL());
     formData.append('img',  canvas.toDataURL());
 
     // Extract the URL from the value of 'action' in the form
@@ -38,9 +37,10 @@ document.addEventListener('DOMContentLoaded', function () {
       method: 'POST',
       body: formData,
     })
-    .then(response => response.text())
+    .then(response => {
+      window.location.assign(response.url);
+    })
     .then(data => {
-      console.log('Post request sent!!');
       return data;
     })
     .catch((error) => {
