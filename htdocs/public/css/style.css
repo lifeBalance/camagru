@@ -2,6 +2,20 @@ body {
     background-color: aquamarine;
 }
 
+#previewBox {
+    position: relative;
+}
+
+.clone {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.highlight {
+    border: 2px solid green;
+}
+
 intput.error {
     background-color: gold;
 }

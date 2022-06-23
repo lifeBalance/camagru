@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Select 'file input' element.
-  const fileInput   = document.getElementById('fileInput');
-  // Select 'div' element (parent of 'picPreview').
   const previewBox  = document.getElementById('previewBox');
-  let   picPreview;
+  const fileInput   = document.getElementById('fileInput');
+  const submit      = document.getElementById('submit');
   const form        = document.getElementById('form');
+  let   picPreview;
 
   // Add event listener/handler to 'file input' element.
   fileInput.addEventListener('change', function (e) {
@@ -12,9 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
       picPreview = document.createElement('img');
       // Set attributes of the new 'img' element
       picPreview.setAttribute('id', 'picPreview');
-      picPreview.setAttribute("style", "width:500px");
+      picPreview.setAttribute("style", "width:500px"); // Move to CSS
       picPreview.setAttribute('src',  window.URL.createObjectURL(fileInput.files[0]));
-      previewBox.insertBefore(picPreview, previewBox.firstChild);
+      previewBox.appendChild(picPreview);
+      previewBox.hidden = false;
     } else {
       picPreview.setAttribute('src',  window.URL.createObjectURL(fileInput.files[0]));
     }

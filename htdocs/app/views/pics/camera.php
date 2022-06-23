@@ -3,19 +3,22 @@
 <h2><?php echo $title; ?></h2>
 <div class="container">
   <main>
-    <div id="previewBox" hidden>
-      <!-- canvas and video will toggle when button is pressed -->
-      <canvas id="canvas" hidden></canvas>
-      <video id="video" autoplay width="640" height="480"></video>
-      <br>
-      <button id="snapBtn">Pic it!</button>
-      <br>
+    <div id="card" hidden>
+      <div id="previewBox">
+        <!-- canvas and video will toggle when button is pressed -->
+        <canvas id="canvas" hidden></canvas>
+        <video id="video" autoplay width="640" height="480"></video>
+      </div><!-- Preview Box -->
 
-      <!-- Form to upload the pic -->
-      <form action="<?php echo URLROOT . '/pics/camera'; ?>" id="form">
-        <input type="submit" name="upload" value="Upload" id="submit">
-      </form>
-    </div>
+      <div id="controls">
+        <button id="snapBtn">Pic it!</button>
+        <br>
+        <!-- Form to upload the pic -->
+        <form action="<?php echo URLROOT . '/pics/camera'; ?>" id="form">
+          <input type="submit" name="upload" value="Upload" id="submit">
+        </form>
+      </div><!-- Controls -->
+    </div><!-- Card -->
 
     <!-- Dinamically load the stickers -->
     <div class="stickers">

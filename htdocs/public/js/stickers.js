@@ -3,22 +3,49 @@ var selectedStickers = [];
 
 document.addEventListener('DOMContentLoaded', function () {
   // Select all stickers
-  const all = document.querySelectorAll('.sticker');
+  const all         = document.querySelectorAll('.sticker');
+  const card        = document.getElementById('card');
+  const previewBox  = document.getElementById('previewBox');
+  let   tmp;
+  let   name;
+  let   toBeRemoved;
+  let   clickedOnSticker;
 
   // Highlight selected sticker; add them to 'selected' array
   all.forEach((sticker) => {
     sticker.addEventListener('click', (event) => {
-      previewBox.hidden = false;
+      // Unveil image preview and control buttons
+      card.hidden = false;
+
+      // Convenience variables to store the clicked on sticker and its 'name'.
+      clickedOnSticker = event.target;
+      name = clickedOnSticker.src.split('/').pop().split('.')[0];
+
       // Do not delete the last sticker (at least one stays).
-      if (event.target.style.border && selectedStickers.length > 1) {
-        event.target.style.border = '';
-        selectedStickers.splice(selectedStickers.indexOf(event.target), 1);
+      if (clickedOnSticker.classList.contains('highlight') &&
+          selectedStickers.length > 1) {
+        // Remove the border of the sticker
+        clickedOnSticker.classList.remove('highlight');
+
+        // Remove the sticker and its clone
+        toBeRemoved = selectedStickers.find(obj => obj.name === name);
+        toBeRemoved.clone.remove();
+        selectedStickers.splice(selectedStickers.indexOf(toBeRemoved), 1);
+
         // Do not add stickers already in the array (not repeated).
-      } else if (!selectedStickers.includes(event.target)) {
-        event.target.style.border = '2px solid green';
-        selectedStickers.push(event.target);
+      } else if (!selectedStickers.find(obj => obj.name === name)) {
+        tmp = {
+          name:   name,
+          orig:   clickedOnSticker,
+          clone:  clickedOnSticker.cloneNode(true),
+          xPos:   0,
+          yPos:   0,
+        };
+        clickedOnSticker.classList.add('highlight');
+        tmp.clone.classList.add('clone');
+        selectedStickers.push(tmp);
+        previewBox.appendChild(tmp.clone);
       }
-      console.log(selectedStickers);//testing....
-    })
+    })  // End of event-listener
   });
 }); // End of 'DOMContentLoaded' event listener/handler
