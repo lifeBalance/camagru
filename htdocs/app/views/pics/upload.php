@@ -5,9 +5,11 @@
 
   <main>
     <div id="card" hidden>
-      <!-- image for edit/preview will be inserted here -->
-      <div id="previewBox" hidden></div>
-      <form action="<?php echo URLROOT . '/pics/upload'; ?>" method="post" enctype="multipart/form-data" id="form">
+      <div id="previewBox" hidden>
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <form action="<?php echo URLROOT . '/pics/upload'; ?>" id="form">
         <input type="file" name="dickpic" id="fileInput">
         <br>
         <input type="submit" name="upload" value="Upload" id="submit">

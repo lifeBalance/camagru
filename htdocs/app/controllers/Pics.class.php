@@ -2,7 +2,7 @@
 
 class Pics extends Controller
 {
-    public function upload($params)
+    public function upload()
     {
         $data = [
             'title' => 'pic it, boi!',
@@ -13,22 +13,18 @@ class Pics extends Controller
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($_FILES["dickpic"]["error"] == UPLOAD_ERR_OK) {
-                // Get name of the temporary server-side stored file (/tmp)
-                $tmp_name = $_FILES["dickpic"]["tmp_name"];
+            if ($_POST['img']) {
+
                 // Generate unique filename
                 $name = uniqid();
-                // Get extension of the file
-                $ext = $this->get_extension($tmp_name);
-                // Validate file: type, size, etc
-                move_uploaded_file($tmp_name, UPLOADS_DIR . "/$name.$ext");
+
+                // Write decoded content to a file with unique name and '.png' extension
+                file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
                 ]);
-                $this->redirect('/');
-            }   else {
-                echo 'Error: ' . $_FILES["dickpic"]["error"];
             }
+            $this->redirect('/');
         } else {
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'
@@ -53,13 +49,14 @@ class Pics extends Controller
                 $name = uniqid();
 
                 // Write decoded content to a file with unique name and '.png' extension
-                file_put_contents(UPLOADS_DIR . '/' . $name . '.png', file_get_contents($_POST['img']));
+                file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
 
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
                 ]);
+                $this->redirect('/');
+                exit();
             }
-            $this->redirect('/');
         } else {
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'

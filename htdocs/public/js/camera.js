@@ -4,9 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form        = document.getElementById('form');
   const submit      = document.getElementById('submit');
   const canvas      = document.getElementById('canvas');
-  const previewBox  = document.getElementById('previewBox');
   const context     = canvas.getContext('2d');
-  let   imageData;
   let   formData;
 
   // Set measurements of the canvas
@@ -20,8 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
       video.hidden = true;
       canvas.hidden = false;
       snapBtn.textContent = 'No likey?'
-      // Put the data of the canvas on a variable
-      imageData = canvas.toDataURL();
     } else {
       canvas.hidden = true;
       video.hidden = false;
@@ -34,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Stop the default event (submitting form) when clicking on 'upload'
     e.preventDefault();
 
-    // Put the data in a FormData object
+    // Put the canvas in a FormData object
     formData = new FormData();
-    formData.append('img', imageData);
+    formData.append('img', canvas.toDataURL());
 
     // Extract the URL from the value of 'action' in the form
     fetch(form.getAttribute('action'), {
