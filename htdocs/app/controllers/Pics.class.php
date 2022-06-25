@@ -10,6 +10,7 @@ class Pics extends Controller
                 'main.js',
                 'upload.js',
                 'stickers.js',
+                'dragQueen.js',
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

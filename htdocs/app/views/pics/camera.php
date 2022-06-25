@@ -14,7 +14,7 @@
         <button id="snapBtn">Pic it!</button>
         <br>
         <!-- Form to upload the pic -->
-        <form action="<?php echo URLROOT . '/pics/camera'; ?>" id="form">
+        <form action="<?php echo URLROOT . '/pics/camera'; ?>" id="form" hidden>
           <input type="submit" name="upload" value="Upload" id="submit">
         </form>
       </div><!-- Controls -->

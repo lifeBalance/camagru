@@ -5,14 +5,14 @@
 
   <main>
     <div id="card" hidden>
-      <div id="previewBox" hidden>
+      <div id="previewDiv" hidden>
         <canvas id="canvas"></canvas>
       </div>
 
       <form action="<?php echo URLROOT . '/pics/upload'; ?>" id="form">
         <input type="file" name="dickpic" id="fileInput">
         <br>
-        <input type="submit" name="upload" value="Upload" id="submit">
+        <input type="submit" name="upload" value="Upload" id="submit" hidden>
       </form>
     </div>
     

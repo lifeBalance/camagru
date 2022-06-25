@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.height = video.height;
   // Event listener/handler for the button to take the pic
   snapBtn.addEventListener('click', function () {
+    form.hidden = false;
     // Toggle video and canvas once pics are taken
     if (canvas.hidden) {
       context.drawImage(video, 0, 0, video.width, video.height);

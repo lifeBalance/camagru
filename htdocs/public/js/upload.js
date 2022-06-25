@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const previewBox  = document.getElementById('previewBox');
+  const previewDiv  = document.getElementById('previewDiv');
   const fileInput   = document.getElementById('fileInput');
   const canvas      = document.getElementById('canvas');
   const context     = canvas.getContext('2d');
@@ -18,11 +18,16 @@ document.addEventListener('DOMContentLoaded', function () {
           canvas.width = img.width;
           canvas.height = img.height;
           context.drawImage(img,0,0); 
+          submit.hidden = false;
+          previewDiv.hidden = false;
         });
+        img.onerror = function () {
+          submit.hidden = true;
+          window.alert("That's not a picture my man!");
+        }
       }
     }
-    context.drawImage(img, 0, 0, img.width, img.height);
-    previewBox.hidden = false;
+    // context.drawImage(img, 0, 0, img.width, img.height);
   });
   
   submit.addEventListener('click', function (e) {
