@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Select all stickers
   const all         = document.querySelectorAll('.sticker');
   const card        = document.getElementById('card');
-  const previewBox  = document.getElementById('previewBox');
+  const previewDiv  = document.getElementById('previewDiv');
   let   tmp;
   let   name;
   let   toBeRemoved;
@@ -42,9 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
           yPos:   0,
         };
         clickedOnSticker.classList.add('highlight');
+        tmp.name = name;
         tmp.clone.classList.add('clone');
+        tmp.clone.setAttribute('id', tmp.name);
         selectedStickers.push(tmp);
-        previewBox.appendChild(tmp.clone);
+        previewDiv.appendChild(tmp.clone);
       }
     })  // End of event-listener
   });

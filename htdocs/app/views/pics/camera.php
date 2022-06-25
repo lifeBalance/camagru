@@ -4,7 +4,7 @@
 <div class="container">
   <main>
     <div id="card" hidden>
-      <div id="previewBox">
+      <div id="previewDiv">
         <!-- canvas and video will toggle when button is pressed -->
         <canvas id="canvas" hidden></canvas>
         <video id="video" autoplay width="640" height="480"></video>

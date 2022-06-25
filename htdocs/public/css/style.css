@@ -2,8 +2,10 @@ body {
     background-color: aquamarine;
 }
 
-#previewBox {
+#previewDiv {
     position: relative;
+    width: fit-content;
+    height: fit-content;
 }
 
 .clone {
@@ -18,4 +20,8 @@ body {
 
 intput.error {
     background-color: gold;
+}
+
+.hide {
+    display: none;
 }
