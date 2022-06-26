@@ -58,8 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(response => {
       const urlObject = new URL(response.url);
-      console.log(urlObject.origin);
-      // window.location.assign(urlObject.origin);
+      window.location.assign(urlObject.origin);
     })
     .catch((error) => {
       console.error('Error:', error);

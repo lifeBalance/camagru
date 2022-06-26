@@ -20,7 +20,8 @@ class Pics extends Controller
                 // Write decoded content to a file with unique name and '.png' extension
                 file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
                 $stickers = json_decode($_POST['stickers']);
-                error_log(print_r($stickers));
+
+                // Merge the user's image with the stickers
                 $this->mergeImgs(UPLOADS_DIR . "/$name.png", $stickers);
 
                 Flash::addFlashes([
@@ -81,9 +82,9 @@ class Pics extends Controller
             );
         }
         // Store the result as a file in the uploads folder
-        imagepng($canvas, UPLOADS_DIR . "/test.png");
+        imagepng($canvas, $user_file);
 
-        // Destroy image once the file is written
+        // Destroy canvas once the file is written
         imagedestroy($canvas);
     }
 
