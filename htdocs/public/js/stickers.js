@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewDiv  = document.getElementById('previewDiv');
   let   tmp;
   let   name;
-  let   toBeRemoved;
   let   clickedOnSticker;
 
   // Highlight selected sticker; add them to 'selected' array
@@ -26,27 +25,23 @@ document.addEventListener('DOMContentLoaded', function () {
           selectedStickers.length > 1) {
         // Remove the border of the sticker
         clickedOnSticker.classList.remove('highlight');
-
-        // Remove the sticker and its clone
-        toBeRemoved = selectedStickers.find(obj => obj.name === name);
-        toBeRemoved.clone.remove();
-        selectedStickers.splice(selectedStickers.indexOf(toBeRemoved), 1);
+        // Remove the clone of the sticker
+        document.getElementById(name).remove();
+        // Remove the sticker from the array
+        selectedStickers.splice(selectedStickers.indexOf(selectedStickers.find(obj => obj.name === name)), 1);
 
         // Do not add stickers already in the array (not repeated).
       } else if (!selectedStickers.find(obj => obj.name === name)) {
-        tmp = {
-          name:   name,
-          orig:   clickedOnSticker,
-          clone:  clickedOnSticker.cloneNode(true),
-          xPos:   0,
-          yPos:   0,
-        };
         clickedOnSticker.classList.add('highlight');
-        tmp.name = name;
-        tmp.clone.classList.add('clone');
-        tmp.clone.setAttribute('id', tmp.name);
-        selectedStickers.push(tmp);
-        previewDiv.appendChild(tmp.clone);
+        tmp = clickedOnSticker.cloneNode(true);
+        tmp.classList.replace('highlight', 'clone');
+        tmp.setAttribute('id', name);
+        selectedStickers.push({
+          'name': name,
+          'xPos':   0,
+          'yPos':   0,
+        });
+        previewDiv.appendChild(tmp);
       }
     })  // End of event-listener
   });

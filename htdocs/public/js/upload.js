@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
           canvas.width = img.width;
           canvas.height = img.height;
           context.drawImage(img,0,0); 
+          // context.drawImage(img, 0, 0, img.width, img.height);
           submit.hidden = false;
           previewDiv.hidden = false;
         });
@@ -27,15 +28,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
     }
-    // context.drawImage(img, 0, 0, img.width, img.height);
   });
-  
+
   submit.addEventListener('click', function (e) {
     e.preventDefault(); // Stop the default event (submitting form)
-    
+
     // Put the data in a FormData object
     formData = new FormData();
-    formData.append('img',  canvas.toDataURL());
+    formData.append('img', canvas.toDataURL());
+    if (selectedStickers.length > 0) {
+      let stickers = '[';
+      for (let i = 0; i < selectedStickers.length; i++) {
+        const st = selectedStickers[i];
+        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}"]`;
+        if (i < selectedStickers.length - 1)
+          stickers += ', ';
+      }
+      stickers += ']';
+      formData.append('stickers', stickers);
+      for (value of formData.values()) {
+        console.log(value);
+      }
+    }
 
     // Extract the URL from the value of 'action' in the form
     fetch(form.getAttribute('action'), {
@@ -43,10 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
       body: formData,
     })
     .then(response => {
-      window.location.assign(response.url);
-    })
-    .then(data => {
-      return data;
+      const urlObject = new URL(response.url);
+      console.log(urlObject.origin);
+      // window.location.assign(urlObject.origin);
     })
     .catch((error) => {
       console.error('Error:', error);
