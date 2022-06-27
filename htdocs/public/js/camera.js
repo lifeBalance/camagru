@@ -31,9 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Stop the default event (submitting form) when clicking on 'upload'
     e.preventDefault();
 
-    // Put the canvas in a FormData object
+    // Append the snapshot to the form data
     formData = new FormData();
     formData.append('img', canvas.toDataURL());
+
+    // Append the stickers array to the form data
+    if (selectedStickers.length > 0) {
+      let stickers = '[';
+      for (let i = 0; i < selectedStickers.length; i++) {
+        const st = selectedStickers[i];
+        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}"]`;
+        if (i < selectedStickers.length - 1)
+          stickers += ', ';
+      }
+      stickers += ']';
+      formData.append('stickers', stickers);
+    }
 
     // Extract the URL from the value of 'action' in the form
     fetch(form.getAttribute('action'), {
@@ -41,7 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
       body: formData,
     })
     .then(response => {
-      window.location.assign(response.url);
+      const urlObject = new URL(response.url);
+      window.location.assign(urlObject.origin);
     })
     .then(data => {
       return data;

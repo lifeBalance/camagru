@@ -17,12 +17,11 @@ class Pics extends Controller
             if (isset($_POST['img'])) {
                 // Generate unique filename
                 $name = uniqid();
-                // Write decoded content to a file with unique name and '.png' extension
+                // Write base image to a file with unique name and '.png' extension
                 file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
-                $stickers = json_decode($_POST['stickers']);
 
                 // Merge the user's image with the stickers
-                $this->mergeImgs(UPLOADS_DIR . "/$name.png", $stickers);
+                $this->mergeImgs(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
 
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
@@ -38,6 +37,9 @@ class Pics extends Controller
 
     public function mergeImgs($user_file, $stickers)
     {
+        // Turn the 'stickers' string (name and coordinates) into array.
+        $stickers = json_decode($stickers);
+
         // Create  GdImage instance out of the user's image
         $usr_gdi = imagecreatefrompng($user_file);
         // Compute dimensions for the user's image
@@ -107,10 +109,13 @@ class Pics extends Controller
                 // Write decoded content to a file with unique name and '.png' extension
                 file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
 
+                // Merge the user's image with the stickers
+                $this->mergeImgs(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
+
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
                 ]);
-                $this->redirect('/');
+                // $this->redirect('/');
                 // die();
             }
         } else {

@@ -46,9 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       stickers += ']';
       formData.append('stickers', stickers);
-      for (value of formData.values()) {
-        console.log(value);
-      }
     }
 
     // Extract the URL from the value of 'action' in the form
