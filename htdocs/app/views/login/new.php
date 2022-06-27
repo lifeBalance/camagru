@@ -2,7 +2,7 @@
 
 <h2>Login</h2>
 
-<form action="<?php echo URLROOT; ?>/users/login" method="post">
+<form action="<?php echo URLROOT; ?>/login/new" method="post">
     <div>
         <label for="email"><sup>*</sup>Email: </label>
         <input type="email" name="email" value="<?php echo $email; ?>">

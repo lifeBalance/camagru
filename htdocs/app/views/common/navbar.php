@@ -9,11 +9,11 @@
         <p><?php echo '<a href="'. URLROOT .'/pics/camera">'; ?>Take a snapshot</a></p>
       </li>
       <li>
-        <p><?php echo 'Welcome <a href="'. URLROOT .'/users/settings">' . $_SESSION['username'] . '!</a> | <a href="' . URLROOT . '/users/logout">Log out</a>'; ?></p>
+        <p><?php echo 'Welcome <a href="'. URLROOT .'/users/settings">' . $_SESSION['username'] . '!</a> | <a href="' . URLROOT . '/login/out">Log out</a>'; ?></p>
       </li>
     <?php else : ?>
       <li>
-        <a href="<?php echo URLROOT; ?>/users/login">Login</a>
+        <a href="<?php echo URLROOT; ?>/login/new">Login</a>
       </li>
     <?php endif; ?>
     </ul>
