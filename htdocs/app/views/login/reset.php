@@ -1,8 +1,8 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
-<h2>Write your New Password</h2>
+<h2>Enter your New Password</h2>
 
-<form action="<?php echo URLROOT . '/users/resetpwd/' . $token ?>" method="post">
+<form action="<?php echo URLROOT . '/login/reset/' . $token ?>" method="post">
 <div>
         <label for="password"><sup>*</sup>Password: </label>
         <input id="password" type="password" name="password" value="<?php echo $password; ?>" placeholder="Password">

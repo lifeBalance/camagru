@@ -35,7 +35,7 @@ class Users extends Controller
                     Flash::addFlashes([
                         'Your account is already confirmed. Go log in!' => 'success'
                     ]);
-                } else if ($this->send_mail($authenticatedUser->email, 'Activate your account', 'activate')) {
+                } else if (Mail::send($authenticatedUser->email, 'Activate your account', 'users', 'activate')) {
                     Flash::addFlashes([
                         'Activation mail is on the way!' => 'success'
                     ]);
@@ -65,28 +65,6 @@ class Users extends Controller
     }
 
     /**
-     * Send emails to users.
-     *
-     * @param email     Email address of the user. 
-     * @param subject   Subject of the email.
-     * @param action    One of: 
-     *
-     * @return true or false
-     */
-    public function send_mail($email, $subject, $action)
-    {
-        $subject = $subject;
-        $token = $this->userModel->generateToken($email);
-        $message = 'Click <a href="http://localhost/users/' . $action . '/' . 
-                    $token . '">here</a> to: <b>' . $subject . "</b>.\r\n";
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
-
-        return mail("<$email>", $subject, $message, $headers);
-    }
-
-    /**
      * Use the token argument to call the 'verifyToken' method on the user 
      * model. Flashes informative message depending on if the account was
      * successfully activated, or the token was invalid.
@@ -99,7 +77,7 @@ class Users extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if ($this->userModel->verifyToken($token)) {
                 Flash::addFlashes(['Account activated. You can log in!' => 'success']);
-                $this->redirect('/users/login');
+                $this->redirect('/login/new');
             } else {
                 Flash::addFlashes(['That token is a bullshit' => 'error']);
                 $this->redirect('/users/confirm');
@@ -130,7 +108,7 @@ class Users extends Controller
                 $this->render('users/register', $formData);
             } else {
                 // SEND CONFIRMATION EMAIL
-                if ($this->send_mail($user->email, 'Activate your account', 'activate')) {
+                if (Mail::send($user->email, 'Activate your account', 'users', 'activate')) {
                     Flash::addFlashes(['Activation mail is on the way!' => 'success']);
                 } else {
                     Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'error']);
@@ -172,100 +150,10 @@ class Users extends Controller
     }
 
     /**
-     * Handle "Forgot your password?" requests.
+     * Helper function to check if a user is logged in using the session.
      *
-     * GET requests: 
-     *      - Render an empty request new password form.
-     * POST requests:
-     *      - Sanitize user email before searching in the database.
-     *      - Re-render incomplete form in case of errors.
-     *      - Flash informative message in case of:
-     *          - Non-existing user.
-     *          - Reset password email sent successfully.
-     *          - Error when sending email.
+     * @return   true/false
      */
-    public function newpwd()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize form
-            $data = [
-                'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-            ];
-            // Render errors if any
-            if ($this->userModel->findByEmail($data['email']))
-            {
-                if ($this->send_mail($data['email'], 'Reset your password', 'resetpwd'))
-                    Flash::addFlashes(['Reset password email is on its way!' => 'success']);
-                else
-                    Flash::addFlashes(["Don't hold your breath waiting for that email!" => 'error']);
-                $this->redirect('/');
-            } else {
-                Flash::addFlashes(['Wrong user!' => 'error']);
-                $this->redirect('/users/newpwd');
-            }
-            // Send email with token for pwd reset
-        } else {
-            $data = [
-                'email' => ''
-            ];
-            $this->render('users/email_form', $data);
-        }
-    }
-
-    /**
-     * Handle when the user clicks on 'Reset your password' link (on email).
-     *
-     * GET requests: 
-     *      - Render an empty "reset your password" form.
-     * POST requests:
-     *      - Sanitize user's email, password and token
-     *      before handling them to the model.
-     *      - Re-render empty form in case of errors.
-     *      - Flash informative message in case of:
-     *          - Non-matching passwords.
-     *          - Password updated successfully.
-     *          - Error when updating db (invalid token).
-     */
-    public function resetpwd($args)
-    {
-        $token = $args[0];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize form
-            $data = [
-                'password' => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pwdConfirm' => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'token' => filter_var($token, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            ];
-            // Submit if both pwd match
-            if ($data['password'] == $data['pwdConfirm'])
-            {
-                // Update the password of user with that token
-                if ($this->userModel->updatePwd($data['token'], $data['password'])) {
-                    Flash::addFlashes(['Password has been changed!' => 'success']);
-                    Flash::addFlashes(['You can now log in!' => 'success']);
-                    $this->redirect('/');
-                } else {
-                    // Redirect to root if something went wrong
-                    Flash::addFlashes(['That token was a bullshit!' => 'error']);
-                    $this->redirect('/');
-                }
-            }
-        } else {
-            // Render form to input new pwd
-            $data = [
-                'password' => '',
-                'pwdConfirm' => '',
-                'token'     => $token
-            ];
-            $this->render('users/pwd_form', $data);
-        }
-    }
-
-    // /**
-    //  * Helper function to check if a user is logged in using the session.
-    //  *
-    //  * @return   true/false
-    //  */
     public function isLoggedIn()
     {
         return isset($_SESSION['user_id']);
@@ -320,7 +208,7 @@ class Users extends Controller
                     // Set account to not confirmed
                     $this->userModel->confirmEmail($newSettings->email, false);
                     // Send confirmation token and log the user out
-                    if ($this->send_mail($newSettings->email, 'Update your new settings', 'activate')) {
+                    if (Mail::send($newSettings->email, 'Update your new settings', 'users', 'activate')) {
                         Flash::addFlashes([
                             'Your account settings have been updated' => 'warning',
                             'Confirmation mail is on the way!' => 'success'

@@ -2,7 +2,7 @@
 
 <h2>Get a New Password</h2>
 
-<form action="<?php echo URLROOT . '/users/newpwd' ?>" method="post">
+<form action="<?php echo URLROOT . '/login/forgot' ?>" method="post">
     <div>
         <label for="email"><sup>*</sup>Email: </label>
         <input id="email" type="email" name="email" value="<?php echo $email; ?>" placeholder="email">

@@ -214,31 +214,31 @@ class User extends Model
         return $stmt->execute();
     }
 
-    /**
-     * Update a user's token in the db with a newly generated one. Locate the
-     * user in the db using its 'email' argument.
-     * 
-     * @param email  The (sanitized) user's email.
-     * 
-     * @return Mixed The token itself/false;
-     */
-    public function generateToken($email)
-    {
-        $token = new Token();
-        $hash = $token->getHash();
+    // /**
+    //  * Update a user's token in the db with a newly generated one. Locate the
+    //  * user in the db using its 'email' argument.
+    //  * 
+    //  * @param email  The (sanitized) user's email.
+    //  * 
+    //  * @return Mixed The token itself/false;
+    //  */
+    // public function generateToken($email)
+    // {
+    //     $token = new Token();
+    //     $hash = $token->getHash();
 
-        $db = static::getDB();
-        $sql = 'UPDATE users
-                SET     token = :token
-                WHERE   email = :email';
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':token', $hash, PDO::PARAM_STR);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        if ($stmt->execute())
-            return $hash;
-        else
-            return false;
-    }
+    //     $db = static::getDB();
+    //     $sql = 'UPDATE users
+    //             SET     token = :token
+    //             WHERE   email = :email';
+    //     $stmt = $db->prepare($sql);
+    //     $stmt->bindValue(':token', $hash, PDO::PARAM_STR);
+    //     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+    //     if ($stmt->execute())
+    //         return $hash;
+    //     else
+    //         return false;
+    // }
 
     /**
      * Use the token (contained in 'params') to confirm the users account
