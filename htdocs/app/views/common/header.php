@@ -9,15 +9,15 @@
     <title><?php echo SITENAME; ?></title>
 </head>
 <body>
-    <?php require APPROOT . '/views/common/navbar.php'; ?>
-    <hr>
-    <div class="container">
-        <!-- flash messages -->
-        <ul>
-            <?php if(Flash::beFlashes()) : ?>
-                <?php $flashes = Flash::getFlashes() ?>
-                <?php foreach ($flashes as $msg => $class) : ?>
-                    <?php echo '<li class="flash ' . $class. '">' . $msg . '</li>'; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </ul>
+  <?php require APPROOT . '/views/common/navbar.php'; ?>
+  <hr>
+  <div class="container">
+    <!-- flash messages -->
+    <ul>
+      <?php if(Flash::beFlashes())
+        $flashes = Flash::getFlashes();
+        if (isset($flashes))
+          foreach ($flashes as $msg => $class)
+            echo '<li class="flash ' . $class. '">' . $msg . "</li>\n";
+      ?>
+    </ul>

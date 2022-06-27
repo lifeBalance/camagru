@@ -207,6 +207,40 @@ FROM php:8.1-rc-apache-buster
 RUN docker-php-ext-install pdo && docker-php-ext-enable pdo
 ```
 
+## Docker Workflow Tricks
+One of the things I noticed while developing the app in Docker, was the need of editing configuration files for the server, PHP interpreter and so on. A pattern that proved useful to me was:
+
+1. Copy the original configuration file to your **host**:
+```
+$ docker cp a22fac:./your_proj/apache2.conf
+```
+
+2. Mount it as a [Docker volume](https://docs.docker.com/storage/volumes/):
+```
+volumes:
+  - ./docker/php_apache/apache2.conf:/etc/apache2/apache2.conf
+```
+
+After that, you'll have a gate to that configuration file on your running container (Don't forget that some services must be restarted after configuration changes).
+
+### A Small Twist
+What if, during the **building image** stage you need to make some change (e.g. change permissions) to a configuration file that does not exist yet? Well, you can create the file, let's say one for configuring [msmtp](https://marlam.de/msmtp/), which must have certain permissions. Then, in your [Dockerfile](https://docs.docker.com/engine/reference/builder/) you have to:
+
+1. Copy the file to the **image**:
+```
+COPY msmtprc /etc/msmtprc
+```
+
+2. Change the permissions in the same `Dockerfile`:
+```
+RUN chmod 600 /etc/msmtprc
+```
+
+What if you have to make configurations to that file while the container is running? Easy, mount the file as a **volume** in your `compose.yml`:
+```
+volumes:
+  - ./docker/php_apache/msmtprc:/etc/msmtprc
+```
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
 

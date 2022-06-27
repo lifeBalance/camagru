@@ -2,6 +2,12 @@
 
 class Pics extends Controller
 {
+    public function __construct()
+    {
+        $this->picModel = $this->load('Pic');
+        $this->commentModel = $this->load('Comment');
+    }
+
     public function upload()
     {
         $data = [
@@ -90,7 +96,7 @@ class Pics extends Controller
         imagedestroy($canvas);
     }
 
-    public function camera($params)
+    public function camera()
     {
         $data = [
             'title' => 'pic it, boi!',
@@ -112,11 +118,23 @@ class Pics extends Controller
                 // Merge the user's image with the stickers
                 $this->mergeImgs(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
 
+                // Pic intel
+                $data = [
+                    'user_id'       => $_SESSION['user_id'],
+                    'comment'       => $_POST['comment'], // Gotta SANITIZE THIS BRUH!!!
+                    'filename'      => $name,
+                    // The MySQL DATETIME format
+                    'created_at'    => date("Y-m-d H:i:s")
+                ];
+                error_log(print_r($data));
+                // Write intel to 'pics' table and push the 'pic_id' to the 'data' array
+                $data['pic_id'] = $this->picModel->new($data);
+                // Write intel to 'comments' table
+                $this->commentModel->new($data);
+
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
                 ]);
-                // $this->redirect('/');
-                // die();
             }
         } else {
             Flash::addFlashes([

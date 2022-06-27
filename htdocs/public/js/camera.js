@@ -4,12 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const form        = document.getElementById('form');
   const submit      = document.getElementById('submit');
   const canvas      = document.getElementById('canvas');
+  const comment     = document.getElementById('comment');
   const context     = canvas.getContext('2d');
   let   formData;
 
   // Set measurements of the canvas
   canvas.width = video.width;
   canvas.height = video.height;
+
   // Event listener/handler for the button to take the pic
   snapBtn.addEventListener('click', function () {
     form.hidden = false;
@@ -35,6 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
     formData = new FormData();
     formData.append('img', canvas.toDataURL());
 
+    // Check that the user wrote some comment
+    if (comment.value == '') {
+      window.alert('Gotta write some comment, son!');
+      return ;
+    } else {
+      formData.append('comment', comment.value);
+    }
+
     // Append the stickers array to the form data
     if (selectedStickers.length > 0) {
       let stickers = '[';
@@ -56,9 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => {
       const urlObject = new URL(response.url);
       window.location.assign(urlObject.origin);
-    })
-    .then(data => {
-      return data;
     })
     .catch((error) => {
       console.error('Error:', error);
