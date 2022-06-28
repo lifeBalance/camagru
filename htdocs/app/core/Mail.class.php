@@ -11,15 +11,22 @@ class Mail
      *
      * @return true or false
      */
-    public static function send($email, $subject, $controller, $action)
+    public static function send($data)
     {
-        $subject = $subject;
-        $token = Token::generateToken($email);
-        $message = 'Click <a href="http://localhost/' . "$controller/$action/$token" . '">here</a> to: <b>' . $subject . "</b>.\r\n";
+        $href = URLROOT . "/{$data['controller']}/{$data['action']}";
+        // Some emails may not use a token (hence below)
+        if (isset($data['token']))
+            $href .= "/{$data['token']}";
+        $link = '<a href="' .$href . '">here</a>';
+        $message = "Click $link to: <b>{$data['subject']}</b>\r\n";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
 
-        return mail("<$email>", $subject, $message, $headers);
+        return mail(
+            '<' . $data['address'] . '>',
+            $data['subject'],
+            $message,
+            $headers);
     }
 }

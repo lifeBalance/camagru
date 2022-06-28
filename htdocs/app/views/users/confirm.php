@@ -14,7 +14,7 @@
     </div>
 
     <div>
-        <input type="submit" value="Confirm Account">
+        <input type="submit" value="Request Email">
     </div>
 </form>
 

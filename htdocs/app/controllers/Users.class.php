@@ -35,14 +35,23 @@ class Users extends Controller
                     Flash::addFlashes([
                         'Your account is already confirmed. Go log in!' => 'success'
                     ]);
-                } else if (Mail::send($authenticatedUser->email, 'Activate your account', 'users', 'activate')) {
-                    Flash::addFlashes([
-                        'Activation mail is on the way!' => 'success'
-                    ]);
                 } else {
-                    Flash::addFlashes([
-                        "Don't hold your breath waiting for the email, dawg!" => 'error'
-                    ]);
+                    $data = [
+                        'address'       => $sanitizedForm['email'],
+                        'subject'       => 'Activate your account',
+                        'controller'    => 'users',
+                        'action'        => 'activate',
+                        'token'         => $this->userModel->generateToken($sanitizedForm['email'])
+                    ];
+                    $success = Mail::send($data);
+                    if ($success) 
+                        Flash::addFlashes([
+                            'Activation mail is on the way!' => 'success'
+                        ]);
+                    else
+                        Flash::addFlashes([
+                            "Don't hold your breath waiting for the email, dawg!" => 'error'
+                        ]);
                 }
                 $this->redirect('/');
             } else {
@@ -80,7 +89,7 @@ class Users extends Controller
                 $this->redirect('/login/new');
             } else {
                 Flash::addFlashes(['That token is a bullshit' => 'error']);
-                $this->redirect('/users/confirm');
+                $this->redirect('/');
             }
         }
     }
@@ -108,7 +117,14 @@ class Users extends Controller
                 $this->render('users/register', $formData);
             } else {
                 // SEND CONFIRMATION EMAIL
-                if (Mail::send($user->email, 'Activate your account', 'users', 'activate')) {
+                $data = [
+                    'address'       => $user->email,
+                    'subject'       => 'Activate your new account',
+                    'controller'    => 'users',
+                    'action'        => 'activate',
+                    'token'         => $this->userModel->generateToken($user->email)
+                ];
+                if (Mail::send($data)) {
                     Flash::addFlashes(['Activation mail is on the way!' => 'success']);
                 } else {
                     Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'error']);
@@ -208,7 +224,14 @@ class Users extends Controller
                     // Set account to not confirmed
                     $this->userModel->confirmEmail($newSettings->email, false);
                     // Send confirmation token and log the user out
-                    if (Mail::send($newSettings->email, 'Update your new settings', 'users', 'activate')) {
+                    $data = [
+                        'address'       => $newSettings->email,
+                        'subject'       => 'Confirm your new settings',
+                        'controller'    => 'users',
+                        'action'        => 'activate',
+                        'token'         => $this->userModel->generateToken($newSettings->email)
+                    ];
+                    if (Mail::send($data)) {
                         Flash::addFlashes([
                             'Your account settings have been updated' => 'warning',
                             'Confirmation mail is on the way!' => 'success'

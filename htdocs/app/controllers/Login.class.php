@@ -134,7 +134,15 @@ class Login extends Controller
             // Render errors if any
             if ($this->userModel->findByEmail($data['email']))
             {
-                if (Mail::send($data['email'], 'Reset your password', 'login', 'reset'))
+                $data = [
+                    'address'       => $data['email'],
+                    'subject'       => 'Reset your password',
+                    'controller'    => 'login',
+                    'action'        => 'reset',
+                    'token'         => $this->userModel->generateToken($data['email'])
+                ];
+                // Send email with token for pwd reset
+                if (Mail::send($data))
                     Flash::addFlashes(['Reset password email is on its way!' => 'success']);
                 else
                     Flash::addFlashes(["Don't hold your breath waiting for that email!" => 'error']);
@@ -143,7 +151,6 @@ class Login extends Controller
                 Flash::addFlashes(['Wrong user!' => 'error']);
                 $this->redirect('/login/forgot');
             }
-            // Send email with token for pwd reset
         } else {
             $data = [
                 'email' => ''
@@ -168,7 +175,8 @@ class Login extends Controller
      */
     public function reset($args)
     {
-        $token = $args[0];
+        // The router reads: URL/controller/action/args
+        $token = $args[0]; // Router put args in an array (even if only 1)
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize form
             $data = [
@@ -176,19 +184,19 @@ class Login extends Controller
                 'pwdConfirm' => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'token' => filter_var($token, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             ];
+            // var_dump('token is ' . $token . "<br>". $data['token']);
             // Submit if both pwd match
             if ($data['password'] == $data['pwdConfirm'])
             {
-                // Update the password of user with that token
-                if ($this->userModel->updatePwd($data['token'], $data['password'])) {
+                // VERIFY TOKEN IS GOOD!!
+                if ($this->userModel->validToken($data['token'])) {
+                    // Update the password of user with that token
+                    $this->userModel->updatePwd($data['token'], $data['password']);
                     Flash::addFlashes(['Password has been changed!' => 'success']);
                     Flash::addFlashes(['You can now log in!' => 'success']);
-                    $this->redirect('/');
-                } else {
-                    // Redirect to root if something went wrong
-                    Flash::addFlashes(['That token was a bullshit!' => 'error']);
-                    $this->redirect('/');
-                }
+                } else
+                    Flash::addFlashes(['Invalid token!' => 'error']);
+                $this->redirect('/');
             }
         } else {
             // Render form to input new pwd
@@ -197,6 +205,8 @@ class Login extends Controller
                 'pwdConfirm' => '',
                 'token'     => $token
             ];
+            if (!$this->userModel->validToken($data['token']))
+                Flash::addFlashes(['Invalid token!' => 'error']);
             $this->render('login/reset', $data);
         }
     }

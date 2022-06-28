@@ -199,7 +199,7 @@ class User extends Model
      * @param token  The (sanitized) hashed token.
      * @param pwd  The (sanitized) NEW password.
      * 
-     * @return Boolena True/false;
+     * @return Boolean True/false;
      */
     public function updatePwd($token, $pwd)
     {
@@ -222,31 +222,31 @@ class User extends Model
     //  * 
     //  * @return Mixed The token itself/false;
     //  */
-    // public function generateToken($email)
-    // {
-    //     $token = new Token();
-    //     $hash = $token->getHash();
+    public function generateToken($email)
+    {
+        // $token = new Token();
+        $hash = Token::new();
 
-    //     $db = static::getDB();
-    //     $sql = 'UPDATE users
-    //             SET     token = :token
-    //             WHERE   email = :email';
-    //     $stmt = $db->prepare($sql);
-    //     $stmt->bindValue(':token', $hash, PDO::PARAM_STR);
-    //     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-    //     if ($stmt->execute())
-    //         return $hash;
-    //     else
-    //         return false;
-    // }
+        $db = static::getDB();
+        $sql = 'UPDATE users
+                SET     token = :token
+                WHERE   email = :email';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':token', $hash, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        if ($stmt->execute())
+            return $hash;
+        else
+            return false;
+    }
 
     /**
      * Use the token (contained in 'params') to confirm the users account
      * if a match is found in the db.
-     * 
+     *
      * @param params Array of values in the query string passed down 
      *               by the router.
-     * 
+     *
      * @return Bool True/false;
      */
     public function verifyToken($params)
@@ -265,6 +265,22 @@ class User extends Model
             $stmt->bindValue(':token', $token, PDO::PARAM_STR);
             return $stmt->execute();
         }
+    }
+
+    /**
+     * Check that the token (contained in 'params') exists in the db.
+     *
+     * @param params Array of values in the query string passed down 
+     *               by the router.
+     *
+     * @return Bool True/false;
+     */
+    public function validToken($token)
+    {
+        $db = static::getDB();
+        $stmt = $db->prepare("SELECT * FROM users WHERE token = ?");
+        $stmt->execute([$token]);
+        return $stmt->rowCount() > 0;
     }
 
     /**
