@@ -31,7 +31,12 @@ class Router {
                 $this->notfound();
             }
         } else {
-            require_once('../app/views/posts/index.php');
+            // Default route
+            require_once('../app/controllers/Posts.class.php');
+            $this->controller   = new Posts ();
+            $this->action       = 'index';
+            $this->params       = [];
+            call_user_func_array([$this->controller, $this->action], [$this->params]);
         }
     }
 

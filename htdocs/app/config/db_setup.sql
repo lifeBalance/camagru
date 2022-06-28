@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `pics` (
     `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `user_id` INT NOT NULL DEFAULT 1,
     `created_at` DATETIME NOT NULL,
+    `likes` INT NOT NULL DEFAULT 0,
     `filename` VARCHAR(255) NOT NULL
 );
 
@@ -91,4 +92,28 @@ VALUES
         1,
         '2009-01-10 19:38:02',
         'Foo bar'
+    );
+
+CREATE TABLE IF NOT EXISTS `likes` (
+	`id`  INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	`pic_id` INT UNSIGNED NOT NULL,
+	`user_id` INT UNSIGNED NOT NULL
+);
+
+INSERT INTO
+    `likes` (
+        `id`,
+        `pic_id`,
+        `user_id`
+    )
+VALUES
+    (
+        1,
+        1,
+        2
+    ),
+    (
+        2,
+        1,
+        1
     );

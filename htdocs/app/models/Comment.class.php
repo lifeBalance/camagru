@@ -26,4 +26,15 @@ class Comment extends Model
         $stmt->bindValue(':comment', $data['comment'], PDO::PARAM_STR);
         $stmt->execute();
     }
+
+    public function getPicComments($id)
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT * FROM comments WHERE pic_id = :pic_id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':pic_id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

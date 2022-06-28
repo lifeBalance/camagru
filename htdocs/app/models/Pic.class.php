@@ -27,4 +27,13 @@ class Pic extends Model
         $stmt->execute();
         return $db->lastInsertId();   // Return the id of the pic
     }
+
+    public function getAll()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT * FROM pics ORDER BY created_at';
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

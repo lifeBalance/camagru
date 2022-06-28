@@ -5,6 +5,7 @@ class Posts extends Controller
     public function __construct()
     {
         $this->picModel = $this->load('Pic');
+        $this->likeModel = $this->load('Like');
         $this->commentModel = $this->load('Comment');
     }
 
@@ -44,6 +45,48 @@ class Posts extends Controller
                 'Select a sticker please!' => 'warning'
             ]);
             $this->render('posts/upload', $data);
+        }
+    }
+
+    public function camera()
+    {
+        $data = [
+            'title' => 'pic it, boi!',
+            'scripts' => [
+                'main.js',
+                'camera.js',
+                'stickers.js',
+                'dragQueen.js',
+            ],
+        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_POST['img']) {
+                // Generate unique filename
+                $name = uniqid();
+
+                // Write decoded content to a file with unique name and '.png' extension
+                file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
+
+                // Merge the user's image with the stickers
+                $this->mergeImgs(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
+
+                // Pic intel
+                $data = [
+                    'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'filename'      => $name,
+                ];
+                $this->write_post_data($data);
+                // error_log(print_r($data));
+
+                Flash::addFlashes([
+                    'pic uploaded!' => 'success'
+                ]);
+            }
+        } else {
+            Flash::addFlashes([
+                'Select a sticker please!' => 'warning'
+            ]);
+            $this->render('posts/camera', $data);
         }
     }
 
@@ -102,48 +145,6 @@ class Posts extends Controller
         imagedestroy($canvas);
     }
 
-    public function camera()
-    {
-        $data = [
-            'title' => 'pic it, boi!',
-            'scripts' => [
-                'main.js',
-                'camera.js',
-                'stickers.js',
-                'dragQueen.js',
-            ],
-        ];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($_POST['img']) {
-                // Generate unique filename
-                $name = uniqid();
-
-                // Write decoded content to a file with unique name and '.png' extension
-                file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
-
-                // Merge the user's image with the stickers
-                $this->mergeImgs(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
-
-                // Pic intel
-                $data = [
-                    'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                    'filename'      => $name,
-                ];
-                $this->write_post_data($data);
-                // error_log(print_r($data));
-
-                Flash::addFlashes([
-                    'pic uploaded!' => 'success'
-                ]);
-            }
-        } else {
-            Flash::addFlashes([
-                'Select a sticker please!' => 'warning'
-            ]);
-            $this->render('posts/camera', $data);
-        }
-    }
-
     private function write_post_data($data)
     {
         // Add more pic intel
@@ -160,4 +161,44 @@ class Posts extends Controller
         $mime_type = image_type_to_mime_type(exif_imagetype($img));
         return substr($mime_type, strpos($mime_type, "/") + 1);
     }
+
+    public function index()
+    {
+        // Get all pics
+        $allPics = $this->picModel->getAll();
+        $data = [];
+        $data['posts'] = [];
+        // Iterate over all pics
+        foreach($allPics as $pic) {
+            // Get all comments for each pic_id
+            $comments = $this->commentModel->getPicComments($pic['id']);
+            // Transform filenames into urls
+            $url = URLROOT . "/uploads/{$pic['filename']}.png";
+            // Get number of likes for each pic_id
+            $likes = $this->likeModel->getPicLikes($pic['id']);
+            // Get if a pic has been liked by the logged in user
+            if (isset($_SESSION['user_id']))
+                $liked = $this->likeModel->getPicLiked($_SESSION['user_id'], $pic['id']);
+            else
+                $liked = 0;
+            // echo '<pre>';
+            // var_dump($comments);
+            // echo '</pre>';
+            // die();
+            $tmp = [
+                'pic_id'        => $pic['id'],
+                'user_id'       => $pic['user_id'],
+                'created_at'    => $pic['created_at'],
+                'filename'      => $pic['filename'],
+                'url'           => $url,
+                'comments'      => $comments,
+                'likes'         => $likes,  // used to render number of likes
+                'liked'         => $liked,  // used to render the heart filled
+            ];
+            array_push($data['posts'], $tmp);
+        }
+        $this->render('posts/index', $data);
+    }
+    // Add function to like a post
+    // Add function to edit a post (comment mb?)
 }
