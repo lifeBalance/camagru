@@ -9,7 +9,7 @@
         <canvas id="canvas"></canvas>
       </div>
 
-      <form action="<?php echo URLROOT . '/pics/upload'; ?>" id="form">
+      <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
         <input type="file" name="dickpic" id="fileInput">
         <br>
         <input type="submit" name="upload" value="Upload" id="submit" hidden>

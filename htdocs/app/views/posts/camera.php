@@ -13,7 +13,7 @@
             <button id="snapBtn">Pic it!</button>
           </div>
 
-          <form id="form" action="<?php echo URLROOT . '/pics/camera'; ?>" hidden>
+          <form id="form" action="<?php echo URLROOT . '/posts/camera'; ?>" hidden>
             <label for="comment">Your comment:</label>
             <textarea id="comment" placeholder="Write soming about your image, dawg!"></textarea>
             <div>

@@ -31,7 +31,7 @@ class Router {
                 $this->notfound();
             }
         } else {
-            require_once('../app/views/pics/index.php');
+            require_once('../app/views/posts/index.php');
         }
     }
 

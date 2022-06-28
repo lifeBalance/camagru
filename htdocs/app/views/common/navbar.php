@@ -3,10 +3,10 @@
     <ul>
     <?php if (isset($_SESSION['username'])) : ?>
       <li>
-        <p><?php echo '<a href="'. URLROOT .'/pics/upload">'; ?>Upload pic</a></p>
+        <p><?php echo '<a href="'. URLROOT .'/posts/upload">'; ?>Upload pic</a></p>
       </li>
       <li>
-        <p><?php echo '<a href="'. URLROOT .'/pics/camera">'; ?>Take a snapshot</a></p>
+        <p><?php echo '<a href="'. URLROOT .'/posts/camera">'; ?>Take a snapshot</a></p>
       </li>
       <li>
         <p><?php echo 'Welcome <a href="'. URLROOT .'/users/settings">' . $_SESSION['username'] . '!</a> | <a href="' . URLROOT . '/login/out">Log out</a>'; ?></p>

@@ -1,6 +1,6 @@
 <?php
 
-class Pics extends Controller
+class Posts extends Controller
 {
     public function __construct()
     {
@@ -37,7 +37,7 @@ class Pics extends Controller
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'
             ]);
-            $this->render('pics/upload', $data);
+            $this->render('posts/upload', $data);
         }
     }
 
@@ -140,7 +140,7 @@ class Pics extends Controller
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'
             ]);
-            $this->render('pics/camera', $data);
+            $this->render('posts/camera', $data);
         }
     }
 
