@@ -10,9 +10,13 @@
       </div>
 
       <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
-        <input type="file" name="dickpic" id="fileInput">
-        <br>
-        <input type="submit" name="upload" value="Upload" id="submit" hidden>
+        <label for="fileInput">Select an image: </label>
+        <input type="file" id="fileInput">
+        <div id="controls" hidden>
+          <label for="comment">Your comment:</label>
+          <textarea id="comment" placeholder="Write soming about your image, dawg!"></textarea>
+          <input type="submit" name="upload" value="Upload" id="submit">
+        </div><!-- controls -->
       </form>
     </div>
     

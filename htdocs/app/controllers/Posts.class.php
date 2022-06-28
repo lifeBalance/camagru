@@ -28,6 +28,12 @@ class Posts extends Controller
 
                 // Merge the user's image with the stickers
                 $this->mergeImgs(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
+                // Pic intel
+                $data = [
+                    'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'filename'      => $name,
+                ];
+                $this->write_post_data($data);
 
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
@@ -120,17 +126,11 @@ class Posts extends Controller
 
                 // Pic intel
                 $data = [
-                    'user_id'       => $_SESSION['user_id'],
-                    'comment'       => $_POST['comment'], // Gotta SANITIZE THIS BRUH!!!
+                    'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                     'filename'      => $name,
-                    // The MySQL DATETIME format
-                    'created_at'    => date("Y-m-d H:i:s")
                 ];
-                error_log(print_r($data));
-                // Write intel to 'pics' table and push the 'pic_id' to the 'data' array
-                $data['pic_id'] = $this->picModel->new($data);
-                // Write intel to 'comments' table
-                $this->commentModel->new($data);
+                $this->write_post_data($data);
+                // error_log(print_r($data));
 
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
@@ -142,6 +142,17 @@ class Posts extends Controller
             ]);
             $this->render('posts/camera', $data);
         }
+    }
+
+    private function write_post_data($data)
+    {
+        // Add more pic intel
+        $data['user_id']    = $_SESSION['user_id'];
+        $data['created_at'] = date("Y-m-d H:i:s");
+        // Write intel to 'pics' table and push the 'pic_id' to the 'data' array
+        $data['pic_id'] = $this->picModel->new($data);
+        // Write intel to 'comments' table
+        $this->commentModel->new($data);
     }
 
     public function get_extension($img)

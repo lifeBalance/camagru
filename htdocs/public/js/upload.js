@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const fileInput   = document.getElementById('fileInput');
   const canvas      = document.getElementById('canvas');
   const context     = canvas.getContext('2d');
-  const submit      = document.getElementById('submit');
+  const controls    = document.getElementById('controls');
   const form        = document.getElementById('form');
   let   reader        = new FileReader();
   let   formData;
@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
           canvas.height = img.height;
           context.drawImage(img,0,0); 
           // context.drawImage(img, 0, 0, img.width, img.height);
-          submit.hidden = false;
+          controls.hidden = false;
           previewDiv.hidden = false;
         });
         img.onerror = function () {
-          submit.hidden = true;
+          controls.hidden = true;
           window.alert("That's not a picture my man!");
         }
       }
@@ -46,6 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       stickers += ']';
       formData.append('stickers', stickers);
+    }
+
+    // Check that the user wrote some comment
+    if (comment.value == '') {
+      window.alert('Gotta write some comment, son!');
+      return ;
+    } else {
+      formData.append('comment', comment.value);
     }
 
     // Extract the URL from the value of 'action' in the form
