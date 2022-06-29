@@ -4,7 +4,7 @@
 
 <?php foreach($posts as $post) {
     echo '<div style="border: 2px solid red">' . "\n";
-    echo 'pic id="' . $post['pic_id'] . '"<br>';
+    echo 'pic id="pic' . $post['pic_id'] . '"<br>';
     echo $post['url'] . '<br>';
     echo 'Liked by you? ';
     if ($post['liked'])

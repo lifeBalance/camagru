@@ -200,5 +200,15 @@ class Posts extends Controller
         $this->render('posts/index', $data);
     }
     // Add function to like a post
+    public function like()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like']))
+        {
+            $user_id = $_SESSION['user_id'];
+            $pic_id = $_POST['like'];
+            $this->likeModel->new($user_id, $pic_id);
+            // Send mail if user has push notif. enabled
+        }
+    }
     // Add function to edit a post (comment mb?)
 }
