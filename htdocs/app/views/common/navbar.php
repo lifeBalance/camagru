@@ -15,7 +15,8 @@
     <div class="navbar-menu">
       <?php if (isset($_SESSION['username'])) : ?>
         <div class="navbar-start">
-          <div class="navbar-item has-dropdown is-hoverable">
+          <!-- Show dropdown only when burger icon is off -->
+          <div class="navbar-item has-dropdown is-hoverable is-hidden-mobile is-hidden-tablet-only">
             <a class="navbar-link">
               Pic it boi!
             </a>
@@ -29,16 +30,33 @@
               </a>
             </div>
           </div><!-- dropdown -->
+          <!-- Show words 'Webcam' and 'Upload' when burger icon is on -->
+          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/camera'; ?>" >Webcam</a>
+          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/upload'; ?>" >Upload</a>
         </div><!-- navbar start -->
 
         <div class="navbar-end">
-          <div class="navbar-item">
+          <!-- Show profile pic only when burger icon is off -->
+          <a class="navbar-item is-hidden-mobile is-hidden-tablet-only" href="<?php echo URLROOT . '/users/settings' ?>"><span class="mr-3"><?php echo $_SESSION['username'] ?></span>
+            <figure class="image">
+              <img class="is-rounded" src="https://icons.iconarchive.com/icons/fasticon/twitter-square/256/twitter-square-icon.png">
+            </figure>
+          </a>
+          <!-- Show word 'Settings' when burger icon is on -->
+          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/users/settings' ?>">User Settings</a>
+
+          <div class="navbar-item is-hidden-mobile is-hidden-tablet-only">
+            <!-- Show 'Log out' button only when burger icon is off -->
             <div class="buttons">
               <a class="button is-light" href="<?php echo URLROOT . '/login/out'; ?>">
                 Log out
               </a>
             </div>
           </div>
+          <!-- Show word 'Settings' when burger icon is on -->
+          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/login/out'; ?>">
+            Log out
+          </a>
         </div><!-- navbar end -->
       <?php else : ?><!-- ELSE -->
         <div class="navbar-end">
@@ -50,9 +68,12 @@
                   Log in
                 </a>
               <?php endif ?>
-              <a class="button is-link"  href="<?php echo URLROOT . '/users/register' ?>">
-                Sign Up
-              </a>
+              <!-- Show 'Sign Up' button only if you're not at the 'Sign Up' page, duh! -->
+              <?php if ($_SERVER['REQUEST_URI'] != '/users/register') : ?>
+                <a class="button is-link"  href="<?php echo URLROOT . '/users/register' ?>">
+                  Sign Up
+                </a>
+              <?php endif ?>
             </div>
           </div>
         </div><!-- navbar end -->

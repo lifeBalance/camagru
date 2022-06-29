@@ -19,13 +19,14 @@
         <input id="pwdConfirm" type="password" name="pwdConfirm" value="<?php echo $pwdConfirm; ?>" placeholder="Confirm Password" class="control input">
     </div>
 
-    <div class="field">
-        <label for="pushNotif" class="checkbox">Email Notifications </label>
-        <input id="pushNotif" type="checkbox"  
-        <?php if(isset($pushNotif)) echo $pushNotif; ?> name="pushNotif">
-    </div>
-
-    <div class="field">
-        <input type="submit" value="Submit" class="control button is-primary">
+    <div class="columns is-vcentered">
+        <div class="control column is-half">
+            <input type="submit" value="Submit" class="control button is-primary">
+        </div>
+        <div class="control column is-half">
+            <label for="pushNotif" class="checkbox">Email Notifications </label>
+            <input id="pushNotif" type="checkbox"  
+            <?php if(isset($pushNotif)) echo $pushNotif; ?> name="pushNotif">
+        </div>
     </div>
 </form>

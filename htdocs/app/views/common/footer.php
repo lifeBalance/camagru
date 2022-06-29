@@ -1,7 +1,7 @@
-  <footer class="footer is-primary">
+  <footer class="footer has-background-primary-dark">
     <div class="content has-text-centered">
-      <p>
-        <strong>Camagru</strong> by <a href="https://github.com/lifeBalance">rodrodri</a>. &copy;<?php echo date('Y'); ?>
+      <p class="has-text-light">
+        <strong class="has-text-light">Camagru</strong> by <a href="https://github.com/lifeBalance" ><strong class="has-text-link-light">rodrodri</strong></a>. &copy;<?php echo date('Y'); ?>
       </p>
     </div>
   </footer>

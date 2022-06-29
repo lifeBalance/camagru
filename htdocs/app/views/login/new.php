@@ -20,7 +20,7 @@
             <div class="control column is-half">
                 <input type="submit" value="Login" class="control button is-primary">
             </div>
-                
+
             <div class="control column is-half">
                 <a href="<?php echo URLROOT; ?>/login/forgot" >Forgot your password?</a>
             </div>
