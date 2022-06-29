@@ -60,6 +60,9 @@ class Login extends Controller
             $formData = [
                 'email'     => '',
                 'password'  => '',
+                'scripts' => [
+                    'main.js',
+                ],
             ];
             $this->render('login/new', $formData);
         }

@@ -166,8 +166,12 @@ class Posts extends Controller
     {
         // Get all pics
         $allPics = $this->picModel->getAll();
-        $data = [];
-        $data['posts'] = [];
+        $data = [
+            'scripts' => [
+                'main.js',
+            ],
+            'posts' => [],
+        ];
         // Iterate over all pics
         foreach($allPics as $pic) {
             // Get all comments for each pic_id

@@ -1,20 +1,55 @@
-  <nav>
-    <h1><a href="<?php echo URLROOT;?>"><?php echo SITENAME; ?></a></h1>
-    <ul>
-    <?php if (isset($_SESSION['username'])) : ?>
-      <li>
-        <p><?php echo '<a href="'. URLROOT .'/posts/upload">'; ?>Upload pic</a></p>
-      </li>
-      <li>
-        <p><?php echo '<a href="'. URLROOT .'/posts/camera">'; ?>Take a snapshot</a></p>
-      </li>
-      <li>
-        <p><?php echo 'Welcome <a href="'. URLROOT .'/users/settings">' . $_SESSION['username'] . '!</a> | <a href="' . URLROOT . '/login/out">Log out</a>'; ?></p>
-      </li>
-    <?php else : ?>
-      <li>
-        <a href="<?php echo URLROOT; ?>/login/new">Login</a>
-      </li>
-    <?php endif; ?>
-    </ul>
+  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="<?php echo URLROOT; ?>">
+        <img src="<?php echo URLROOT . '/assets/logo.png'; ?>" alt="Camagru" height="60"><?php echo SITENAME; ?>
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div><!-- navbar-brand -->
+
+    <div class="navbar-menu">
+      <?php if (isset($_SESSION['username'])) : ?>
+        <div class="navbar-start">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Pic it boi!
+            </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="<?php echo URLROOT . '/posts/camera'; ?>">
+                Webcam
+              </a>
+              <a class="navbar-item" href="<?php echo URLROOT . '/posts/upload'; ?>">
+                Upload
+              </a>
+            </div>
+          </div><!-- dropdown -->
+        </div><!-- navbar start -->
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-light" href="<?php echo URLROOT . '/login/out'; ?>">
+                Log out
+              </a>
+            </div>
+          </div>
+        </div><!-- navbar end -->
+      <?php else : ?><!-- ELSE -->
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-primary"  href="<?php echo URLROOT . '/login/new' ?>">
+                Log in
+              </a>
+            </div>
+          </div>
+        </div><!-- navbar end -->
+      <?php endif; ?>
+    </div> <!-- navbar menu -->
   </nav>
+
