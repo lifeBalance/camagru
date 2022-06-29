@@ -11,7 +11,4 @@
 </head>
 <body>
   <?php require APPROOT . '/views/common/navbar.php'; ?>
-  <hr>
-  <!-- flash messages -->
-
 

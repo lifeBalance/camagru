@@ -1,7 +1,8 @@
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="<?php echo URLROOT; ?>">
-        <img src="<?php echo URLROOT . '/assets/logo.png'; ?>" alt="Camagru" height="60"><?php echo SITENAME; ?>
+        <img src="<?php echo URLROOT . '/assets/logo.png'; ?>" alt="Camagru" height="60" class="mt-2 mr-2 ml-2">
+        <h2 class="title is-2 has-text-light"><?php echo SITENAME; ?></h2>
       </a>
 
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
@@ -43,8 +44,13 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-primary"  href="<?php echo URLROOT . '/login/new' ?>">
-                Log in
+              <?php if ($_SERVER['REQUEST_URI'] != '/login/new') : ?>
+                <a class="button is-light"  href="<?php echo URLROOT . '/login/new' ?>">
+                  Log in
+                </a>
+              <?php endif ?>
+              <a class="button is-link"  href="<?php echo URLROOT . '/users/register' ?>">
+                Sign Up
               </a>
             </div>
           </div>

@@ -41,7 +41,8 @@ class Login extends Controller
                     $this->redirect('/');
                 // Authenticated but email NOT CONFIRMED (can't let you in dawg)
                 } else {
-                    Flash::addFlashes(['please confirm your account' => 'warning']);
+                    $link = '<a href="' . URLROOT . '/users/confirm">Click Here!</a>';
+                    Flash::addFlashes(["No confirmation email? $link" => 'warning']);
                     $this->redirect('/');
                 }
             // Authentication failure
@@ -51,6 +52,9 @@ class Login extends Controller
                     'title'     => 'login',
                     'email'     => $sanitizedForm['email'],
                     'password'  => '',
+                    'scripts' => [
+                        'main.js',
+                    ],
                 ];
                 $this->render('login/new', $data);
             }
@@ -98,7 +102,7 @@ class Login extends Controller
      */
     public function flashlogout()
     {
-        Flash::addFlashes(['see ya later dawg!' => 'success']);
+        Flash::addFlashes(['See ya later dawg!' => 'success']);
         $this->redirect('/');
     }
 
@@ -148,10 +152,10 @@ class Login extends Controller
                 if (Mail::send($data))
                     Flash::addFlashes(['Reset password email is on its way!' => 'success']);
                 else
-                    Flash::addFlashes(["Don't hold your breath waiting for that email!" => 'error']);
+                    Flash::addFlashes(["Don't hold your breath waiting for that email!" => 'danger']);
                 $this->redirect('/');
             } else {
-                Flash::addFlashes(['Wrong user!' => 'error']);
+                Flash::addFlashes(['Wrong user!' => 'danger']);
                 $this->redirect('/login/forgot');
             }
         } else {
@@ -198,7 +202,7 @@ class Login extends Controller
                     Flash::addFlashes(['Password has been changed!' => 'success']);
                     Flash::addFlashes(['You can now log in!' => 'success']);
                 } else
-                    Flash::addFlashes(['Invalid token!' => 'error']);
+                    Flash::addFlashes(['Invalid token!' => 'danger']);
                 $this->redirect('/');
             }
         } else {
@@ -209,7 +213,7 @@ class Login extends Controller
                 'token'     => $token
             ];
             if (!$this->userModel->validToken($data['token']))
-                Flash::addFlashes(['Invalid token!' => 'error']);
+                Flash::addFlashes(['Invalid token!' => 'danger']);
             $this->render('login/reset', $data);
         }
     }

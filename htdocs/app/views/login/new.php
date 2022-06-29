@@ -1,37 +1,35 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
-<h2>Login</h2>
+<section class="section">
+    <?php require APPROOT . '/views/common/flashes.php'; ?>
 
-<form action="<?php echo URLROOT; ?>/login/new" method="post">
-    <div>
-        <label for="email"><sup>*</sup>Email: </label>
-        <input type="email" name="email" value="<?php echo $email; ?>">
+    <h2 class="title is-2 columns is-centered">Login</h2>
+    <div class="columns is-centered">
+    <form action="<?php echo URLROOT; ?>/login/new" method="post" class="column is-half">
+        <div class="field">
+            <label for="email" class="label"><sup>*</sup>Email: </label>
+            <input type="email" name="email" value="<?php echo $email; ?>" class="control input">
+        </div>
+
+        <div class="field">
+            <label for="password" class="label"><sup>*</sup>Password: </label>
+            <input type="password" name="password" value="<?php echo $password; ?>" class="control input">
+        </div>
+
+        <div class="columns is-vcentered">
+            <div class="control column is-half">
+                <input type="submit" value="Login" class="control button is-primary">
+            </div>
+                
+            <div class="control column is-half">
+                <a href="<?php echo URLROOT; ?>/login/forgot" >Forgot your password?</a>
+            </div>
+        </div>
+        <!-- <div class="column">
+            <a href="<?php echo URLROOT; ?>/users/confirm">No confirmation email?</a>
+        </div> -->
+    </form>
     </div>
-
-    <div>
-        <label for="password"><sup>*</sup>Password: </label>
-        <input type="password" name="password" value="<?php echo $password; ?>">
-    </div>
-
-    <div>
-        <div>
-            <input type="submit" value="Login">
-        </div>
-        
-        <div>
-            <p>Not registered dawg?
-            <a href="<?php echo URLROOT; ?>/users/register">Create account!</a></p>
-        </div>
-
-        <div>
-            <p>Forgot your password?
-            <a href="<?php echo URLROOT; ?>/login/forgot">Request a new one!</a></p>
-        </div>
-        <div>
-            <p>No confirmation email?
-            <a href="<?php echo URLROOT; ?>/users/confirm">Request a new one!</a></p>
-        </div>
-    </div>
-</form>
+</section>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>

@@ -1,4 +1,4 @@
-  <footer class="footer">
+  <footer class="footer is-primary">
     <div class="content has-text-centered">
       <p>
         <strong>Camagru</strong> by <a href="https://github.com/lifeBalance">rodrodri</a>. &copy;<?php echo date('Y'); ?>
