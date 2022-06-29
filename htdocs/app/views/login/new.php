@@ -25,9 +25,6 @@
                 <a href="<?php echo URLROOT; ?>/login/forgot" >Forgot your password?</a>
             </div>
         </div>
-        <!-- <div class="column">
-            <a href="<?php echo URLROOT; ?>/users/confirm">No confirmation email?</a>
-        </div> -->
     </form>
     </div>
 </section>

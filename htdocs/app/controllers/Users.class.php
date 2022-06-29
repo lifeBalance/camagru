@@ -50,7 +50,7 @@ class Users extends Controller
                         ]);
                     else
                         Flash::addFlashes([
-                            "Don't hold your breath waiting for the email, dawg!" => 'error'
+                            "Don't hold your breath waiting for the email, dawg!" => 'danger'
                         ]);
                 }
                 $this->redirect('/');
@@ -88,7 +88,7 @@ class Users extends Controller
                 Flash::addFlashes(['Account activated. You can log in!' => 'success']);
                 $this->redirect('/login/new');
             } else {
-                Flash::addFlashes(['That token is a bullshit' => 'error']);
+                Flash::addFlashes(['That token is a bullshit' => 'danger']);
                 $this->redirect('/');
             }
         }
@@ -108,61 +108,54 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
-            $formData = $this->sanitize($_POST);
-            array_merge($formData, ['action' => 'register']);
-            $user = $this->userModel->new($formData);
+            $data = [
+                'action' => 'register',
+                'email'         => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+                'username'      => filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pushNotif'     => isset($_POST['pushNotif']) ? 'on' : '',
+                'scripts' => [
+                    'main.js',
+                ],
+            ];
+            $user = $this->userModel->new($data);
             if ($user === false) {
                 Flash::addFlashes($this->userModel->errors);
                 // Load FAULTY form
-                $this->render('users/register', $formData);
+                $this->render('users/register', $data);
             } else {
                 // SEND CONFIRMATION EMAIL
-                $data = [
+                $mail_data = [
                     'address'       => $user->email,
                     'subject'       => 'Activate your new account',
                     'controller'    => 'users',
                     'action'        => 'activate',
                     'token'         => $this->userModel->generateToken($user->email)
                 ];
-                if (Mail::send($data)) {
+                if (Mail::send($mail_data)) {
                     Flash::addFlashes(['Activation mail is on the way!' => 'success']);
                 } else {
-                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'error']);
+                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'danger']);
                 }
                 $this->redirect('/');
             }
         // Not a POST request (user just reloaded page)
         } else {
             // Load EMPTY form 
-            $formData = [
+            $data = [
                 'action'         => 'register',
                 'email'         => '',
                 'username'      => '',
                 'password'      => '',
                 'pwdConfirm'    => '',
                 'pushNotif'     => 'on',
+                'scripts' => [
+                    'main.js',
+                ],
             ];
-            $this->render('users/register', $formData);
+            $this->render('users/register', $data);
         }
-    }
-
-    /**
-     * Sanitize all the fields in the new account form.
-     * 
-     * @param formData  The $POST request
-     * 
-     * @return Array with the sanitized form fields.
-     */
-    public function sanitize($formData)
-    {
-        $sanitizedForm = [
-            'email'         => filter_var($formData['email'], FILTER_SANITIZE_EMAIL),
-            'username'      => filter_var($formData['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'password'      => filter_var($formData['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'pwdConfirm'    => filter_var($formData['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'pushNotif'     => isset($formData['pushNotif']) ? 'on' : '',
-        ];
-        return $sanitizedForm;
     }
 
     /**
@@ -193,6 +186,7 @@ class Users extends Controller
         // If it's logged in: GET request
         if ($this->isLoggedIn() && $_SERVER['REQUEST_METHOD'] == 'GET') {
             $user = $this->userModel->findById($_SESSION['user_id']);
+            // Pre-fill the form with intel from the DB.
             $formData = [
                 'action'         => 'settings',
                 'email'         => $user->email,
@@ -206,18 +200,27 @@ class Users extends Controller
         // If it's logged in: POST request
         else if ($this->isLoggedIn() && $_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
-            $formData = $this->sanitize($_POST);
-            array_merge($formData, ['action' => 'settings']); // Form view's action
+            $data = [
+                'action' => 'register',
+                'email'         => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+                'username'      => filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pushNotif'     => isset($_POST['pushNotif']) ? 'on' : '',
+                'scripts' => [
+                    'main.js',
+                ],
+            ];
             $oldSettings = $this->userModel->findById($_SESSION['user_id']);
 
-            if ($this->userModel->edit($formData, $_SESSION['user_id']) === false) {
+            if ($this->userModel->edit($data, $_SESSION['user_id']) === false) {
                 // Load FAULTY form
                 Flash::addFlashes($this->userModel->errors);
-                $this->render('users/settings', $formData);
+                $this->render('users/settings', $data);
             } else {
                 $newSettings = $this->userModel->findById($_SESSION['user_id']);
                 Flash::addFlashes(['Your account settings have been updated' => 'warning']);
-                $_SESSION['username'] = $newSettings->username; // For 'Welcome X' msg
+                $_SESSION['username'] = $newSettings->username; // So we don't lose 'Welcome X' msg
 
                 // Log out the user is the email setting was changed!
                 if ($oldSettings->email != $newSettings->email) {

@@ -44,6 +44,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
+              <!-- Show 'Log in' button only if you're not at the 'Log in' page, duh! -->
               <?php if ($_SERVER['REQUEST_URI'] != '/login/new') : ?>
                 <a class="button is-light"  href="<?php echo URLROOT . '/login/new' ?>">
                   Log in
