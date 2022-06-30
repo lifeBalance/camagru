@@ -4,6 +4,7 @@ class Posts extends Controller
 {
     public function __construct()
     {
+        $this->usrModel = $this->load('User');
         $this->picModel = $this->load('Pic');
         $this->likeModel = $this->load('Like');
         $this->commentModel = $this->load('Comment');
@@ -76,7 +77,6 @@ class Posts extends Controller
                     'filename'      => $name,
                 ];
                 $this->write_post_data($data);
-                // error_log(print_r($data));
 
                 Flash::addFlashes([
                     'pic uploaded!' => 'success'
@@ -174,6 +174,12 @@ class Posts extends Controller
         ];
         // Iterate over all pics
         foreach($allPics as $pic) {
+            // Get author of pic
+            $author = $this->usrModel->findById($pic['user_id']);
+            // echo '<pre>';
+            // var_dump($author);
+            // echo '</pre>';
+            // die();
             // Get all comments for each pic_id
             $comments = $this->commentModel->getPicComments($pic['id']);
             // Transform filenames into urls
@@ -185,13 +191,10 @@ class Posts extends Controller
                 $liked = $this->likeModel->getPicLiked($_SESSION['user_id'], $pic['id']);
             else
                 $liked = 0;
-            // echo '<pre>';
-            // var_dump($comments);
-            // echo '</pre>';
-            // die();
             $tmp = [
                 'pic_id'        => $pic['id'],
                 'user_id'       => $pic['user_id'],
+                'author_nick'   => $author->username,
                 'created_at'    => $pic['created_at'],
                 'filename'      => $pic['filename'],
                 'url'           => $url,

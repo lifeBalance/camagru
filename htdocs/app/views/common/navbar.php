@@ -1,4 +1,4 @@
-  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="<?php echo URLROOT; ?>">
         <img src="<?php echo URLROOT . '/assets/logo.png'; ?>" alt="Camagru" height="60" class="mt-2 mr-2 ml-2">

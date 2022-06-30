@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-navbar-fixed-top">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
     <link rel="icon" type="image/x-icon" href="<?php echo URLROOT; ?>/assets/favicon/camera-512x512.png">
-    <title><?php echo SITENAME; ?></title>
+    <title><?php echo ucfirst(SITENAME) ?></title>
 </head>
 <body>
   <?php require APPROOT . '/views/common/navbar.php'; ?>
