@@ -179,8 +179,22 @@ class Posts extends Controller
             $author = $this->usrModel->findById($pic['user_id']);
             // Get all comments for each pic_id
             $comments = $this->commentModel->getPicComments($pic['id']);
+            $allComments = [];  // Data massaging
+            foreach ($comments as $comment) {
+                $author = $this->usrModel->findById($pic['user_id']);
+                $tmp = [
+                    // Find username of the author of the comment
+                    'author' => $author->username,
+                    'date'    => $comment['created_at'],
+                    // Find url of her profile pic
+                    // 'url_prof_pic'  => $author->profile_pic,
+                    // Put the comment itself in a 'content' key
+                    'content'   => $comment['comment']
+                ];
+                array_push($allComments, $tmp);
+            }
             // echo '<pre>';
-            // var_dump($comments);
+            // var_dump($allComments);
             // echo '</pre>';
             // die();
             // Transform filenames into urls
@@ -200,7 +214,7 @@ class Posts extends Controller
                 'filename'      => $pic['filename'],
                 'url_pic'       => $url_pic,
                 'url_prof_pic'  => 'https://icons.iconarchive.com/icons/fasticon/twitter-square/256/twitter-square-icon.png',
-                'comments'      => $comments,
+                'comments'      => $allComments,
                 'likes'         => $likes,  // used to render number of likes
                 'liked'         => $liked,  // used to render the heart filled
             ];

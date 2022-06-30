@@ -1,6 +1,6 @@
 <hr>
 <bold class="has-text-weight-bold">
-    <?php echo $comment['user_id'] ?>
-</bold> on <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+    <?php echo $comment['author'] ?>
+</bold><br><?php echo Time::ago($comment['date']) ?>
 <br>
-<?php echo $comment['comment'] ?>
+<?php echo $comment['content'] ?>

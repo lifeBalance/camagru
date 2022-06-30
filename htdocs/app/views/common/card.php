@@ -34,9 +34,9 @@
                 <!-- Author's comment -->
                 <bold class="has-text-weight-bold">
                     <?php echo $post['author_nick'] ?>
-                </bold> on <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </bold> <?php echo Time::ago($post['comments'][0]['date']) ?>
                 <br>
-                <?php echo $post['comments'][0]['comment'] ?>
+                <?php echo $post['comments'][0]['content'] ?>
                 <!-- Hide 'Show comments' when they're being shown. -->
                 <div class="has-text-centered">
                     <hr>
