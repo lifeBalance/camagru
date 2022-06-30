@@ -169,6 +169,7 @@ class Posts extends Controller
         $data = [
             'scripts' => [
                 'main.js',
+                'comments.js',
             ],
             'posts' => [],
         ];
@@ -176,14 +177,14 @@ class Posts extends Controller
         foreach($allPics as $pic) {
             // Get author of pic
             $author = $this->usrModel->findById($pic['user_id']);
-            // echo '<pre>';
-            // var_dump($author);
-            // echo '</pre>';
-            // die();
             // Get all comments for each pic_id
             $comments = $this->commentModel->getPicComments($pic['id']);
+            // echo '<pre>';
+            // var_dump($comments);
+            // echo '</pre>';
+            // die();
             // Transform filenames into urls
-            $url = URLROOT . "/uploads/{$pic['filename']}.png";
+            $url_pic = URLROOT . "/uploads/{$pic['filename']}.png";
             // Get number of likes for each pic_id
             $likes = $this->likeModel->getPicLikes($pic['id']);
             // Get if a pic has been liked by the logged in user
@@ -197,7 +198,8 @@ class Posts extends Controller
                 'author_nick'   => $author->username,
                 'created_at'    => $pic['created_at'],
                 'filename'      => $pic['filename'],
-                'url'           => $url,
+                'url_pic'       => $url_pic,
+                'url_prof_pic'  => 'https://icons.iconarchive.com/icons/fasticon/twitter-square/256/twitter-square-icon.png',
                 'comments'      => $comments,
                 'likes'         => $likes,  // used to render number of likes
                 'liked'         => $liked,  // used to render the heart filled
