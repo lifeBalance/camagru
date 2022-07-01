@@ -25,24 +25,28 @@
         </div>
         <div class="card-content comments-section">
             <?php
-                foreach($post['comments'] as $k => $comment) {
-                    if ($k == 0) {
-                        echo '<div class="author-comment">';
-                            require APPROOT . '/views/common/comment.php';
-                        echo '</div>';
-                        echo '<div class="has-text-centered">';
-                        echo '  <a  class="show-comments">Show comments</a>';
-                        echo '</div>';
-                    } else {
-                        echo '<div class="other-comments" >';// hide them at the beginning!
-                            require APPROOT . '/views/common/comment.php';
-                        echo '</div>';
-                    }
-                }
+            $comment = $post['comments'][0];
+            echo '<div class="author-comment">';
+                require APPROOT . '/views/common/comment.php';
+            echo '</div>';
+            // Link to show the comments
+            echo '<div class="has-text-centered">';
+            echo '  <a  class="show-comments">Show comments</a>';
+            echo '</div>';
+
+            echo '<div class="other-comments" hidden>';// hide them at the beginning!
+            foreach($post['comments'] as $k => $comment) {
+                if ($k == 0)
+                    continue ;
+                else
+                    require APPROOT . '/views/common/comment.php';
+            }
+            // <!-- Link to show the comments -->
+            echo '  <div class="has-text-centered">';
+            echo '    <a class="hide-comments" >Hide comments</a>';
+            echo '  </div>';
+            echo '</div>';
             ?>
-            <div class="has-text-centered">
-                <a class="hide-comments" >Hide comments</a>
-            </div>
         </div><!-- comments-section -->
     </div><!-- card-content -->
 </div>
