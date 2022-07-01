@@ -6,57 +6,43 @@
     </div>
 
     <div class="card-content">
-        <!-- Like/Comment section -->
         <div class="media mb-1">
+            <!-- Like icon section -->
             <span class="media-left">
-                <i class="fa-solid fa-heart has-text-danger"></i>
-                <?php echo $post['likes'] ?> likes
+                <?php
+                    if ($post['liked'])
+                        echo '<i class="fa-solid fa-heart has-text-danger"></i>';
+                    else
+                        echo '<i class="fa-solid fa-heart"></i>';
+                    echo ' ' . $post['likes'] . ' likes';
+                ?>
             </span>
+            <!-- Comment icon section -->
             <span class="media-right">
                 <i class="fa-solid fa-comment"></i>
                 Comment
             </span>
         </div>
-        <div class="media mb-1">
-            <div class="media-left">
-                <figure class="image is-48x48">
-                    <img src="<?php echo $post['url_prof_pic'] ?>" alt="Profile image">
-                </figure>
-            </div>
-            <div class="media-content">
-                <p class="title is-6">@<?php echo $post['author_nick'] ?></p>
-                <p class="subtitle is-6"><?php echo $post['comments'][0]['date'] ?></p>
-            </div>
-        </div>
-
-        <div class="content" id="author-comment">
-
-            <!-- Comment section -->
-            <div class="comments-section">
-                <!-- Author's comment -->
-                <?php echo $post['comments'][0]['content'] ?>
-                <!-- Hide 'Show comments' when they're being shown. -->
-                <div class="has-text-centered">
-                    <hr>
-                    <a  class="show-comments">Show comments</a>
-                </div>
-                <!-- All comments (hidden by default) -->
-                <div class="content all-comments" hidden>
-                    <?php
-                    if (count($post['comments']) > 0) {
-                        foreach($post['comments'] as $k => $comment) {
-                            if ($k == 0)
-                                continue;
+        <div class="card-content comments-section">
+            <?php
+                foreach($post['comments'] as $k => $comment) {
+                    if ($k == 0) {
+                        echo '<div class="author-comment">';
                             require APPROOT . '/views/common/comment.php';
-                        }
+                        echo '</div>';
+                        echo '<div class="has-text-centered">';
+                        echo '  <a  class="show-comments">Show comments</a>';
+                        echo '</div>';
+                    } else {
+                        echo '<div class="other-comments" >';// hide them at the beginning!
+                            require APPROOT . '/views/common/comment.php';
+                        echo '</div>';
                     }
-                    ?>
-                    <div class="has-text-centered">
-                        <hr>
-                        <a  class="hide-comments" >Hide comments</a>
-                    </div>
-                </div><!-- all comments -->
+                }
+            ?>
+            <div class="has-text-centered">
+                <a class="hide-comments" >Hide comments</a>
             </div>
-        </div>
-    </div>
+        </div><!-- comments-section -->
+    </div><!-- card-content -->
 </div>

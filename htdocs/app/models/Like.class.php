@@ -28,7 +28,7 @@ class Like extends Model
         return $stmt->rowCount();
     }
 
-    public function getPicLiked($user_id, $pic_id)
+    public function userLikedPic($user_id, $pic_id)
     {
         $db = static::getDB();
         $sql = 'SELECT * FROM likes

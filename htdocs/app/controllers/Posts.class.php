@@ -175,54 +175,43 @@ class Posts extends Controller
         ];
         // Iterate over all pics
         foreach($allPics as $pic) {
-            // Get author of pic
-            $post_author = $this->usrModel->findById($pic['user_id']);
             // Get all comments for each pic_id
             $comments = $this->commentModel->getPicComments($pic['id']);
-            $allComments = [];  // Data massaging
+            $allComments = [];
             foreach ($comments as $comment) {
-                $comment_author = $this->usrModel->findById($pic['user_id']);
+                $comment_author = $this->usrModel->findById($comment['user_id']);
                 $tmp = [
-                    // Find username of the author of the comment
                     'author'        => $comment_author->username,
-                    // Prettify date
                     'date'          => Time::ago($comment['created_at']),
-                    // Find url of her profile pic
-                    'url_prof_pic'  => $this->profile_pic($comment_author),
-                    // Put the comment itself in a 'content' key
+                    'profile_pic'  => $this->url_profile_pic($comment_author),
                     'content'       => $comment['comment']
                 ];
                 array_push($allComments, $tmp);
             }
-            // echo '<pre>';
-            // var_dump($allComments);
-            // echo '</pre>';
-            // die();
             // Transform filenames into urls
             $url_pic = URLROOT . "/uploads/{$pic['filename']}.png";
             // Get number of likes for each pic_id
             $likes = $this->likeModel->getPicLikes($pic['id']);
             // Get if a pic has been liked by the logged in user
             if (isset($_SESSION['user_id']))
-                $liked = $this->likeModel->getPicLiked($_SESSION['user_id'], $pic['id']);
+                $liked = $this->likeModel->userLikedPic($_SESSION['user_id'], $pic['id']);
             else
                 $liked = 0;
             $tmp = [
-                'pic_id'        => $pic['id'],
-                'user_id'       => $pic['user_id'],
-                'author_nick'   => $post_author->username,
-                'created_at'    => $pic['created_at'],
-                'filename'      => $pic['filename'],
                 'url_pic'       => $url_pic,
-                'url_prof_pic'  => $this->profile_pic($post_author),
                 'comments'      => $allComments,
-                'likes'         => $likes,  // used to render number of likes
-                'liked'         => $liked,  // used to render the heart filled
+                'likes'         => $likes,
+                'liked'         => $liked,
             ];
             array_push($data['posts'], $tmp);
         }
+        // echo '<pre>';
+        // var_dump($data['posts']);
+        // echo '</pre>';
+        // die();
         $this->render('posts/index', $data);
     }
+
     // Add function to like a post
     public function like()
     {
@@ -234,8 +223,9 @@ class Posts extends Controller
             // Send mail if user has push notif. enabled
         }
     }
+
     // Add function to edit a post (comment mb?)
-    private function profile_pic($someone)
+    private function url_profile_pic($someone)
     {
         if (empty($someone->profile_pic))
             return URLROOT . "/assets/no_profile_pic.png";

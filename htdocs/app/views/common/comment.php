@@ -1,6 +1,17 @@
+<div class="media mb-1">
+    <div class="media-left">
+        <figure class="image is-48x48">
+            <img src="<?php echo $comment['profile_pic'] ?>" alt="Profile image">
+        </figure>
+    </div>
+    <div class="media-content">
+        <p class="title is-6">@<?php echo $comment['author'] ?></p>
+        <p class="subtitle is-6"><?php echo $comment['date'] ?></p>
+    </div>
+</div>
+
+<div class="content">
+    <?php echo $comment['content'] ?>
+</div>
 <hr>
-<bold class="has-text-weight-bold">
-    <?php echo $comment['author'] ?>
-</bold><br><?php echo $comment['date'] ?>
-<br>
-<?php echo $comment['content'] ?>
+

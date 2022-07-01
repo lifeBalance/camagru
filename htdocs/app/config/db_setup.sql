@@ -86,19 +86,25 @@ VALUES
         1,
         1,
         '2009-01-10 18:38:02',
-        'First comment to first post! (by the first site member)'
+        'First comment to first post!'
     ),
     (
         1,
         2,
-        '2009-01-10 18:38:02',
-        'First comment to first post (by its author)'
+        '2009-01-10 18:40:02',
+        'Nice doggy!'
+    ),
+    (
+        1,
+        1,
+        '2009-01-10 19:45:02',
+        'thanks man :-)'
     ),
     (
         2,
-        1,
-        '2009-01-10 19:38:02',
-        'Nice doggy my man, nice doggy!'
+        2,
+        '2009-01-11 19:38:02',
+        'His name is Earl!'
     );
 
 CREATE TABLE IF NOT EXISTS `likes` (
