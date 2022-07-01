@@ -176,20 +176,21 @@ class Posts extends Controller
         // Iterate over all pics
         foreach($allPics as $pic) {
             // Get author of pic
-            $author = $this->usrModel->findById($pic['user_id']);
+            $post_author = $this->usrModel->findById($pic['user_id']);
             // Get all comments for each pic_id
             $comments = $this->commentModel->getPicComments($pic['id']);
             $allComments = [];  // Data massaging
             foreach ($comments as $comment) {
-                $author = $this->usrModel->findById($pic['user_id']);
+                $comment_author = $this->usrModel->findById($pic['user_id']);
                 $tmp = [
                     // Find username of the author of the comment
-                    'author' => $author->username,
-                    'date'    => $comment['created_at'],
+                    'author'        => $comment_author->username,
+                    // Prettify date
+                    'date'          => Time::ago($comment['created_at']),
                     // Find url of her profile pic
-                    // 'url_prof_pic'  => $author->profile_pic,
+                    'url_prof_pic'  => $this->profile_pic($comment_author),
                     // Put the comment itself in a 'content' key
-                    'content'   => $comment['comment']
+                    'content'       => $comment['comment']
                 ];
                 array_push($allComments, $tmp);
             }
@@ -209,11 +210,11 @@ class Posts extends Controller
             $tmp = [
                 'pic_id'        => $pic['id'],
                 'user_id'       => $pic['user_id'],
-                'author_nick'   => $author->username,
+                'author_nick'   => $post_author->username,
                 'created_at'    => $pic['created_at'],
                 'filename'      => $pic['filename'],
                 'url_pic'       => $url_pic,
-                'url_prof_pic'  => 'https://icons.iconarchive.com/icons/fasticon/twitter-square/256/twitter-square-icon.png',
+                'url_prof_pic'  => $this->profile_pic($post_author),
                 'comments'      => $allComments,
                 'likes'         => $likes,  // used to render number of likes
                 'liked'         => $liked,  // used to render the heart filled
@@ -234,4 +235,11 @@ class Posts extends Controller
         }
     }
     // Add function to edit a post (comment mb?)
+    private function profile_pic($someone)
+    {
+        if (empty($someone->profile_pic))
+            return URLROOT . "/assets/no_profile_pic.png";
+        else
+            return URLROOT . "/assets/$someone->profile_pic.png";
+    }
 }

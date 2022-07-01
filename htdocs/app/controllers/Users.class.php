@@ -8,6 +8,70 @@ class Users extends Controller
     {
         $this->userModel = $this->load('User');
     }
+    /**
+     * GET requests: 
+     *      - Render an empty account registration form.
+     * POST requests:
+     *      - Save valid user details in the database.
+     *      - Re-render incomplete form in case of errors.
+     *      - Send confirmation email.
+     *      - Flash informative messages according to the outcome of any
+     *      of the operations described above.
+     */
+    public function register()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize data
+            $data = [
+                'action' => 'register',
+                'email'         => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+                'username'      => filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pushNotif'     => isset($_POST['pushNotif']) ? 'on' : '',
+                // 'profile_pic'   => , // Write logic to save a user profile pic
+                'scripts' => [
+                    'main.js',
+                ],
+            ];
+            $user = $this->userModel->new($data);
+            if ($user === false) {
+                Flash::addFlashes($this->userModel->errors);
+                // Load FAULTY form
+                $this->render('users/register', $data);
+            } else {
+                // SEND CONFIRMATION EMAIL
+                $mail_data = [
+                    'address'       => $user->email,
+                    'subject'       => 'Activate your new account',
+                    'controller'    => 'users',
+                    'action'        => 'activate',
+                    'token'         => $this->userModel->generateToken($user->email)
+                ];
+                if (Mail::send($mail_data)) {
+                    Flash::addFlashes(['Activation mail is on the way!' => 'success']);
+                } else {
+                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'danger']);
+                }
+                $this->redirect('/');
+            }
+        // Not a POST request (user just reloaded page)
+        } else {
+            // Load EMPTY form 
+            $data = [
+                'action'         => 'register',
+                'email'         => '',
+                'username'      => '',
+                'password'      => '',
+                'pwdConfirm'    => '',
+                'pushNotif'     => 'on',
+                'scripts' => [
+                    'main.js',
+                ],
+            ];
+            $this->render('users/register', $data);
+        }
+    }
 
     /**
      * GET requests: 
@@ -91,70 +155,6 @@ class Users extends Controller
                 Flash::addFlashes(['That token is a bullshit' => 'danger']);
                 $this->redirect('/');
             }
-        }
-    }
-
-    /**
-     * GET requests: 
-     *      - Render an empty account registration form.
-     * POST requests:
-     *      - Save valid user details in the database.
-     *      - Re-render incomplete form in case of errors.
-     *      - Send confirmation email.
-     *      - Flash informative messages according to the outcome of any
-     *      of the operations described above.
-     */
-    public function register()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize data
-            $data = [
-                'action' => 'register',
-                'email'         => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-                'username'      => filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pushNotif'     => isset($_POST['pushNotif']) ? 'on' : '',
-                'scripts' => [
-                    'main.js',
-                ],
-            ];
-            $user = $this->userModel->new($data);
-            if ($user === false) {
-                Flash::addFlashes($this->userModel->errors);
-                // Load FAULTY form
-                $this->render('users/register', $data);
-            } else {
-                // SEND CONFIRMATION EMAIL
-                $mail_data = [
-                    'address'       => $user->email,
-                    'subject'       => 'Activate your new account',
-                    'controller'    => 'users',
-                    'action'        => 'activate',
-                    'token'         => $this->userModel->generateToken($user->email)
-                ];
-                if (Mail::send($mail_data)) {
-                    Flash::addFlashes(['Activation mail is on the way!' => 'success']);
-                } else {
-                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'danger']);
-                }
-                $this->redirect('/');
-            }
-        // Not a POST request (user just reloaded page)
-        } else {
-            // Load EMPTY form 
-            $data = [
-                'action'         => 'register',
-                'email'         => '',
-                'username'      => '',
-                'password'      => '',
-                'pwdConfirm'    => '',
-                'pushNotif'     => 'on',
-                'scripts' => [
-                    'main.js',
-                ],
-            ];
-            $this->render('users/register', $data);
         }
     }
 

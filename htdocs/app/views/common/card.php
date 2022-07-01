@@ -6,6 +6,7 @@
     </div>
 
     <div class="card-content">
+        <!-- Like/Comment section -->
         <div class="media mb-1">
             <span class="media-left">
                 <i class="fa-solid fa-heart has-text-danger"></i>
@@ -24,7 +25,7 @@
             </div>
             <div class="media-content">
                 <p class="title is-6">@<?php echo $post['author_nick'] ?></p>
-                <p class="subtitle is-6"><?php echo Time::ago($post['comments'][0]['date']) ?></p>
+                <p class="subtitle is-6"><?php echo $post['comments'][0]['date'] ?></p>
             </div>
         </div>
 

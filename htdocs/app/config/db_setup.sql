@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `pwd_hash` VARCHAR(255) NOT NULL,
     `confirmed` BOOLEAN NOT NULL DEFAULT 0,
     `push_notif` BOOLEAN NOT NULL DEFAULT 1,
-    `token` VARCHAR(64) UNIQUE NULL
+    `token` VARCHAR(64) UNIQUE NULL,
+    `profile_pic` VARCHAR(255) NOT NULL DEFAULT ''
 );
 
 INSERT INTO
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 
 INSERT INTO
     `comments` (
-        `id`,
+        `pic_id`,
         `user_id`,
         `created_at`,
         `comment`
@@ -85,13 +86,19 @@ VALUES
         1,
         1,
         '2009-01-10 18:38:02',
-        'Lorem ipsum'
+        'First comment to first post! (by the first site member)'
+    ),
+    (
+        1,
+        2,
+        '2009-01-10 18:38:02',
+        'First comment to first post (by its author)'
     ),
     (
         2,
         1,
         '2009-01-10 19:38:02',
-        'Foo bar'
+        'Nice doggy my man, nice doggy!'
     );
 
 CREATE TABLE IF NOT EXISTS `likes` (
