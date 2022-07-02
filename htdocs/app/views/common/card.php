@@ -10,10 +10,14 @@
             <!-- Like icon section -->
             <span class="media-left">
                 <?php
-                    if ($post['user_liked'])
-                        echo '<i class="fa-solid fa-heart is-clickable has-text-danger" id="'. $post['pic_id'] .'"></i>';
-                    else
-                        echo '<i class="fa-solid fa-heart is-clickable" id="'. $post['pic_id'] . '"></i>';
+                    if (isset($_SESSION['user_id'])) {
+                        if ($post['user_liked'])
+                            echo '<i class="fa-solid fa-heart is-clickable has-text-danger" id="'. $post['pic_id'] .'"></i>';
+                        else
+                            echo '<i class="fa-regular fa-heart is-clickable" id="'. $post['pic_id'] . '"></i>';
+                    } else {
+                        echo '<i class="fa-solid fa-heart" id="'. $post['pic_id'] . '"></i>';
+                    }
                     echo ' <span>' . $post['likes'] . '</span> likes';
                 ?>
             </span>

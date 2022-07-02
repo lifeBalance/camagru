@@ -109,10 +109,11 @@ class Posts extends Controller
             'scripts' => [
                 'main.js',
                 'comments.js',
-                'likes.js',
             ],
             'posts' => [],
         ];
+        if (isset($_SESSION['user_id']))
+            array_push($data['scripts'], 'likes.js');
         // Iterate over all pics
         foreach($allPics as $pic) {
             // Get all comments for each pic_id
@@ -133,8 +134,10 @@ class Posts extends Controller
             // Get number of likes for each pic_id
             $likes = $this->likeModel->getPicLikes($pic['id']);
             // Get if a pic has been liked by the logged in user
-            if (isset($_SESSION['user_id']))        
+            if (isset($_SESSION['user_id']))
                 $liked = $this->likeModel->userLikedPic($_SESSION['user_id'], $pic['id']);
+            else
+                $liked = false;
             $tmp = [
                 'url_pic'       => $url_pic,
                 'pic_id'        => $pic['id'],

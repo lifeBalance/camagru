@@ -108,25 +108,21 @@ VALUES
     );
 
 CREATE TABLE IF NOT EXISTS `likes` (
-	`id`  INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
 	`pic_id` INT UNSIGNED NOT NULL,
 	`user_id` INT UNSIGNED NOT NULL
 );
 
 INSERT INTO
     `likes` (
-        `id`,
         `pic_id`,
         `user_id`
     )
 VALUES
     (
         1,
-        1,
         2
     ),
     (
-        2,
         1,
         1
     );

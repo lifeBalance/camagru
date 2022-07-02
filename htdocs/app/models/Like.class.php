@@ -31,34 +31,34 @@ class Like extends Model
     public function userLikedPic($user_id, $pic_id)
     {
         $db = static::getDB();
-        $sql = 'SELECT id FROM likes
+        $sql = 'SELECT * FROM likes
                 WHERE pic_id = :pic_id AND user_id = :user_id';
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':pic_id', $pic_id, PDO::PARAM_INT);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
-        return ($stmt->fetchColumn());
+        return ($stmt->rowCount() > 0);
     }
 
     public function toggle($user_id, $pic_id)
     {
-        $liked = $this->userLikedPic($user_id, $pic_id);
-        error_log($liked);
-        if ($liked) {
-            $this->delete($liked);
-            return 'nope';
+        if ($this->userLikedPic($user_id, $pic_id)) {
+            $this->delete($user_id, $pic_id);
+            return false;
         } else {
             $this->new($user_id, $pic_id);
-            return 'yep';
+            return true;
         }
     }
 
-    public function delete($id)
+    public function delete($user_id, $pic_id)
     {
         $db = static::getDB();
-        $sql = 'DELETE FROM likes WHERE id = :id';
+        $sql = 'DELETE FROM likes
+                WHERE user_id = :user_id AND pic_id = :pic_id';
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':pic_id', $pic_id, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
     }
 }
