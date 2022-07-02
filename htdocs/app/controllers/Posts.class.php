@@ -109,6 +109,7 @@ class Posts extends Controller
             'scripts' => [
                 'main.js',
                 'comments.js',
+                'likes.js',
             ],
             'posts' => [],
         ];
@@ -122,7 +123,7 @@ class Posts extends Controller
                 $tmp = [
                     'author'        => $comment_author->username,
                     'date'          => Time::ago($comment['created_at']),
-                    'profile_pic'  => Img::url_profile_pic($comment['user_id']),
+                    'profile_pic'   => Img::url_profile_pic($comment['user_id']),
                     'content'       => $comment['comment']
                 ];
                 array_push($allComments, $tmp);
@@ -132,15 +133,14 @@ class Posts extends Controller
             // Get number of likes for each pic_id
             $likes = $this->likeModel->getPicLikes($pic['id']);
             // Get if a pic has been liked by the logged in user
-            if (isset($_SESSION['user_id']))
+            if (isset($_SESSION['user_id']))        
                 $liked = $this->likeModel->userLikedPic($_SESSION['user_id'], $pic['id']);
-            else
-                $liked = 0;
             $tmp = [
                 'url_pic'       => $url_pic,
+                'pic_id'        => $pic['id'],
                 'comments'      => $allComments,
                 'likes'         => $likes,
-                'liked'         => $liked,
+                'user_liked'    => $liked,
             ];
             array_push($data['posts'], $tmp);
         }
@@ -151,15 +151,21 @@ class Posts extends Controller
         $this->render('posts/index', $data);
     }
 
-    // Add function to like a post
+    // Add function to toggle like in a post
     public function like()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like']))
+        if ($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            $user_id = $_SESSION['user_id'];
-            $pic_id = $_POST['like'];
-            $this->likeModel->new($user_id, $pic_id);
-            // Send mail if user has push notif. enabled
+            if ($_POST['pic_id'] && $_SESSION['user_id']) {
+                $data = [];
+                $data['liked'] = $this->likeModel->toggle($_SESSION['user_id'], $_POST['pic_id']);
+                // error_log($data['liked']);
+                header('Content-type: application/json');
+                echo json_encode($data);
+                exit();
+                // Send mail to OP if she has push notif. enabled
+                    // Get user_id from pic_id
+            }
         }
     }
 

@@ -59,6 +59,7 @@ class Img
 
     static function url_profile_pic($user_id)
     {
+        require_once(APPROOT .'/models/User.class.php');
         $user = new User();
 
         $user->findById($user_id);

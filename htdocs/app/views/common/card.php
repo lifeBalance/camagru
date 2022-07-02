@@ -1,6 +1,6 @@
 <div class="card block">
     <div class="card-image">
-        <figure class="image is-4by3">
+        <figure class="image is-1by1">
             <img src="<?php echo $post['url_pic']?>" alt="Post image">
         </figure>
     </div>
@@ -10,11 +10,11 @@
             <!-- Like icon section -->
             <span class="media-left">
                 <?php
-                    if ($post['liked'])
-                        echo '<i class="fa-solid fa-heart has-text-danger"></i>';
+                    if ($post['user_liked'])
+                        echo '<i class="fa-solid fa-heart is-clickable has-text-danger" id="'. $post['pic_id'] .'"></i>';
                     else
-                        echo '<i class="fa-solid fa-heart"></i>';
-                    echo ' ' . $post['likes'] . ' likes';
+                        echo '<i class="fa-solid fa-heart is-clickable" id="'. $post['pic_id'] . '"></i>';
+                    echo ' <span>' . $post['likes'] . '</span> likes';
                 ?>
             </span>
             <!-- Comment icon section -->
