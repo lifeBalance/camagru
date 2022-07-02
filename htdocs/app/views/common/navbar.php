@@ -59,18 +59,26 @@
           </a>
         </div><!-- navbar end -->
       <?php else : ?><!-- ELSE -->
+        <div class="navbar-start">
+          <a class="navbar-item is-hidden-desktop"  href="<?php echo URLROOT . '/login/new' ?>">
+            Log in
+          </a>
+          <a class="navbar-item is-hidden-desktop"  href="<?php echo URLROOT . '/users/register' ?>">
+            Sign Up
+          </a>
+        </div>
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
               <!-- Show 'Log in' button only if you're not at the 'Log in' page, duh! -->
               <?php if ($_SERVER['REQUEST_URI'] != '/login/new') : ?>
-                <a class="button is-light"  href="<?php echo URLROOT . '/login/new' ?>">
+                <a class="navbar-item button is-light is-hidden-mobile is-hidden-tablet-only"  href="<?php echo URLROOT . '/login/new' ?>">
                   Log in
                 </a>
               <?php endif ?>
               <!-- Show 'Sign Up' button only if you're not at the 'Sign Up' page, duh! -->
               <?php if ($_SERVER['REQUEST_URI'] != '/users/register') : ?>
-                <a class="button is-link"  href="<?php echo URLROOT . '/users/register' ?>">
+                <a class="navbar-item button is-link is-hidden-mobile is-hidden-tablet-only"  href="<?php echo URLROOT . '/users/register' ?>">
                   Sign Up
                 </a>
               <?php endif ?>
