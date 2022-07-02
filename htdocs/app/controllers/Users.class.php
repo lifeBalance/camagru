@@ -105,7 +105,10 @@ class Users extends Controller
                         'subject'       => 'Activate your account',
                         'controller'    => 'users',
                         'action'        => 'activate',
-                        'token'         => $this->userModel->generateToken($sanitizedForm['email'])
+                        'token'         => $this->userModel->generateToken($sanitizedForm['email']),
+                        'scripts'   => [
+                            'main.js'
+                        ],
                     ];
                     $success = Mail::send($data);
                     if ($success) 
@@ -124,6 +127,9 @@ class Users extends Controller
                 $formData = [
                     'email'     => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
                     'password'  => '',
+                    'scripts'   => [
+                        'main.js'
+                    ],
                 ];
                 $this->render('users/confirm', $formData);
             }
@@ -131,7 +137,10 @@ class Users extends Controller
             // Load EMPTY form 
             $formData = [
                 'email'     => '',
-                'password'  => ''
+                'password'  => '',
+                'scripts'   => [
+                    'main.js'
+                ],
             ];
             $this->render('users/confirm', $formData);
         }

@@ -11,9 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
       navbarMenu.classList.toggle('is-active');
   });
 
-  messages.forEach(msg => {
-    msg.addEventListener('click', e => {
-      console.log(e.target.parentElement.parentElement.remove());
+  if (messages.length > 0) {
+    messages.forEach(msg => {
+      // Had to use 'onclick' to get rid of 'undefined' on console 
+      msg.onclick = e => {
+        e.target.parentElement.parentElement.remove();
+      }
     });
-  });
+  }
 });

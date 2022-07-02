@@ -1,11 +1,13 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
 <section class="section">
-    <?php require APPROOT . '/views/common/flashes.php'; ?>
-
-    <h2 class="title is-2 columns is-centered">Register</h2>
     <div class="columns is-centered">
-        <?php require APPROOT . '/views/common/form.php'; ?>
+        <div class="column is-two-thirds">
+            <?php require APPROOT . '/views/common/flashes.php'; ?>
+
+            <h2 class="title">Register</h2>
+            <?php require APPROOT . '/views/common/form.php'; ?>
+        </div>
     </div>
 </section>
 

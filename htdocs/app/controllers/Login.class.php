@@ -160,7 +160,10 @@ class Login extends Controller
             }
         } else {
             $data = [
-                'email' => ''
+                'email' => '',
+                'scripts' => [
+                    'main.js',
+                ],
             ];
             $this->render('login/forgot', $data);
         }
