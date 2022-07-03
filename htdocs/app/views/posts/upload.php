@@ -9,17 +9,23 @@
 
       <main>
         <div id="card" hidden>
+          <!-- Div contains img file and sticker (shows up when file is loaded -->
           <div id="previewDiv" hidden>
-            <canvas id="canvas"></canvas>
+            <canvas id="canvas" class="hide"></canvas>
+            <!-- <figure class="image is-square"> -->
+              <img src="" alt="" id="previewImg">
+              <!-- </figure> -->
           </div>
+          <!-- File input (shows up when sticker is selected -->
+          <?php require  APPROOT . '/views/common/upload.php' ?>
 
           <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
-            <?php require  APPROOT . '/views/common/upload.php' ?>
             <div id="controls" hidden>
               <div class="field">
                 <label for="comment" class="label">Your comment:</label>
                 <textarea name="comment" id="comment" placeholder="Write soming about your image, dawg!" class="textarea is-primary"></textarea>
               </div>
+
               <div class="field">
                 <input type="submit" name="upload" value="Upload" id="submit" class="control button is-primary">
               </div>

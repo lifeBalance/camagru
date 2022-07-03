@@ -1,34 +1,33 @@
 document.addEventListener('DOMContentLoaded', function () {
   const previewDiv  = document.getElementById('previewDiv');
+  const previewImg  = document.getElementById('previewImg');
   const fileInput   = document.getElementById('fileInput');
-  const canvas      = document.getElementById('canvas');
-  const context     = canvas.getContext('2d');
   const controls    = document.getElementById('controls');
   const form        = document.getElementById('form');
-  let   reader      = new FileReader();
+  const submit      = document.getElementById('submit');
+  const canvas      = document.getElementById('canvas');
+  const comment     = document.getElementById('comment');
+  const context     = canvas.getContext('2d');
   let   formData;
-  let   img         = new Image();
+  let   file;
 
-  fileInput.addEventListener('change', function (e) {
-    if (fileInput.files[0]) {
-      reader.readAsDataURL(fileInput.files[0]);
-      reader.onloadend = function () {
-        img.src = reader.result;
-        img.addEventListener('load', function () {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          context.drawImage(img,0,0); 
-          // context.drawImage(img, 0, 0, img.width, img.height);
-          controls.hidden = false;
-          previewDiv.hidden = false;
-        });
-        img.onerror = function () {
-          controls.hidden = true;
-          window.alert("That's not a picture my man!");
+  fileInput.onchange = (e) => {
+    if (e.target.files[0]) {
+      file = fileInput.files[0];
+
+      if (file.type.match('image.*')) {
+        previewImg.src = window.URL.createObjectURL(file);
+        previewDiv.hidden = false;  // show img and sticker
+        controls.hidden = false;    // show upload button
+        // Draw the img onto the hidden canvas for fetching it
+        previewImg.onload = () => {
+          canvas.width = previewImg.clientWidth;
+          canvas.height = previewImg.clientHeight;
+          context.drawImage(previewImg, 0, 0, previewImg.clientWidth, previewImg.clientHeight);
         }
       }
     }
-  });
+  }
 
   submit.addEventListener('click', function (e) {
     e.preventDefault(); // Stop the default event (submitting form)
@@ -36,6 +35,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Put the data in a FormData object
     formData = new FormData();
     formData.append('img', canvas.toDataURL());
+
+    // Check that the user wrote some comment
+    if (comment.value == '') {
+      window.alert('Gotta write some comment, son!');
+      return ;
+    } else {
+      formData.append('comment', comment.value);
+    }
+
+    // Append the stickers intel to the form data (if there's any)
     if (selectedStickers.length > 0) {
       let stickers = '[';
       for (let i = 0; i < selectedStickers.length; i++) {
@@ -46,14 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       stickers += ']';
       formData.append('stickers', stickers);
-    }
-
-    // Check that the user wrote some comment
-    if (comment.value == '') {
-      window.alert('Gotta write some comment, son!');
-      return ;
-    } else {
-      formData.append('comment', comment.value);
     }
 
     // Extract the URL from the value of 'action' in the form

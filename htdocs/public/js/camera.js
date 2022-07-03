@@ -30,8 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Event listener/handler for the button to upload the pic
   submit.addEventListener('click', function (e) {
-    // Stop the default event (submitting form) when clicking on 'upload'
-    e.preventDefault();
+    e.preventDefault(); // Stop the default event (submitting form)
 
     // Append the snapshot to the form data
     formData = new FormData();
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('comment', comment.value);
     }
 
-    // Append the stickers array to the form data
+    // Append the stickers intel to the form data
     if (selectedStickers.length > 0) {
       let stickers = '[';
       for (let i = 0; i < selectedStickers.length; i++) {

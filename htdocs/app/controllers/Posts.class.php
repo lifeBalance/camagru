@@ -22,14 +22,16 @@ class Posts extends Controller
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['img'])) {
+            if ($_POST['img']) {
                 // Generate unique filename
                 $name = uniqid();
+
                 // Write base image to a file with unique name and '.png' extension
                 file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
 
                 // Merge the user's image with the stickers
                 Img::merge(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
+
                 // Pic intel
                 $data = [
                     'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -60,6 +62,7 @@ class Posts extends Controller
                 'dragQueen.js',
             ],
         ];
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($_POST['img']) {
                 // Generate unique filename
