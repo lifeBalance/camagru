@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
       clickedOnSticker = event.target;
       name = clickedOnSticker.src.split('/').pop().split('.')[0];
 
-      // Do not delete the last sticker (at least one stays).
+      // Do not delete a non-existing sticker (at least one stays).
       if (clickedOnSticker.classList.contains('highlight') &&
-          selectedStickers.length > 1) {
+          selectedStickers.length >= 0) {
         // Remove the border of the sticker
         clickedOnSticker.classList.remove('highlight');
         // Remove the clone of the sticker

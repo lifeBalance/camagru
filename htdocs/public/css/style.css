@@ -25,3 +25,8 @@ intput.error {
 .hide {
     display: none;
 }
+
+.stickers {
+    background-color: aliceblue;
+    padding: 0.2em;
+}

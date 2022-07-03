@@ -21,7 +21,7 @@
             </div>
 
             <form id="form" action="<?php echo URLROOT . '/posts/camera'; ?>" hidden>
-              <div class="field">
+              <div class="field mt-5">
                 <label for="comment" class="label">Your comment:</label>
                 <textarea id="comment" placeholder="Write soming about your image, dawg!" class="textarea"></textarea>
               </div>
@@ -33,7 +33,9 @@
         </div><!-- Card -->
 
         <!-- Dinamically load the stickers -->
-        <div class="stickers">
+        <hr>
+        <h2 class="title mb-3">Select some sticker</h2>
+        <div class="stickers mt-5 is-clearfix">
           <?php
             $images = glob('assets/stickers/' . "*.png");
             foreach ($images as $idx => $img) {

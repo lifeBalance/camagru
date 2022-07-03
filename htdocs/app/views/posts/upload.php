@@ -29,6 +29,8 @@
         
         <!-- Dinamically load the stickers -->
         <div class="stickers">
+          <hr>
+          <h2 class="title">Select some sticker</h2>
           <?php
             $images = glob('assets/stickers/' . "*.png");
             foreach ($images as $img)
