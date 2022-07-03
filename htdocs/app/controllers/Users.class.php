@@ -20,6 +20,10 @@ class Users extends Controller
      */
     public function register()
     {
+        // If user is logged in, redirect her to URLROOT
+        if (isset($_SESSION['user_id'])) {
+            $this->redirect('/');
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $data = [
