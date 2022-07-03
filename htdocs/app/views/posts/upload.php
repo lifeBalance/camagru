@@ -10,7 +10,7 @@
       <main>
         <div id="card" hidden>
           <div id="previewDiv" hidden>
-            <canvas class="column is-full" id="canvas"></canvas>
+            <canvas id="canvas"></canvas>
           </div>
 
           <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
@@ -26,15 +26,18 @@
             </div><!-- controls -->
           </form>
         </div>
-        
-        <!-- Dinamically load the stickers -->
-        <div class="stickers">
-          <hr>
-          <h2 class="title">Select some sticker</h2>
+
+        <!-- Stickers -->
+        <hr>
+        <h2 class="title mb-3">Select some sticker</h2>
+        <div class="stickers box is-clearfix mt-5">
+          <!-- Dinamically load the stickers -->
           <?php
             $images = glob('assets/stickers/' . "*.png");
-            foreach ($images as $img)
-            echo '<img src="' . URLROOT . "/$img" . '" class="sticker">';
+            foreach ($images as $idx => $img) {
+              $url = URLROOT . "/$img";
+              require APPROOT . '/views/common/sticker.php';
+            }
             ?>
         </div>
       </main>

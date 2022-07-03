@@ -35,7 +35,7 @@
         <!-- Dinamically load the stickers -->
         <hr>
         <h2 class="title mb-3">Select some sticker</h2>
-        <div class="stickers mt-5 is-clearfix">
+        <div class="stickers mt-5 box is-clearfix">
           <?php
             $images = glob('assets/stickers/' . "*.png");
             foreach ($images as $idx => $img) {
