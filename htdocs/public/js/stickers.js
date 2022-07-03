@@ -17,8 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
       card.hidden = false;
 
       // Convenience variables to store the clicked on sticker and its 'name'.
-      clickedOnSticker = event.target;
-      name = clickedOnSticker.src.split('/').pop().split('.')[0];
+      clickedOnSticker = event.currentTarget; // Parent of currentTarget
+      // Get the 'name' from the 'src' attribute of the img element
+      name = clickedOnSticker.firstElementChild.src.split('/').pop().split('.')[0];
 
       // Do not delete a non-existing sticker (at least one stays).
       if (clickedOnSticker.classList.contains('highlight') &&
