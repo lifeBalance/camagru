@@ -4,6 +4,7 @@
     <div class="columns is-centered">
         <div class="column is-two-thirds">
             <?php require APPROOT . '/views/common/flashes.php'; ?>
+
             <h2 class="title">Login</h2>
 
             <form action="<?php echo URLROOT; ?>/login/new" method="post">

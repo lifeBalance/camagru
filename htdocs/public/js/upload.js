@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const context     = canvas.getContext('2d');
   const controls    = document.getElementById('controls');
   const form        = document.getElementById('form');
-  let   reader        = new FileReader();
+  let   reader      = new FileReader();
   let   formData;
-  let   img           = new Image();
+  let   img         = new Image();
 
   fileInput.addEventListener('change', function (e) {
     if (fileInput.files[0]) {

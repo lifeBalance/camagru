@@ -1,38 +1,47 @@
 <?php require APPROOT . '/views/common/header.php'; ?>
 
-<h2><?php echo $title; ?></h2>
-<div class="container">
+<section class="section">
+  <div class="columns is-centered">
+    <div class="column is-two-thirds">
+      <?php require APPROOT . '/views/common/flashes.php'; ?>
 
-  <main>
-    <div id="card" hidden>
-      <div id="previewDiv" hidden>
-        <canvas id="canvas"></canvas>
-      </div>
+      <h2 class="title"><?php echo $title; ?></h2>
 
-      <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
-        <label for="fileInput">Select an image: </label>
-        <input type="file" id="fileInput">
-        <div id="controls" hidden>
-          <label for="comment">Your comment:</label>
-          <textarea id="comment" placeholder="Write soming about your image, dawg!"></textarea>
-          <input type="submit" name="upload" value="Upload" id="submit">
-        </div><!-- controls -->
-      </form>
-    </div>
-    
-    <!-- Dinamically load the stickers -->
-    <div class="stickers">
-      <?php
-        $images = glob('assets/stickers/' . "*.png");
-        foreach ($images as $img)
-        echo '<img src="' . URLROOT . "/$img" . '" class="sticker">';
-        ?>
-    </div>
-  </main>
+      <main>
+        <div id="card" hidden>
+          <div id="previewDiv" hidden>
+            <canvas class="column is-full" id="canvas"></canvas>
+          </div>
+
+          <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
+            <?php require  APPROOT . '/views/common/upload.php' ?>
+            <div id="controls" hidden>
+              <div class="field">
+                <label for="comment" class="label">Your comment:</label>
+                <textarea name="comment" id="comment" placeholder="Write soming about your image, dawg!" class="textarea is-primary"></textarea>
+              </div>
+              <div class="field">
+                <input type="submit" name="upload" value="Upload" id="submit" class="control button is-primary">
+              </div>
+            </div><!-- controls -->
+          </form>
+        </div>
+        
+        <!-- Dinamically load the stickers -->
+        <div class="stickers">
+          <?php
+            $images = glob('assets/stickers/' . "*.png");
+            foreach ($images as $img)
+            echo '<img src="' . URLROOT . "/$img" . '" class="sticker">';
+            ?>
+        </div>
+      </main>
+    </div><!-- column -->
+  </div><!-- columns -->
 
   <div class="sidebar">
     <!-- Dinamically load the user's taken pics -->
   </div>
-</div>
+</section>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>
