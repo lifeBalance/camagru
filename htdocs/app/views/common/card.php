@@ -1,6 +1,6 @@
 <div class="card block">
     <div class="card-image">
-        <figure class="image is-1by1">
+        <figure class="image">
             <img src="<?php echo $post['url_pic']?>" alt="Post image">
         </figure>
     </div>
