@@ -33,8 +33,8 @@
           </form>
         </div>
 
-        <!-- Stickers -->
         <hr>
+        <!-- Stickers -->
         <h2 class="title mb-3">Select some sticker</h2>
         <div class="stickers box is-clearfix mt-5">
           <!-- Dinamically load the stickers -->
@@ -50,9 +50,9 @@
     </div><!-- column -->
   </div><!-- columns -->
 
-  <div class="sidebar">
+  <!-- <div class="sidebar"> -->
     <!-- Dinamically load the user's taken pics -->
-  </div>
+  <!-- </div> -->
 </section>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>

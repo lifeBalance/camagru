@@ -12,7 +12,7 @@
           <div id="previewDiv" >
             <!-- canvas is always hidden -->
             <canvas id="canvas" hidden ></canvas>
-            <video id="video" autoplay width="1440" height="1440"></video>
+            <video id="video" autoplay ></video>
           </div><!-- Preview Box -->
 
           <div id="controls">
@@ -32,10 +32,11 @@
           </div><!-- Controls -->
         </div><!-- Card -->
 
-        <!-- Dinamically load the stickers -->
         <hr>
+        <!-- Stickers -->
         <h2 class="title mb-3">Select some sticker</h2>
         <div class="stickers mt-5 box is-clearfix">
+          <!-- Dinamically load the stickers -->
           <?php
             $images = glob('assets/stickers/' . "*.png");
             foreach ($images as $idx => $img) {
@@ -47,11 +48,11 @@
       </main>
     </div> <!-- column -->
   </div> <!-- columns -->
-</section>
 
-<!-- Area for the user's taken pics -->
-<!-- <div class="sidebar"> -->
-  <!-- Dinamically load the user's taken pics -->
-<!-- </div> -->
+  <!-- Area for the user's taken pics -->
+  <!-- <div class="sidebar"> -->
+    <!-- Dinamically load the user's taken pics -->
+  <!-- </div> -->
+</section>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>

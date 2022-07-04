@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const video       = document.getElementById('video');
+  // const videoBox    = document.getElementById('videoBox');
   const snapBtn     = document.getElementById('snapBtn');
   const form        = document.getElementById('form');
   const submit      = document.getElementById('submit');
@@ -9,9 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let   formData;
 
   // Set measurements of the canvas
-  canvas.width = video.width;
-  canvas.height = video.height;
-
+  video.onloadedmetadata = (e) => {
+    canvas.setAttribute('width', video.videoWidth);
+    canvas.setAttribute('height', video.videoHeight);
+  };
   // Event listener/handler for the button to take the pic
   snapBtn.addEventListener('click', function () {
     form.hidden = false;
@@ -21,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       snapBtn.textContent = 'Pic it!'
     } else {
       video.pause();
-      context.drawImage(video, 0, 0, video.width, video.height);
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
       snapBtn.textContent = 'No likey?'
     }
   });
