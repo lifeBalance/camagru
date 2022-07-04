@@ -8,9 +8,9 @@
       <h2 class="title"><?php echo $title; ?></h2>
 
       <main>
-        <div id="card" hidden>
+        <div id="card" class="hide">
           <!-- Div contains img file and sticker (shows up when file is loaded -->
-          <div id="previewDiv" hidden>
+          <div id="previewDiv" class="hide">
             <canvas id="canvas" class="hide"></canvas>
             <!-- <figure class="image is-square"> -->
               <img src="" alt="" id="previewImg">

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   all.forEach((sticker) => {
     sticker.addEventListener('click', (event) => {
       // Unveil image preview and control buttons
-      card.hidden = false;
+      card.style.display = 'block';
 
       // Convenience variables to store the clicked on sticker and its 'name'.
       clickedOnSticker = event.currentTarget; // Parent of currentTarget
@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
           'name': name,
           'xPos':   0,
           'yPos':   0,
+          'width':  clickedOnSticker.clientWidth,
+          'height': clickedOnSticker.clientHeight,
         });
         previewDiv.appendChild(tmp);
       }

@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (file.type.match('image.*')) {
         previewImg.src = window.URL.createObjectURL(file);
-        previewDiv.hidden = false;  // show img and sticker
-        controls.hidden = false;    // show upload button
+        previewDiv.style.display = 'block';  // show img and sticker
+        controls.style.display = 'block';    // show upload button
         // Draw the img onto the hidden canvas for fetching it
         previewImg.onload = () => {
           canvas.width = previewImg.clientWidth;
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
       let stickers = '[';
       for (let i = 0; i < selectedStickers.length; i++) {
         const st = selectedStickers[i];
-        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}"]`;
+        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}", "${st.width}", ${st.height}]`;
         if (i < selectedStickers.length - 1)
           stickers += ', ';
       }
