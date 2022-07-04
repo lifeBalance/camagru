@@ -16,15 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   snapBtn.addEventListener('click', function () {
     form.hidden = false;
     // Toggle video and canvas once pics are taken
-    if (canvas.hidden) {
-      context.drawImage(video, 0, 0, video.width, video.height);
-      video.hidden = true;
-      canvas.hidden = false;
-      snapBtn.textContent = 'No likey?'
-    } else {
-      canvas.hidden = true;
-      video.hidden = false;
+    if (video.paused) {
+      video.play();
       snapBtn.textContent = 'Pic it!'
+    } else {
+      video.pause();
+      context.drawImage(video, 0, 0, video.width, video.height);
+      snapBtn.textContent = 'No likey?'
     }
   });
 

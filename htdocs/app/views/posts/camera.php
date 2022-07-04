@@ -10,9 +10,9 @@
       <main>
         <div id="card" hidden >
           <div id="previewDiv" >
-            <!-- canvas and video will toggle when button is pressed -->
-            <canvas id="canvas" hidden width="640" height="480"></canvas>
-            <video id="video" autoplay width="640" height="480"></video>
+            <!-- canvas is always hidden -->
+            <canvas id="canvas" hidden ></canvas>
+            <video id="video" autoplay width="1440" height="1440"></video>
           </div><!-- Preview Box -->
 
           <div id="controls">
