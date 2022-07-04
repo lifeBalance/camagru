@@ -8,8 +8,8 @@
       <h2 class="title"><?php echo $title; ?></h2>
 
       <main>
-        <div id="card"  class="hide" >
-          <div id="previewDiv" >
+        <div id="card">
+          <div id="previewDiv">
             <!-- canvas is always hidden -->
             <canvas id="canvas" hidden ></canvas>
             <video id="video" autoplay ></video>
@@ -17,7 +17,7 @@
 
           <div id="controls">
             <div>
-              <button id="snapBtn" class="button is-primary">Pic it!</button>
+              <button id="snapBtn" class="button is-primary" disabled>Pic it!</button>
             </div>
 
             <form id="form" action="<?php echo URLROOT . '/posts/camera'; ?>" hidden>

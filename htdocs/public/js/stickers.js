@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const all         = document.querySelectorAll('.sticker');
   const card        = document.getElementById('card');
   const previewDiv  = document.getElementById('previewDiv');
+  const snapBtn     = document.getElementById('snapBtn') || false;
   let   tmp;
   let   name;
   let   clickedOnSticker;
@@ -45,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
           'height': clickedOnSticker.clientHeight,
         });
         previewDiv.appendChild(tmp);
+        // If there's a snapBtn, enable it (stickers were selected)
+        if (snapBtn)
+          snapBtn.disabled = false;
       }
     })  // End of event-listener
   });

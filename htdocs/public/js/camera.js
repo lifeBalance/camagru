@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const video       = document.getElementById('video');
-  // const videoBox    = document.getElementById('videoBox');
+  const previewDiv  = document.getElementById('previewDiv');
   const snapBtn     = document.getElementById('snapBtn');
   const form        = document.getElementById('form');
   const submit      = document.getElementById('submit');
@@ -8,12 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const comment     = document.getElementById('comment');
   const context     = canvas.getContext('2d');
   let   formData;
+  let   initialized = false;
 
   // Set measurements of the canvas
-  video.onloadedmetadata = (e) => {
-    canvas.setAttribute('width', video.videoWidth);
-    canvas.setAttribute('height', video.videoHeight);
-  };
+  // video.onloadedmetadata = (e) => {
+  //   canvas.setAttribute('width', video.videoWidth);
+  //   canvas.setAttribute('height', video.videoHeight);
+  // };
+  video.addEventListener(
+    'canplay',
+    () => {
+        if (!initialized) {
+            let w = previewDiv.offsetWidth;
+            let h = previewDiv.offsetHeight;
+
+            video.setAttribute('width', w);
+            video.setAttribute('height', h);
+            canvas.setAttribute('width', w);
+            canvas.setAttribute('height', h);
+            initialized = true
+        }
+    },
+    false
+)
+
   // Event listener/handler for the button to take the pic
   snapBtn.addEventListener('click', function () {
     form.hidden = false;
