@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let stickers = '[';
       for (let i = 0; i < selectedStickers.length; i++) {
         const st = selectedStickers[i];
-        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}"]`;
+        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}", "${st.width}", ${st.height}]`;
         if (i < selectedStickers.length - 1)
           stickers += ', ';
       }

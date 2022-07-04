@@ -8,7 +8,7 @@
       <h2 class="title"><?php echo $title; ?></h2>
 
       <main>
-        <div id="card" hidden >
+        <div id="card"  class="hide" >
           <div id="previewDiv" >
             <!-- canvas is always hidden -->
             <canvas id="canvas" hidden ></canvas>
