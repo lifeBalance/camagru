@@ -38,9 +38,8 @@ class Img
             $sticker_file = $stickers_folder . "/$name.png";
 
             // Create sticker's GdImage instance
-            $sticker_gdi = imagecreatefrompng($sticker_file);
-            // Scale the sticker to the size in the browser
-            $sticker_gdi = imagescale($sticker_gdi, $src_width, $src_height);
+            $sticker_gdi = Img::resizeSticker(
+                $sticker_file, $src_width, $src_height);
 
             // Copy the sticker to the canvas
             imagecopy(
@@ -71,6 +70,23 @@ class Img
             return URLROOT . "/assets/no_profile_pic.png";
         else
             return URLROOT . "/assets/$user->profile_pic.png";
+    }
+
+    /**
+     * Resize a sticker preserving the transparency.
+     * 
+     * @param   String  Path to image file.
+     * @return  GdImage GdImage object.
+     */
+    static function resizeSticker($file, int $newWidth, int $newHeight) {
+        $img = imagecreatefrompng($file);
+        $blank = imagecreatetruecolor($newWidth, $newHeight);
+        $transparent = imagecolorallocatealpha($blank, 0, 0, 0, 127);
+        imagefill($blank, 0, 0, $transparent);
+        imagecolortransparent($blank, $transparent);
+        imagecopyresampled($blank, $img, 0, 0, 0, 0, $newWidth, $newHeight, 128, 128);
+        imagepng($blank);
+        return $blank;
     }
 
     static function get_extension($img)
