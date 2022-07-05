@@ -111,13 +111,13 @@ class Posts extends Controller
         $data = [
             'scripts' => [
                 'main.js',
+                'comments_modal.js',
             ],
             'posts' => [],
         ];
         if (isset($_SESSION['user_id']))
         {
             array_push($data['scripts'], 'likes.js');
-            array_push($data['scripts'], 'comments.js');
         }
         // Iterate over all pics
         foreach($allPics as $pic) {
@@ -163,7 +163,7 @@ class Posts extends Controller
             if ($_POST['pic_id'] && $_SESSION['user_id']) {
                 $data = [];
                 $data['liked'] = $this->likeModel->toggle($_SESSION['user_id'], $_POST['pic_id']);
-                // error_log($data['liked']);
+                // Send response to browser
                 header('Content-type: application/json');
                 echo json_encode($data);
                 exit();
@@ -199,12 +199,12 @@ class Posts extends Controller
                 $data['author'] = $this->usrModel->findById($_SESSION['user_id'])->username;
                 $data['ago'] = Time::ago($data['created_at']);
                 $data['profile_pic'] = Img::url_profile_pic($_SESSION['user_id']);
+                // send response back
                 header('Content-type: application/json');
-                echo json_encode($data);// send response back
+                echo json_encode($data);
                 exit();
             }
         }
     }
-
     // Add function to edit a post (comment mb?)
 }
