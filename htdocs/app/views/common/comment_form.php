@@ -4,6 +4,7 @@
             <img src="<?php echo $comment['profile_pic'] ?>" alt="Profile picture">
         </figure>
     </div>
+
     <div class="media-content">
         <form>
             <textarea class="textarea is-small mb-1" placeholder="Write a comment"></textarea>

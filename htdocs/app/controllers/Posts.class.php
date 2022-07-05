@@ -150,10 +150,6 @@ class Posts extends Controller
             ];
             array_push($data['posts'], $tmp);
         }
-        // echo '<pre>';
-        // var_dump($data['posts']);
-        // echo '</pre>';
-        // die();
         $this->render('posts/index', $data);
     }
 
@@ -187,16 +183,16 @@ class Posts extends Controller
                 $this->commentModel->new($data);
 
                 // Get other intel to notify by email
-                // $post_owner_id = $this->picModel->getAuthor($_POST['pic_id']);
-                // $post_owner = $this->usrModel->findById($post_owner_id);
+                $post_owner_id = $this->picModel->getAuthorId($_POST['pic_id']);
+                $post_owner = $this->usrModel->findById($post_owner_id);
                 // Send mail to OP if she has push notif. enabled
-                // if ($post_owner->push_notif) {
-                //     Mail::notify([
-                //         'address'   =>  $post_owner->email,
-                //         'username'  =>  $_SESSION['username'],
-                //         'subject'   => 'Your post got a comment!'
-                //     ]);
-                // }
+                if ($post_owner->push_notif) {
+                    Mail::notify([
+                        'address'   =>  $post_owner->email,
+                        'username'  =>  $_SESSION['username'],
+                        'subject'   => 'Your post got a comment!'
+                    ]);
+                }
                 // Add some intel to the data for the response
                 $data['author'] = $this->usrModel->findById($_SESSION['user_id'])->username;
                 $data['ago'] = Time::ago($data['created_at']);

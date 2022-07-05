@@ -68,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         commentForm = e.target.parentElement.parentElement.parentElement;
         // Insert new comment (with Ajax data) before the comment form
         commentForm.insertAdjacentHTML('beforebegin', newComment);
-        // console.log(comment); // testing
+        // Clear the text area
+        e.target.previousElementSibling.value = '';
+        // console.log(comment); // Testing answer from server
       })
       .catch(error => console.log(`Woops! ${error}`));
     });

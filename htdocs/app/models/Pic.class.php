@@ -37,14 +37,14 @@ class Pic extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAuthor($pic_id)
+    public function getAuthorId($pic_id)
     {
         $db = static::getDB();
         $sql = 'SELECT user_id FROM pics
-                WHERE pic_id = :pic_id';
+                WHERE id = :pic_id';
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':pic_id', $pic_id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchColumn();
     }
 }
