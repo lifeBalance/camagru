@@ -169,8 +169,41 @@ class Posts extends Controller
                 header('Content-type: application/json');
                 echo json_encode($data);
                 exit();
+            }
+        }
+    }
+
+    public function comment()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            if ($_POST['comment'] && $_SESSION['user_id']) {
+                $data = [
+                    'comment'       =>  filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'user_id'       => $_SESSION['user_id'],
+                    'pic_id'        => $_POST['pic_id'],
+                    'created_at'    => date('Y-m-d H:i:s')
+                ];
+                $this->commentModel->new($data);
+
+                // Get other intel to notify by email
+                // $post_owner_id = $this->picModel->getAuthor($_POST['pic_id']);
+                // $post_owner = $this->usrModel->findById($post_owner_id);
                 // Send mail to OP if she has push notif. enabled
-                    // Get user_id from pic_id
+                // if ($post_owner->push_notif) {
+                //     Mail::notify([
+                //         'address'   =>  $post_owner->email,
+                //         'username'  =>  $_SESSION['username'],
+                //         'subject'   => 'Your post got a comment!'
+                //     ]);
+                // }
+                // Add some intel to the data for the response
+                $data['author'] = $this->usrModel->findById($_SESSION['user_id'])->username;
+                $data['ago'] = Time::ago($data['created_at']);
+                $data['profile_pic'] = Img::url_profile_pic($_SESSION['user_id']);
+                header('Content-type: application/json');
+                echo json_encode($data);// send response back
+                exit();
             }
         }
     }
