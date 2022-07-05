@@ -39,7 +39,7 @@
           <!-- Show profile pic only when burger icon is off -->
           <a class="navbar-item is-hidden-mobile is-hidden-tablet-only" href="<?php echo URLROOT . '/users/settings' ?>"><span class="mr-3"><?php echo $_SESSION['username'] ?></span>
             <figure class="image">
-              <img class="is-rounded" src="<?php echo Img::url_profile_pic($_SESSION['user_id'])?>">
+              <img src="<?php echo Img::url_profile_pic($_SESSION['user_id'])?>">
             </figure>
           </a>
           <!-- Show word 'Settings' when burger icon is on -->

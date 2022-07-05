@@ -3,10 +3,15 @@
         <label for="username" class="label"><sup>*</sup>Username: </label>
         <input id="username" type="text" name="username" value="<?php echo $username; ?>" placeholder="username" class="control input" autocomplete="username">
     </div>
-    
+
     <div class="field">
         <label for="email" class="label"><sup>*</sup>Email: </label>
         <input id="email" type="email" name="email" value="<?php echo $email; ?>" placeholder="email" class="control input" autocomplete="current-email">
+    </div>
+
+    <div class="field">
+        <label for="gravatar" class="label">Gravatar: </label>
+        <input id="gravatar" type="text" name="gravatar" value="<?php echo $gravatar; ?>" placeholder="gravatar" class="control input">
     </div>
 
     <div class="field">

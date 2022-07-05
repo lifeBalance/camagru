@@ -62,14 +62,17 @@ class Img
 
     static function url_profile_pic($user_id)
     {
-        require_once(APPROOT .'/models/User.class.php');
-        $user = new User();
+        $db = Model::getDB();
 
-        $user->findById($user_id);
-        if (empty($user->profile_pic))
-            return URLROOT . "/assets/no_profile_pic.png";
+        $sql = "SELECT profile_pic FROM users WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$user_id]);
+        $gravatar = $stmt->fetchColumn();
+
+        if ($gravatar)
+            return $gravatar;
         else
-            return URLROOT . "/assets/$user->profile_pic.png";
+            return URLROOT . "/assets/no_profile_pic.png";
     }
 
     /**

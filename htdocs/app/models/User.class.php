@@ -35,10 +35,11 @@ class User extends Model
             else
                 $notif = false;
             $db = static::getDB();
-            $sql = 'INSERT INTO users (username, email, pwd_hash, push_notif)
-                    VALUES (:username, :email, :pwd_hash, :push_notif)';
+            $sql = 'INSERT INTO users (username, email, profile_pic, pwd_hash, push_notif)
+                    VALUES (:username, :email, :profile_pic, :pwd_hash, :push_notif)';
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+            $stmt->bindValue(':profile_pic', $data['gravatar'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
             $stmt->bindValue(':pwd_hash', $pwd_hash, PDO::PARAM_STR);
             $stmt->bindValue(':push_notif', $notif, PDO::PARAM_BOOL);
@@ -79,11 +80,13 @@ class User extends Model
             $sql = 'UPDATE users
                     SET username    = :username,
                         email       = :email,
+                        profile_pic = :profile_pic,
                         pwd_hash    = :pwd_hash,
                         push_notif  = :push_notif
                     WHERE id = :id';
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':username',   $data['username'],  PDO::PARAM_STR);
+            $stmt->bindValue(':profile_pic',$data['gravatar'],  PDO::PARAM_STR);
             $stmt->bindValue(':email',      $data['email'],     PDO::PARAM_STR);
             $stmt->bindValue(':pwd_hash',   $pwd_hash,          PDO::PARAM_STR);
             $stmt->bindValue(':push_notif', $notif,             PDO::PARAM_BOOL);
