@@ -111,12 +111,14 @@ class Posts extends Controller
         $data = [
             'scripts' => [
                 'main.js',
-                'comments.js',
             ],
             'posts' => [],
         ];
         if (isset($_SESSION['user_id']))
+        {
             array_push($data['scripts'], 'likes.js');
+            array_push($data['scripts'], 'comments.js');
+        }
         // Iterate over all pics
         foreach($allPics as $pic) {
             // Get all comments for each pic_id
