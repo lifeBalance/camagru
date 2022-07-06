@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
     <link rel="icon" type="image/x-icon" href="<?php echo URLROOT; ?>/assets/favicon/camera-512x512.png">
     <title><?php echo ucfirst(SITENAME) ?></title>
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet"> 
 </head>
 <body>
   <?php require APPROOT . '/views/common/navbar.php'; ?>

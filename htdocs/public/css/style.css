@@ -30,3 +30,9 @@ intput.error {
     background-color: aliceblue;
     padding: 0.2em;
 }
+
+.fonty {
+    font-family: 'Permanent Marker', cursive;
+    color: #f6a230;
+    text-shadow: 2px 2px hsl(348, 86%, 43%);
+}
