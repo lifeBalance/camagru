@@ -60,6 +60,7 @@ class Posts extends Controller
                 'camera.js',
                 'stickers.js',
                 'dragQueen.js',
+                'gallery_modal.js',
             ],
         ];
 
@@ -89,6 +90,7 @@ class Posts extends Controller
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'
             ]);
+            $data['user_pics'] = $this->picModel->getAllFrom($_SESSION['user_id']);
             $this->render('posts/camera', $data);
         }
     }

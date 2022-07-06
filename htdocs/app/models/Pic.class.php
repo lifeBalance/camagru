@@ -47,4 +47,15 @@ class Pic extends Model
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+    public function getAllFrom($user_id)
+    {
+        $db = static::getDB();
+        $sql = 'SELECT * FROM pics
+                WHERE user_id = :user_id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -18,6 +18,7 @@
           <div id="controls">
             <div>
               <button id="snapBtn" class="button is-primary" disabled>Pic it!</button>
+              <input id="gallery" type="submit" value="Gallery" class="control button open-gallery">
             </div>
 
             <form id="form" action="<?php echo URLROOT . '/posts/camera'; ?>" hidden>
@@ -49,10 +50,8 @@
     </div> <!-- column -->
   </div> <!-- columns -->
 
-  <!-- Area for the user's taken pics -->
-  <!-- <div class="sidebar"> -->
-    <!-- Dinamically load the user's taken pics -->
-  <!-- </div> -->
+  <!-- Gallery modal (Fuck sidebars!) -->
+  <?php require APPROOT . '/views/posts/gallery_modal.php' ?>
 </section>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>
