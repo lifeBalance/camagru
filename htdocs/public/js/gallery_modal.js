@@ -39,10 +39,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // console.log('About to delete post: ' + postId);
         const post = document.getElementById(`post-${postId}`);
 
-        post.remove(); // remove post from DOM
-        // Post removal function goes here
-        // call funtion that uses fetch to remove the post (pic, comments, likes.)
-        // use response to update the DOM (remove the node)
+        // Append to the form the id of the post we want to delete
+        data = new FormData();
+        data.append('post_id', postId);
+
+        // Interesting way of getting the URL we want
+        url = new URL('/posts/delete', window.location.href);
+        fetch(url.href, {
+          method: 'POST',
+          body: data
+        })
+        .then(response => {
+            // return response.text() // for checking back-end errors
+            return response.json();
+        })
+        .then(respJSON => {
+          if (respJSON.post_id == postId)
+            post.remove(); // remove post from DOM
+        })
+        .catch(error => console.log(`Woops! ${error}`));
       });
     });
   });

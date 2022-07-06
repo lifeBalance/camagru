@@ -13,7 +13,7 @@ class Posts extends Controller
     public function upload()
     {
         $data = [
-            'title' => '<p>It seems you\'re <i class="fa-solid fa-camera-retro"></i>-shy &#128527;</p>',
+            'title' => '<p><i class="fa-solid fa-camera-retro"></i> shy, huh? &#128527;</p>',
             'scripts' => [
                 'main.js',
                 'upload.js',
@@ -208,5 +208,27 @@ class Posts extends Controller
             }
         }
     }
-    // Add function to edit a post (comment mb?)
+    // Add function to delete a post (comment mb?)
+    public function delete()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            // Delete pic, comments and likes
+            $this->likeModel->deleteById($_POST['post_id']);
+            $this->commentModel->deleteById($_POST['post_id']);
+            // Delete the picture file before!!!
+            $filename = $this->picModel->getFilenameById($_POST['post_id']);
+            // Remove filename
+            unlink(PUBLIC_DIR . "/uploads/$filename.png");
+            // Remove db entry
+            $this->picModel->deleteById($_POST['post_id']);
+
+            // send response back
+            if(!empty($_POST)) {
+                header('Content-type: application/json');
+                echo json_encode($_POST);
+                exit();
+            }
+        }
+    }
 }

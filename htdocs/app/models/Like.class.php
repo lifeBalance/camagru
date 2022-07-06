@@ -61,4 +61,14 @@ class Like extends Model
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function deleteById($post_id)
+    {
+        $db = static::getDB();
+        $sql = 'DELETE FROM likes
+                WHERE pic_id = :post_id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':post_id', $post_id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

@@ -37,4 +37,14 @@ class Comment extends Model
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function deleteById($post_id)
+    {
+        $db = static::getDB();
+        $sql = 'DELETE FROM comments
+                WHERE pic_id = :post_id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':post_id', $post_id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

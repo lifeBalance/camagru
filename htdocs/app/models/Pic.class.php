@@ -58,4 +58,25 @@ class Pic extends Model
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function deleteById($id)
+    {
+        $db = static::getDB();
+        $sql = 'DELETE FROM pics
+                WHERE id = :id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function getFilenameById($post_id)
+    {
+        $db = static::getDB();
+        $sql = 'SELECT filename FROM pics
+                WHERE id = :post_id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':post_id', $post_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
 }
