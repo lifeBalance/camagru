@@ -6,9 +6,12 @@
       </a>
 
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <figure class="image is-64x64 pr-5 pt-2" aria-hidden="true">
+          <img src="<?php echo URLROOT . '/assets/burger_icon.png' ?>">
+        </figure>
+        <!-- <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span> -->
       </a>
     </div><!-- navbar-brand -->
 
