@@ -1,7 +1,7 @@
   <nav class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item pt-1" href="<?php echo URLROOT; ?>">
-        <h2 class="title is-2 fonty">C<img src="<?php echo URLROOT . '/assets/logo.png'; ?>" alt="Camagru" height="60" class="mt-2 ">MAGRU</h2>
+        <h2 class="title is-2 fonty">CAM<img src="<?php echo URLROOT . '/assets/logo.png'; ?>" alt="Camagru" height="60" class="mt-2 ">GRU</h2>
       </a>
 
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">

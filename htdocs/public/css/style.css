@@ -36,3 +36,11 @@ intput.error {
     color: #f6a230;
     text-shadow: 2px 2px hsl(348, 86%, 43%);
 }
+
+.yellow {
+    color: #f6a230;
+}
+
+.brownie {
+    color: #52150c;
+}
