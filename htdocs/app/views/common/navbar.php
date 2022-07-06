@@ -18,8 +18,9 @@
     <div class="navbar-menu">
       <?php if (isset($_SESSION['username'])) : ?>
         <div class="navbar-start">
+          <?php require APPROOT . '/views/common/pic_it.php' ?>
           <!-- Show dropdown only when burger icon is off -->
-          <div class="navbar-item has-dropdown is-hoverable is-hidden-mobile is-hidden-tablet-only">
+          <!-- <div class="navbar-item has-dropdown is-hoverable is-hidden-mobile is-hidden-tablet-only">
             <a class="navbar-link">
               Pic it boi!
             </a>
@@ -32,7 +33,7 @@
                 Upload
               </a>
             </div>
-          </div><!-- dropdown -->
+          </div>dropdown -->
           <!-- Show words 'Webcam' and 'Upload' when burger icon is on -->
           <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/camera'; ?>" >Webcam</a>
           <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/upload'; ?>" >Upload</a>
