@@ -13,7 +13,7 @@ class Posts extends Controller
     public function upload()
     {
         $data = [
-            'title' => 'pic it, boi!',
+            'title' => '<p>It seems you\'re <i class="fa-solid fa-camera-retro"></i>-shy &#128527;</p>',
             'scripts' => [
                 'main.js',
                 'upload.js',
@@ -54,7 +54,7 @@ class Posts extends Controller
     public function camera()
     {
         $data = [
-            'title' => 'pic it, boi!',
+            'title' => '<p>Say &#129472;!</p>',
             'scripts' => [
                 'main.js',
                 'camera.js',
