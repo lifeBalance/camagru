@@ -86,7 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.previousElementSibling.value = '';
         // console.log(comment); // Testing answer from server
       })
-      .catch(error => console.log(`Woops! ${error}`));
+      .catch(
+        //error => console.log(`Woops! ${error}`)
+      );
     });
   });
 

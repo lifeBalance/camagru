@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
           if (respJSON.post_id == postId)
             post.remove(); // remove post from DOM
         })
-        .catch(error => console.log(`Woops! ${error}`));
+        .catch(
+          //error => console.log(`Woops! ${error}`)
+        );
       });
     });
   });
