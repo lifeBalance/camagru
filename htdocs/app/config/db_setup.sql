@@ -17,6 +17,7 @@ INSERT INTO
     `users` (
         `id`,
         `username`,
+        `profile_pic`,
         `email`,
         `pwd_hash`,
         `confirmed`
@@ -25,14 +26,16 @@ VALUES
     (
         1,
         'Bob',
+        '',
         'bob@gmail.com',
         '$2y$10$Wt2XXhvVfFyWSkupAL0OzOv3I9b9AZvPMUpoCo7FLosiAyzsD9FiW',
         1
     ),
     (
         2,
-        'John',
-        'jdoe@gmail.com',
+        'Lynda',
+        'https://robohash.org/44585be6e8575964e1823fab8af2d66d?set=set4&bgset=&size=200x200',
+        'lynda@gmail.com',
         '$2y$10$Fza7OXvlIuDKsxNHtG/zuO7.BKlaZyRy.KVRpK0nA3wxhjav3LVHK',
         0
     );
@@ -47,7 +50,6 @@ CREATE TABLE IF NOT EXISTS `pics` (
 
 INSERT INTO
     `pics` (
-        `id`,
         `user_id`,
         `created_at`,
         `filename`
@@ -55,15 +57,28 @@ INSERT INTO
 VALUES
     (
         1,
-        1,
         '2009-01-10 18:38:02',
         '62b9dab68c48a'
     ),
     (
-        2,
         1,
         '2009-01-10 19:38:02',
         '62b9db5fc8859'
+    ),
+    (
+        2,
+        '2020-03-07 09:03:50',
+        '62c6a17616763'
+    ),
+    (
+        2,
+        '2021-03-07 19:38:02',
+        '62c6a2838c647'
+    ),
+    (
+        1,
+        '2022-07-07 09:43:47',
+        '62c6aad31ef8a'
     );
 
 CREATE TABLE IF NOT EXISTS `comments` (
@@ -86,7 +101,7 @@ VALUES
         1,
         1,
         '2009-01-10 18:38:02',
-        'First comment to first post!'
+        "Das my boi Alfred. Ain't it cute!"
     ),
     (
         1,
@@ -98,13 +113,50 @@ VALUES
         1,
         1,
         '2009-01-10 19:45:02',
-        'thanks man :-)'
+        'thanks gurl :-)'
     ),
     (
         2,
         2,
         '2009-01-11 19:38:02',
         'His name is Earl!'
+    ),
+    (
+        2,
+        1,
+        '2009-01-11 19:40:02',
+        'Meh, quite a shitty dog!'
+    ),
+    (
+        2,
+        2,
+        '2009-01-11 19:41:02',
+        'F*ck you John!'
+    ),
+    (
+        3,
+        2,
+        '2020-03-07 09:03:50',
+        'Riiiight...'
+    ),
+    (
+        4,
+        2,
+        '2021-03-07 19:38:02',
+        "When someone starts crying and you don't know what to do...
+        - Do you want water?"
+    ),
+    (
+        5,
+        1,
+        '2022-07-07 09:43:47',
+        "Wanna see my Linux?"
+    ),
+    (
+        5,
+        2,
+        '2022-07-07 09:53:47',
+        "Sure, let's go!"
     );
 
 CREATE TABLE IF NOT EXISTS `likes` (
