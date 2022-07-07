@@ -90,4 +90,27 @@ So I had to take the following the steps:
 
 Then, during development and evaluation, I used the first mail account I created in outlook for the users of the app.
 
-## Docker Setup
+## Docker Setup: Password
+In order to avoid committing my password to source control, decided to use the following approach:
+
+1. In my `compose.yaml` file, I set up the following **environment variable** for the container:
+```
+environment:
+    APACHE_DOCUMENT_ROOT: /var/www/html/public
+    MAILPWD: ${MAILPWD}
+```
+
+2. In my `msmtprc` file, I used `passwordeval` to read from the environment variable running in the container:
+```
+passwordeval echo "$MAILPWD"
+```
+
+3. Before running `docker compose up`, I just set up the environment variable containing password in my host machine:
+```
+export MAINPWD=1234ass
+```
+
+4. Now we can start the containers:
+```
+docker compose up
+```

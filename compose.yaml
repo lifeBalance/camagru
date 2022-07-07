@@ -13,6 +13,7 @@ services:
       - ./docker/php_apache/msmtprc:/etc/msmtprc
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
+      MAILPWD: ${MAILPWD}
     ports:
       - 80:80
       - 443:443
