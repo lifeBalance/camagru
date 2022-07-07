@@ -17,30 +17,12 @@
     <div class="navbar-menu">
       <?php if (isset($_SESSION['username'])) : ?>
         <div class="navbar-start">
-          <?php require APPROOT . '/views/common/pic_it.php' ?>
-          <!-- Show dropdown only when burger icon is off -->
-          <!-- <div class="navbar-item has-dropdown is-hoverable is-hidden-mobile is-hidden-tablet-only">
-            <a class="navbar-link">
-              Pic it boi!
-            </a>
-
-            <div class="navbar-dropdown">
-              <a class="navbar-item" href="<?php echo URLROOT . '/posts/camera'; ?>">
-                Webcam
-              </a>
-              <a class="navbar-item" href="<?php echo URLROOT . '/posts/upload'; ?>">
-                Upload
-              </a>
-            </div>
-          </div>dropdown -->
-          <!-- Show words 'Webcam' and 'Upload' when burger icon is on -->
-          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/camera'; ?>" >Webcam</a>
-          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/upload'; ?>" >Upload</a>
         </div><!-- navbar start -->
 
         <div class="navbar-end">
+          <!-- SETTINGS -->
           <!-- Show profile pic only when burger icon is off -->
-          <a class="navbar-item is-hidden-mobile is-hidden-tablet-only" href="<?php echo URLROOT . '/users/settings' ?>"><span class="mr-3"><?php echo $_SESSION['username'] ?></span>
+          <a class="navbar-item is-hidden-mobile is-hidden-tablet-only" href="<?php echo URLROOT . '/users/settings' ?>"><span class="mr-3 has-text-weight-semibold"><?php echo $_SESSION['username'] ?></span>
             <figure class="image">
               <img src="<?php echo Img::url_profile_pic($_SESSION['user_id'])?>">
             </figure>
@@ -48,15 +30,21 @@
           <!-- Show word 'Settings' when burger icon is on -->
           <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/users/settings' ?>">User Settings</a>
 
+          <!-- NEW POST -->
+          <?php require APPROOT . '/views/common/pic_it.php' ?>
+          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/camera'; ?>" >Webcam</a>
+          <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/posts/upload'; ?>" >Upload</a>
+
+          <!-- LOG OUT -->
+          <!-- Show button only when burger icon is off -->
           <div class="navbar-item is-hidden-mobile is-hidden-tablet-only">
-            <!-- Show 'Log out' button only when burger icon is off -->
             <div class="buttons">
               <a class="button is-light" href="<?php echo URLROOT . '/login/out'; ?>">
                 Log out
               </a>
             </div>
           </div>
-          <!-- Show word 'Settings' when burger icon is on -->
+          <!-- Show words 'Log out' when burger icon is on -->
           <a class="navbar-item is-hidden-desktop" href="<?php echo URLROOT . '/login/out'; ?>">
             Log out
           </a>
