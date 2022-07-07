@@ -25,7 +25,12 @@
             <!-- Comment modals opener -->
             <span class="media-right">
             <?php
-                echo '<i class="fa-regular fa-comment is-clickable has-text-primary p-2 open-modal" data-id="open-modal-'. $post['pic_id'] .'"></i> Comments';
+                // Pluralize the word comment
+                if ($post['comments_qty'] == 1)
+                    $comment_str = 'comment';
+                else
+                    $comment_str = 'comments';
+                echo '<i class="fa-regular fa-comment is-clickable has-text-primary p-2 open-modal" data-id="open-modal-'. $post['pic_id'] .'"></i>' . $post['comments_qty'] . " $comment_str";
             ?>
             </span>
         </div>

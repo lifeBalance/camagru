@@ -149,6 +149,7 @@ class Posts extends Controller
                 'url_pic'       => $url_pic,
                 'pic_id'        => $pic['id'],
                 'comments'      => $allComments,
+                'comments_qty'  => count($allComments),
                 'likes'         => $likes,
                 'user_liked'    => $liked,
             ];
