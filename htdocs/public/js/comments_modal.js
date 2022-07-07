@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const openModals = document.querySelectorAll('.open-modal');
-  const closeButtons = document.querySelectorAll('.delete');
+  const closeButtons = document.querySelectorAll('.delete') || false;
   const formBtns = document.querySelectorAll('.comment-btn');
 
   // Functions to open and close a modal
@@ -24,11 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Attaching event-listeners to CLOSE the comment modals
   closeButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      postId = e.target.getAttribute('data-id').replace('close-modal-', '');
-      const modal = document.querySelector(`[data-id=modal-${postId}]`);
-      closeModal(modal);
-    });
+    // Flash messages also have '.delete' class
+    if (button.hasAttribute('data-id'))
+    {
+      button.addEventListener('click', (e) => {
+        postId = e.target.getAttribute('data-id').replace('close-modal-', '');
+        const modal = document.querySelector(`[data-id=modal-${postId}]`);
+        closeModal(modal);
+      });
+    }
   });
   
   // Attaching event-listeners to fetch the form to the server
