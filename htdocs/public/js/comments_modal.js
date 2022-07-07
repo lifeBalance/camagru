@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         body: data
       })
       .then(response => {
-          // return response.text() // for checking back-end errors
           return response.json();
         })
       .then(comment => {
@@ -86,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.previousElementSibling.value = '';
         // console.log(comment); // Testing answer from server
       })
-      .catch(
-        //error => console.log(`Woops! ${error}`)
-      );
+      .catch((error) => {
+        console.error(`Woops! ${error}`);
+      });
     });
   });
 

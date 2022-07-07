@@ -50,16 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
           body: data
         })
         .then(response => {
-            // return response.text() // for checking back-end errors
-            return response.json();
+            return response.json(); // Parse JSON string into object
+          })
+          .then(parsed => {
+            // console.log(parsed); // Test it's an object
+            if (parsed.post_id == postId)
+              post.remove(); // remove post from DOM
         })
-        .then(respJSON => {
-          if (respJSON.post_id == postId)
-            post.remove(); // remove post from DOM
-        })
-        .catch(
-          //error => console.log(`Woops! ${error}`)
-        );
+        .catch((error) => {
+          console.error(`Woops! ${error}`);
+        });
       });
     });
   });

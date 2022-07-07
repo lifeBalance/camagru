@@ -206,7 +206,7 @@ class Posts extends Controller
                 $data['author'] = $this->usrModel->findById($_SESSION['user_id'])->username;
                 $data['ago'] = Time::ago($data['created_at']);
                 $data['profile_pic'] = Img::url_profile_pic($_SESSION['user_id']);
-                // send response back
+                // Send response back as JSON string
                 header('Content-type: application/json');
                 echo json_encode($data);
                 exit();
@@ -228,9 +228,10 @@ class Posts extends Controller
             // Remove db entry
             $this->picModel->deleteById($_POST['post_id']);
 
-            // send response back
+            // Send response back as JSON string
             if(!empty($_POST)) {
                 header('Content-type: application/json');
+                // error_log(json_encode($_POST));
                 echo json_encode($_POST);
                 exit();
             }
