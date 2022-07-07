@@ -1,4 +1,4 @@
 db_data
 msmtp-gmail.gpg
 stuff
-htdocs/public/uploads/*
+# htdocs/public/uploads/*
