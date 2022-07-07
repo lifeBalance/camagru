@@ -5,6 +5,7 @@ USER root
 COPY msmtprc /etc/msmtprc
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Helsinki
 
 RUN apt-get update && apt-get install -q -y                                     \
     zlib1g-dev msmtp msmtp-mta mailutils libpng-dev libjpeg-dev openssl         \
