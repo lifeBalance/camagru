@@ -21,7 +21,7 @@ class Mail
         $message = "Click $link to: <b>{$data['subject']}</b>\r\n";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
+        $headers .= 'From: <camaru.agru@gmail.com>' . "\r\n";
 
         return mail(
             '<' . $data['address'] . '>',
@@ -35,7 +35,7 @@ class Mail
         $message = "<b>{$data['username']}</b> commented on one of your posts\r\n";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= 'From: <camagru69@outlook.com>' . "\r\n";
+        $headers .= 'From: <camaru.agru@gmail.com>' . "\r\n";
 
         return mail(
             '<' . $data['address'] . '>',

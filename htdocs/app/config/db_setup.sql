@@ -27,7 +27,7 @@ VALUES
         1,
         'Bob',
         '',
-        'bob@gmail.com',
+        'agrucam@hotmail.com',
         '$2y$10$Wt2XXhvVfFyWSkupAL0OzOv3I9b9AZvPMUpoCo7FLosiAyzsD9FiW',
         1
     ),
@@ -35,9 +35,9 @@ VALUES
         2,
         'Lynda',
         'https://robohash.org/44585be6e8575964e1823fab8af2d66d?set=set4&bgset=&size=200x200',
-        'lynda@gmail.com',
+        'camagru69@outlook.com',
         '$2y$10$Fza7OXvlIuDKsxNHtG/zuO7.BKlaZyRy.KVRpK0nA3wxhjav3LVHK',
-        0
+        1
     );
 
 CREATE TABLE IF NOT EXISTS `pics` (
