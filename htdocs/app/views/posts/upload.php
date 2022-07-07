@@ -8,16 +8,17 @@
       <h2 class="title"><?php echo $title; ?></h2>
 
       <main>
-        <div id="card" class="hide">
+        <!-- <div id="card" class="hide"> -->
           <!-- Div contains img file and sticker (shows up when file is loaded -->
           <div id="previewDiv" class="hide">
             <canvas id="canvas" class="hide"></canvas>
-            <!-- <figure class="image is-square"> -->
-              <img src="" alt="" id="previewImg">
-              <!-- </figure> -->
+            <img src="" alt="" id="previewImg">
           </div>
           <!-- File input (shows up when sticker is selected -->
-          <?php require  APPROOT . '/views/common/upload.php' ?>
+          <div class="field is-grouped">
+            <?php require  APPROOT . '/views/common/upload.php' ?>
+            <input id="gallery" type="submit" value="Gallery" class="control button is-link ml-2 open-gallery">
+          </div>
 
           <form action="<?php echo URLROOT . '/posts/upload'; ?>" id="form">
             <div id="controls" hidden>
@@ -31,7 +32,7 @@
               </div>
             </div><!-- controls -->
           </form>
-        </div>
+        <!-- </div> -->
 
         <hr>
         <!-- Stickers -->
@@ -50,9 +51,8 @@
     </div><!-- column -->
   </div><!-- columns -->
 
-  <!-- <div class="sidebar"> -->
-    <!-- Dinamically load the user's taken pics -->
-  <!-- </div> -->
+  <!-- Gallery modal (Fuck sidebars!) -->
+  <?php require APPROOT . '/views/posts/gallery_modal.php' ?>
 </section>
 
 <?php require APPROOT . '/views/common/footer.php'; ?>

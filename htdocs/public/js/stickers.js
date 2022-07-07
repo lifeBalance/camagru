@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const card        = document.getElementById('card');
   const previewDiv  = document.getElementById('previewDiv');
   const snapBtn     = document.getElementById('snapBtn') || false;
+  const fileInput   = document.getElementById('fileInput') || false;
+  const fInputLabel = document.getElementById('fInputLabel') || false;
   let   tmp;
   let   name;
   let   clickedOnSticker;
@@ -15,7 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
   all.forEach((sticker) => {
     sticker.addEventListener('click', (event) => {
       // Unveil image preview and control buttons
-      card.style.display = 'block';
+      // card.style.display = 'block';
+      if (fileInput && fInputLabel) {
+        fileInput.disabled = false;
+        fInputLabel.textContent = 'Choose your file...';
+      }
 
       // Convenience variables to store the clicked on sticker and its 'name'.
       clickedOnSticker = event.currentTarget; // Parent of currentTarget

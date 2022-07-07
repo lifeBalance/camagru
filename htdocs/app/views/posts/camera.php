@@ -18,7 +18,7 @@
           <div id="controls">
             <div>
               <button id="snapBtn" class="button is-primary" disabled>Pic it!</button>
-              <input id="gallery" type="submit" value="Gallery" class="control button open-gallery">
+              <input id="gallery" type="submit" value="Gallery" class="control button is-link open-gallery">
             </div>
 
             <form id="form" action="<?php echo URLROOT . '/posts/camera'; ?>" hidden>

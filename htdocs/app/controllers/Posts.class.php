@@ -19,6 +19,7 @@ class Posts extends Controller
                 'upload.js',
                 'stickers.js',
                 'dragQueen.js',
+                'gallery_modal.js',
             ],
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -47,6 +48,8 @@ class Posts extends Controller
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'
             ]);
+            // Send down the user's gallery
+            $data['user_pics'] = $this->picModel->getAllFrom($_SESSION['user_id']);
             $this->render('posts/upload', $data);
         }
     }
@@ -90,6 +93,7 @@ class Posts extends Controller
             Flash::addFlashes([
                 'Select a sticker please!' => 'warning'
             ]);
+            // Send down the user's gallery
             $data['user_pics'] = $this->picModel->getAllFrom($_SESSION['user_id']);
             $this->render('posts/camera', $data);
         }
