@@ -25,9 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attaching event-listeners to CLOSE the comment modals
   closeButtons.forEach(button => {
     button.addEventListener('click', (e) => {
-      btnDataId = e.target.getAttribute('data-id');
-      modalDataId = btnDataId.replace('close-modal-', 'modal-');
-      const modal = document.querySelector(`[data-id=${modalDataId}]`);
+      postId = e.target.getAttribute('data-id').replace('close-modal-', '');
+      const modal = document.querySelector(`[data-id=modal-${postId}]`);
       closeModal(modal);
     });
   });
