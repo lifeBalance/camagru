@@ -66,9 +66,18 @@ user        "some.email@gmail.com"
 password    "xxxxxxxxxxxx"
 ```
 
-> From May 30, 2022, ​​Google no longer supports the use of third-party apps or devices which ask you to sign in to your Google Account using only your username and password.
+But I was having problems authenticating with just username and password:
+```
+sendmail: authentication failed (method PLAIN)
+sendmail: server message: 535-5.7.8 Username and Password not accepted.
+```
 
-But I was having problems authenticating with just username and password, but I solved it using the following the steps:
+The reason for that was:
+```
+From May 30, 2022, ​​Google no longer supports the use of third-party apps or devices which ask you to sign in to your Google Account using only your username and password.
+```
+
+So I had to take the following the steps:
 
 1. Go to your Google Account (click on your avatar -> Manage your Google Account(above list of yout all account))
 2. Find Security Menu (left side menu)

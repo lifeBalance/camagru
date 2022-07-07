@@ -10,11 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let   formData;
   let   initialized = false;
 
-  // Set measurements of the canvas
-  // video.onloadedmetadata = (e) => {
-  //   canvas.setAttribute('width', video.videoWidth);
-  //   canvas.setAttribute('height', video.videoHeight);
-  // };
   video.addEventListener(
     'canplay',
     () => {

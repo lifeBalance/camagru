@@ -210,6 +210,9 @@ class Users extends Controller
                 'password'      => '',
                 'pwdConfirm'    => '',
                 'pushNotif'     => ($user->push_notif) ? 'checked' : '',
+                'scripts' => [
+                    'main.js',
+                ],
             ];
             $this->render('users/settings', $formData);
         }

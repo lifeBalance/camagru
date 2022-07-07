@@ -27,8 +27,9 @@ Next are my notes about what I learned while doing so (expect lots of memes).
 * [That model gives me the DB-jeebies](./README/model_class.md)
 * [Models, views, controllers: the MVC workflow](./README/workflow.md)
 * [Webcam Snapshots](./README/camera.md)
+* [Sending mail](./README/mail.md)
 
-- [] Learn how to setup a sendmail container. Mb smtp? (https://marlam.de/)
+- [] Learn how to use PHP namespaces.
 
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
