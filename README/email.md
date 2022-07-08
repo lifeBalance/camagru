@@ -114,3 +114,34 @@ export MAINPWD=1234ass
 ```
 docker compose up
 ```
+
+## Timezone
+Something I noticed once the emails we're showing up, was the wrong times due to a misconfigured timezone in the containers. The solution was quite simple, setting up an [environment variable](https://docs.docker.com/engine/reference/builder/#env) in the `Dockerfile`:
+```
+ENV TZ=Europe/Helsinki
+```
+
+For that to work, we need the [tzdata](https://packages.debian.org/buster/tzdata) installed in the container, which we can check using:
+```
+$ dpkg -s tzdata
+Package: tzdata
+Status: install ok installed
+[...]
+```
+
+In my case it was already installed, so setting the aforementioned environment variable was enough. By the way, you can make sure the time is right using the `date` command. Once the **system timezone** was correct, I had to add the following setting to my **PHP configuration**:
+```
+date.timezone = "Europe/Helsinki"
+```
+
+To check all is working, we have to restart the server, pull up a php interactive shell and print the date:
+```
+$ php -a
+php> echo date('l jS \of F Y h:i:s A');
+Friday 8th of July 2022 10:51:41 AM
+```
+
+The last part of the puzzle was to set the email headers in [mail()](https://www.php.net/manual/en/function.mail.php):
+```
+$headers .= 'Date: ' . date("r") . "\r\n";
+```

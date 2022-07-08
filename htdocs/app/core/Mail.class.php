@@ -19,8 +19,9 @@ class Mail
             $href .= "/{$data['token']}";
         $link = '<a href="' .$href . '">here</a>';
         $message = "Click $link to: <b>{$data['subject']}</b>\r\n";
-        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= 'Date: ' . date("r") . "\r\n";
         $headers .= 'From: <camaru.agru@gmail.com>' . "\r\n";
 
         return mail(
@@ -33,8 +34,9 @@ class Mail
     static function notify($data)
     {
         $message = "<b>{$data['username']}</b> commented on one of your posts\r\n";
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers =  'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type:text/html;charset=UTF-8' . "\r\n";
+        $headers .= 'Date: ' . date("r") . "\r\n";
         $headers .= 'From: <camaru.agru@gmail.com>' . "\r\n";
 
         return mail(
