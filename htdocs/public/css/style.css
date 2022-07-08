@@ -40,3 +40,20 @@ body {
 .greyish {
     color: #555353;
 }
+
+#grid {
+    display: inline-grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    background-color: white;
+    padding: 0.5em;
+}
+#grid figure {
+    margin: 0;
+    padding: 0;
+}
+
+#grid img {
+    display: block;
+    max-width: 80%;
+    height: auto;
+}

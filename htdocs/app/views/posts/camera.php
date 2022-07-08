@@ -36,16 +36,7 @@
         <hr>
         <!-- Stickers -->
         <h2 class="title mb-3">Select some sticker</h2>
-        <div class="stickers mt-5 box is-clearfix">
-          <!-- Dinamically load the stickers -->
-          <?php
-            $images = glob('assets/stickers/' . "*.png");
-            foreach ($images as $idx => $img) {
-              $url = URLROOT . "/$img";
-              require APPROOT . '/views/common/sticker.php';
-            }
-          ?>
-        </div> <!-- stickers -->
+        <?php require APPROOT . '/views/common/stickers_grid.php'; ?>
       </main>
     </div> <!-- column -->
   </div> <!-- columns -->

@@ -1,11 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const isTouchDevice = () => {  
+    return window.matchMedia("(pointer: coarse)").matches  
+  }
+
   // DRAGGING STICKERS
   const prevDiv = document.getElementById('previewDiv');
   let   deltaX = 0, deltaY = 0, startX = 0, startY = 0;
   let   active = false;
 
-  // For getting delta on pointer position
-  prevDiv.addEventListener('pointerdown',  ptrDownHandler, false);
+  if (isTouchDevice())
+  {
+    prevDiv.addEventListener('touchstart', touchStartHandler, {passive: true});
+  } else {
+    prevDiv.addEventListener('pointerdown',  ptrDownHandler, false);
+  }
 
   function ptrDownHandler(e) {
     e.preventDefault();
@@ -20,9 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function ptrMoveHandler(e) {
-    if (e.target.parentElement.classList.contains('clone')) {
+    e.preventDefault();
+
+    if (e.target.classList.contains('clone')) {
       // "Box" of the sticker
-      let boxRect = e.target.parentElement.getBoundingClientRect();
+      let boxRect = e.target.getBoundingClientRect();
 
       // calculate the change in cursor location
       deltaX = startX - e.clientX;
@@ -34,27 +44,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // set the element's new position:
       if (active) {
-        e.target.parentElement.style.top = `${e.target.parentElement.offsetTop - deltaY}px`;
-        e.target.parentElement.style.left = `${e.target.parentElement.offsetLeft - deltaX}px`;
+        e.target.style.top = `${e.target.offsetTop - deltaY}px`;
+        e.target.style.left = `${e.target.offsetLeft - deltaX}px`;
       }
 
-      if (getOffset(prevDiv).left + parseInt(e.target.parentElement.style.left) + e.target.parentElement.offsetWidth >= getOffset(prevDiv).right)
+      if (getOffset(prevDiv).left + parseInt(e.target.style.left) + e.target.offsetWidth >= getOffset(prevDiv).right)
         active = false;
-      if (getOffset(prevDiv).top + parseInt(e.target.parentElement.style.top) + boxRect.height >= getOffset(prevDiv).bottom)
+      if (getOffset(prevDiv).top + parseInt(e.target.style.top) + boxRect.height >= getOffset(prevDiv).bottom)
         active = false;
-      if (e.target.parentElement.offsetTop - deltaY <= 0 || e.target.parentElement.offsetLeft - deltaX <= 0)
+      if (e.target.offsetTop - deltaY <= 0 || e.target.offsetLeft - deltaX <= 0)
         active = false;
     }
   }
 
   function ptrUpHandler(e) {
     active = false;
-    if (e.target.parentElement.classList.contains('clone')) {
-      sticker = selectedStickers.find(obj => obj.name == e.target.parentElement.id);
+    if (e.target.classList.contains('clone')) {
+      sticker = selectedStickers.find(obj => obj.name == e.target.id);
       // Store the sticker's position in the selectedStickers array.
-      sticker.xPos = e.target.parentElement.style.left;
-      sticker.yPos = e.target.parentElement.style.top;
-      // console.log(`${sticker.name}: ${sticker.xPos}:${sticker.yPos}`);
+      sticker.xPos = e.target.style.left;
+      sticker.yPos = e.target.style.top;
     }
   }
 
@@ -67,4 +76,55 @@ document.addEventListener('DOMContentLoaded', () => {
       bottom: parseInt(rect.bottom + window.scrollY),
     };
   }
+
+  function touchMoveHandler(e) {
+    // e.preventDefault();
+
+    if (e.target.classList.contains('clone')) {
+      // "Box" of the sticker
+      let boxRect = e.target.getBoundingClientRect();
+
+      deltaX = startX - e.changedTouches[0].clientX;
+      deltaY = startY - e.changedTouches[0].clientY;
+
+      startX = e.changedTouches[0].clientX;
+      startY = e.changedTouches[0].clientY;
+
+      // set the element's new position:
+      if (active) {
+        e.target.style.top = `${e.target.offsetTop - deltaY}px`;
+        e.target.style.left = `${e.target.offsetLeft - deltaX}px`;
+      }
+
+      if (getOffset(prevDiv).left + parseInt(e.target.style.left) + e.target.offsetWidth >= getOffset(prevDiv).right)
+        active = false;
+      if (getOffset(prevDiv).top + parseInt(e.target.style.top) + boxRect.height >= getOffset(prevDiv).bottom)
+        active = false;
+      if (e.target.offsetTop - deltaY <= 0 || e.target.offsetLeft - deltaX <= 0)
+        active = false;
+    }
+  }
+
+  function touchStartHandler(e) {
+    // e.preventDefault();
+
+    prevDiv.addEventListener('touchmove', touchMoveHandler, { passive: true});
+    prevDiv.addEventListener('touchend', touchEndHandler, { passive: true} );
+    // Get a starting value to calculate the pointer's position delta
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    active = true;
+  }
+
+  function touchEndHandler(e) {
+    active = false;
+    if (e.target.classList.contains('clone')) {
+      sticker = selectedStickers.find(obj => obj.name == e.target.id);
+      // Store the sticker's position in the selectedStickers array.
+      sticker.xPos = e.target.style.left;
+      sticker.yPos = e.target.style.top;
+      // console.log(`${sticker.name}: ${sticker.xPos}:${sticker.yPos}`);
+    }
+  }
+
 }); // End of 'DOMContentLoaded' event listener/handler
