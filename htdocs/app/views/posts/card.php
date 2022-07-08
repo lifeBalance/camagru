@@ -30,11 +30,11 @@
                     $comment_str = 'comment';
                 else
                     $comment_str = 'comments';
-                echo '<i class="fa-regular fa-comment is-clickable has-text-primary p-2 open-modal" data-id="open-modal-'. $post['pic_id'] .'"></i>' . $post['comments_qty'] . " $comment_str";
+                echo '<i class="fa-regular fa-comment is-clickable has-text-primary p-2 open-modal" data-id="open-modal-'. $post['pic_id'] .'"></i>' . '<span id="comments-qty-' . $post['pic_id'] . '">' . $post['comments_qty'] . '</span> ' . $comment_str;
             ?>
             </span>
         </div>
     </div><!-- card-content -->
     <!-- The modal view -->
-    <?php require APPROOT . '/views/common/comments_modal.php'; ?>
+    <?php require APPROOT . '/views/posts/comments_modal.php'; ?>
 </div>

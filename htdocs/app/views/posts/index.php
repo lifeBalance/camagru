@@ -6,7 +6,7 @@
             <?php require APPROOT . '/views/common/flashes.php'; ?>
 
             <?php foreach($posts as $post) {
-                require APPROOT . '/views/common/card.php';
+                require APPROOT . '/views/posts/card.php';
             }
             ?>
         </div>

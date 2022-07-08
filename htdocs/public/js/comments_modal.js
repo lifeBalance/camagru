@@ -40,13 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', (e) => {
       e.preventDefault(); // prevent form submission
 
-      btnDataId = e.target.getAttribute('data-id');
-      
-      sectionDataId = linkDataId.replace('open-modal-', 'section-');
+      // Get post id from the data-id attribute of the clicked icon
+      let postId = e.target.getAttribute('data-id').replace('btn-', '');
 
       data = new FormData();
-      data.append('pic_id', e.target.getAttribute('data-id').replace('btn-', ''));
-      // Traverse up to the text area to get the comment
+      data.append('pic_id', postId);
+      // Traverse up to the text input to get the comment
       let comment = e.target.previousElementSibling.value;
       data.append('comment', comment);
 
@@ -78,11 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="content">${comment.comment}</div>
 </div>`;
         // Select section with the comments
-        commentsSection = document.querySelector(`[data-id=${sectionDataId}]`);
+        commentsSection = document.querySelector(`[data-id=section-${postId}]`);
         // Insert new comment (with Ajax data) at the end of the secion
         commentsSection.insertAdjacentHTML('beforeend', newComment);
         // Clear the text input
         e.target.previousElementSibling.value = '';
+        const commentsQty = document.getElementById(`comments-qty-${postId}`);
+        let val = parseInt(commentsQty.textContent) + 1;
+        commentsQty.textContent = val;
         // console.log(comment); // Testing answer from server
       })
       .catch((error) => {
