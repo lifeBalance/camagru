@@ -270,7 +270,7 @@ class Users extends Controller
             }
         // Can't access the form if logged out!
         } else {
-            $this->redirect('/');
+            $this->redirect('/login/new');
         }
     }
 }

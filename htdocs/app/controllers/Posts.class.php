@@ -12,6 +12,11 @@ class Posts extends Controller
 
     public function upload()
     {
+        // Redirect to login page if user is not logged in
+        if (!isset($_SESSION['user_id'])) {
+            $this->redirect('/login/new');
+            die();
+        }
         $data = [
             'title' => '<p><i class="fa-solid fa-camera-retro"></i> shy, huh? &#128527;</p>',
             'scripts' => [
@@ -49,13 +54,20 @@ class Posts extends Controller
                 'Select a sticker please!' => 'warning'
             ]);
             // Send down the user's gallery
-            $data['user_pics'] = $this->picModel->getAllFrom($_SESSION['user_id']);
-            $this->render('posts/upload', $data);
+            if (isset($_SESSION['user_id'])) {
+                $data['user_pics'] = $this->picModel->getAllFrom($_SESSION['user_id']);
+                $this->render('posts/upload', $data);
+            }
         }
     }
 
     public function camera()
     {
+        // Redirect to login page if user is not logged in
+        if (!isset($_SESSION['user_id'])) {
+            $this->redirect('/login/new');
+            die();
+        }
         $data = [
             'title' => '<p>Say &#129472;!</p>',
             'scripts' => [
