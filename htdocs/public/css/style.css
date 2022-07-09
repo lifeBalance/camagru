@@ -1,6 +1,13 @@
 body {
     background-color: aquamarine;
 }
+.wrapper {
+    min-height: 80vh;
+}
+
+.footer {
+    min-height: 20vh;
+}
 
 #previewDiv {
     position: relative;

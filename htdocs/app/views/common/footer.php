@@ -1,3 +1,4 @@
+  </div><!-- wrapper -->
   <footer class="footer has-background-primary-dark">
     <div class="content has-text-centered">
       <p class="greyish">
