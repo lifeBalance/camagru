@@ -62,8 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.classList.contains('clone')) {
       sticker = selectedStickers.find(obj => obj.name == e.target.id);
       // Store the sticker's position in the selectedStickers array.
-      sticker.xPos = e.target.style.left;
-      sticker.yPos = e.target.style.top;
+      sticker.xPos = parseInt(e.target.style.left);
+      sticker.yPos = parseInt(e.target.style.top);
+      // console.log(`ptr: ${sticker.name}: [${sticker.xPos}, ${sticker.yPos}]`);
     }
   }
 
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function touchMoveHandler(e) {
-    // e.preventDefault();
+    // e.preventDefault(); // Don't use this here!!
 
     if (e.target.classList.contains('clone')) {
       // "Box" of the sticker
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function touchStartHandler(e) {
-    // e.preventDefault();
+    // e.preventDefault(); // Don't use this here!!
 
     prevDiv.addEventListener('touchmove', touchMoveHandler, { passive: true});
     prevDiv.addEventListener('touchend', touchEndHandler, { passive: true} );
@@ -121,9 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.classList.contains('clone')) {
       sticker = selectedStickers.find(obj => obj.name == e.target.id);
       // Store the sticker's position in the selectedStickers array.
-      sticker.xPos = e.target.style.left;
-      sticker.yPos = e.target.style.top;
-      // console.log(`${sticker.name}: ${sticker.xPos}:${sticker.yPos}`);
+      sticker.xPos = parseInt(e.target.style.left);
+      sticker.yPos = parseInt(e.target.style.top);
+      // console.log(`touch: ${sticker.name}: [${sticker.xPos}, ${sticker.yPos}]`);
     }
   }
 

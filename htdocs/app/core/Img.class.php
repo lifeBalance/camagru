@@ -4,9 +4,6 @@ class Img
 {
     static function merge($user_file, $stickers)
     {
-        // Turn the 'stickers' string (name and coordinates) into array.
-        $stickers = json_decode($stickers);
-
         // Create  GdImage instance out of the user's image
         $usr_gdi = imagecreatefrompng($user_file);
         // Compute dimensions for the user's image
@@ -28,10 +25,10 @@ class Img
         // Copy the stickers to the canvas
         foreach ($stickers as $sticker) {
             $name       = $sticker[0];
-            $dst_x      = preg_replace("/[^0-9]/", '', $sticker[1]);
-            $dst_y      = preg_replace("/[^0-9]/", '', $sticker[2]);
-            $src_width  = $sticker[3];
-            $src_height = $sticker[4];
+            $dst_x      = (int) $sticker[1];
+            $dst_y      = (int) $sticker[2];
+            $src_width  = (int) $sticker[3];
+            $src_height = (int) $sticker[4];
 
             // Load sticker file
             $stickers_folder = PUBLIC_DIR . '/assets/stickers';

@@ -36,7 +36,7 @@ class Posts extends Controller
                 file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
 
                 // Merge the user's image with the stickers
-                Img::merge(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
+                Img::merge(UPLOADS_DIR . "/$name.png", json_decode($_POST['stickers']));
 
                 // Pic intel
                 $data = [
@@ -46,7 +46,7 @@ class Posts extends Controller
                 $this->write_post_data($data);
 
                 Flash::addFlashes([
-                    'pic uploaded!' => 'success'
+                    'Pic uploaded!' => 'success'
                 ]);
             }
         } else {
@@ -88,17 +88,21 @@ class Posts extends Controller
                 file_put_contents(UPLOADS_DIR . "/$name.png", file_get_contents($_POST['img']));
 
                 // Merge the user's image with the stickers
-                Img::merge(UPLOADS_DIR . "/$name.png", $_POST['stickers']);
+                Img::merge(UPLOADS_DIR . "/$name.png", json_decode($_POST['stickers']));
 
                 // Pic intel
                 $data = [
                     'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                     'filename'      => $name,
+                    'stickers'      => $_POST['stickers']
                 ];
                 $this->write_post_data($data);
-
+                // Send response back as JSON string (check everything is OK)
+                // header('Content-type: application/json');
+                // echo json_encode($data);
+                // exit();
                 Flash::addFlashes([
-                    'pic uploaded!' => 'success'
+                    'Pic uploaded!' => 'success'
                 ]);
             }
         } else {

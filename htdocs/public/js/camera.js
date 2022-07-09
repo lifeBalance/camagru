@@ -61,13 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectedStickers.length > 0) {
       let stickers = '[';
       for (let i = 0; i < selectedStickers.length; i++) {
-        const st = selectedStickers[i];
-        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}", "${st.width}", ${st.height}]`;
+        let st = selectedStickers[i];
+        stickers += `["${st.name}", "${st.xPos}", "${st.yPos}", "${st.width}", "${st.height}"]`;
         if (i < selectedStickers.length - 1)
           stickers += ', ';
-      }
-      stickers += ']';
-      formData.append('stickers', stickers);
+        }
+        stickers += ']';
+        formData.append('stickers', stickers);
+        console.log(stickers);
+        // return;
     }
 
     // Extract the URL from the value of 'action' in the form
@@ -78,9 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => {
       const urlObject = new URL(response.url);
       window.location.assign(urlObject.origin);
+      // return response.json();  // test everything is aight
+    })
+    .then(parsed => {
+      // console.log(parsed); // test everything is aight
     })
     .catch((error) => {
-      console.error('Error:', error);
+      console.log('Error:', error);
     });
   }); // End of 'submit' event listener/handler
 
