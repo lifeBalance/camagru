@@ -96,8 +96,10 @@ class Login extends Controller
         }
         // Finally, destroy the session.
         session_destroy();
-
-        $this->redirect('/login/flashlogout');
+        if ($_SERVER['HTTP_REFERER'] == URLROOT . '/users/settings')
+            $this->redirect('/login/flashnewsettings');
+        else
+            $this->redirect('/login/flashlogout');
     }
 
     /**
@@ -107,6 +109,15 @@ class Login extends Controller
     public function flashlogout()
     {
         Flash::addFlashes(['See ya later dawg!' => 'success']);
+        $this->redirect('/');
+    }
+    /**
+     * Helper function that calls 'addFlashes' to be able to inform the user
+     * about having been logged out because of new email settings.
+     */
+    public function flashnewsettings()
+    {
+        Flash::addFlashes(['Confirm your account before login in!' => 'warning']);
         $this->redirect('/');
     }
 

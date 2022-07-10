@@ -265,6 +265,8 @@ class Users extends Controller
                             "Don't hold your breath waiting for the email, dawg!" => 'error'
                         ]);
                     }
+                    $this->redirect('/login/out');
+                    die();
                 }
                 $this->redirect('/');
             }
