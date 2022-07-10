@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         stickers += ']';
         formData.append('stickers', stickers);
-        console.log(stickers);
+        // console.log(stickers);
         // return;
     }
 
