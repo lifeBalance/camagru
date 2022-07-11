@@ -234,22 +234,25 @@ class Posts extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            // Delete pic, comments and likes
-            $this->likeModel->deleteById($_POST['post_id']);
-            $this->commentModel->deleteById($_POST['post_id']);
-            // Delete the picture file before!!!
-            $filename = $this->picModel->getFilenameById($_POST['post_id']);
-            // Remove filename
-            unlink(PUBLIC_DIR . "/uploads/$filename.png");
-            // Remove db entry
-            $this->picModel->deleteById($_POST['post_id']);
+            if ($this->picModel->getAuthorId($_POST['post_id']) == $_SESSION['user_id'])
+            {
+                // Delete pic, comments and likes
+                $this->likeModel->deleteById($_POST['post_id']);
+                $this->commentModel->deleteById($_POST['post_id']);
+                // Delete the picture file before!!!
+                $filename = $this->picModel->getFilenameById($_POST['post_id']);
+                // Remove filename
+                unlink(PUBLIC_DIR . "/uploads/$filename.png");
+                // Remove db entry
+                $this->picModel->deleteById($_POST['post_id']);
 
-            // Send response back as JSON string
-            if(!empty($_POST)) {
-                header('Content-type: application/json');
-                // error_log(json_encode($_POST));
-                echo json_encode($_POST);
-                exit();
+                // Send response back as JSON string
+                if(!empty($_POST)) {
+                    header('Content-type: application/json');
+                    // error_log(json_encode($_POST));
+                    echo json_encode($_POST);
+                    exit();
+                }
             }
         }
     }
