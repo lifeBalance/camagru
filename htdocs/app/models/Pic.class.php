@@ -31,7 +31,7 @@ class Pic extends Model
     public function getAll()
     {
         $db = static::getDB();
-        $sql = 'SELECT * FROM pics ORDER BY created_at';
+        $sql = 'SELECT * FROM pics ORDER BY created_at DESC';
         $stmt = $db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
