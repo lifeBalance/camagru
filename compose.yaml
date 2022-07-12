@@ -22,6 +22,7 @@ services:
       - mysql
       - php-apache
     image: phpmyadmin:5.1.3-apache
+    container_name: phpmyadmin
     ports:
       - 8081:80
     environment:
