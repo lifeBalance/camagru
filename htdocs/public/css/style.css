@@ -9,6 +9,10 @@ body {
     min-height: 20vh;
 }
 
+.op-hr {
+    border: 3px outset #00d1b2;
+}
+
 #previewDiv {
     position: relative;
     width: fit-content;

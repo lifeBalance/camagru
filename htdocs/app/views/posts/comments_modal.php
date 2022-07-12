@@ -9,7 +9,9 @@
         <?php
             foreach($post['comments'] as $k => $comment) {
                 require APPROOT . '/views/common/comment.php';
-                if ($k < count($post['comments']) - 1)
+                if ($k == 0)
+                    echo '<hr class="mt-1 op-hr" >';
+                else if ($k < count($post['comments']) - 1)
                     echo '<hr class="mt-1">';
             }
         ?>
