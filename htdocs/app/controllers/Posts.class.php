@@ -199,8 +199,10 @@ class Posts extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             if ($_POST['comment'] && $_SESSION['user_id']) {
+                // Truncate the comment to the maximum length the db takes
+                $truncated = substr(filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS), 0, 255);
                 $data = [
-                    'comment'       =>  filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'comment'       =>  $truncated,
                     'user_id'       => $_SESSION['user_id'],
                     'pic_id'        => $_POST['pic_id'],
                     'created_at'    => date('Y-m-d H:i:s')
