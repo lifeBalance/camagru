@@ -47,8 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
       data.append('pic_id', postId);
       // Traverse up to the text input to get the comment
       let comment = e.target.previousElementSibling.value;
+      if (comment.length == 0) {
+        alert('No empty comments son!');
+        return ;
+      }
       data.append('comment', comment);
-
       url = window.location.href + 'posts/comment';
       fetch(url, {
         method: 'POST',

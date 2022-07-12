@@ -9,7 +9,7 @@
         <p class="title is-6">@<?php echo $_SESSION['username'] ?></p>
         <p class="subtitle is-6 mb-2">Write your comment:</p>
         <div class="field">
-            <input type="text" class="input is-medium mb-1" placeholder="Write a comment"></input>
+            <input type="text" class="input is-medium mb-1" maxlength="255" placeholder="Max. 255 characters"></input>
             <button class="button is-primary comment-btn" data-id="btn-<?php echo $post['pic_id'] ?>">Comment</button>
         </div>
     </div>

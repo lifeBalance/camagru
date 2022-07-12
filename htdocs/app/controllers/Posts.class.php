@@ -201,6 +201,9 @@ class Posts extends Controller
             if ($_POST['comment'] && $_SESSION['user_id']) {
                 // Truncate the comment to the maximum length the db takes
                 $truncated = substr(filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS), 0, 255);
+                // Exit if it's an empty comment (not to store empty comments in db)
+                if (strlen($truncated) == 0)
+                    return;
                 $data = [
                     'comment'       =>  $truncated,
                     'user_id'       => $_SESSION['user_id'],

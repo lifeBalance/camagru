@@ -20,7 +20,7 @@
         <?php
         // Button to submit the comment
         if (isset($_SESSION['user_id'])) {
-            require APPROOT . '/views/common/modal_form.php';
+            require APPROOT . '/views/common/comment_form.php';
         }
         ?>
     </footer>
