@@ -232,12 +232,23 @@ class Users extends Controller
                 ],
             ];
             $oldSettings = $this->userModel->findById($_SESSION['user_id']);
-
-            if ($this->userModel->edit($data, $_SESSION['user_id']) === false) {
+            // When email has been changed, check that new email doesn't already exist in the db
+            if ($data['email'] != $oldSettings->email &&
+                $this->userModel->findByEmail($data['email']))
+            {
+                // Load FAULTY form
+                Flash::addFlashes(['That email is already taken' => 'error']);
+                $this->render('users/settings', $data);
+            }
+            else if ($this->userModel->edit($data, $_SESSION['user_id']) === false)
+            {
                 // Load FAULTY form
                 Flash::addFlashes($this->userModel->errors);
                 $this->render('users/settings', $data);
-            } else {
+            }
+            else
+            {
+                // No errors in the form
                 $newSettings = $this->userModel->findById($_SESSION['user_id']);
                 Flash::addFlashes(['Your account settings have been updated' => 'warning']);
                 $_SESSION['username'] = $newSettings->username; // So we don't lose 'Welcome X' msg
