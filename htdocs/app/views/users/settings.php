@@ -19,17 +19,17 @@
 
                 <div class="field">
                     <label for="gravatar" class="label">Gravatar: </label>
-                    <input id="gravatar" type="text" name="gravatar" value="<?php echo $gravatar; ?>" placeholder="gravatar" class="control input">
+                    <input id="gravatar" type="text" name="gravatar" value="<?php echo $gravatar; ?>" placeholder="Between 0-255 characters." class="control input">
                 </div>
 
                 <div class="field">
                     <label for="password" class="label">New Password: </label>
-                    <input id="password" type="password" name="password" placeholder="Password" class="control input" autocomplete="new-password">
+                    <input id="password" type="password" name="password" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password">
                 </div>
 
                 <div class="field">
                     <label for="pwdConfirm" class="label">Confirm New Password: </label>
-                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Confirm Password" class="control input" autocomplete="new-password">
+                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password">
                 </div>
 
                 <div class="columns is-vcentered">

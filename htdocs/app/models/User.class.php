@@ -26,7 +26,7 @@ class User extends Model
         if (empty($this->errors)) {
             // Check that the email doesn't exist in the database!!!
             if ($this->findByEmail($data['email'])) {
-                $this->errors['user with that email already exists'] = 'error';
+                $this->errors['User with that email already exists'] = 'error';
                 return false;
             }
             $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -103,22 +103,24 @@ class User extends Model
     public function validateSettingsForm($data)
     {
         if (empty($data['username']))
-            $this->errors['name is required'] = 'danger';
+            $this->errors['Username is required'] = 'danger';
         if (strlen($data['username']) > 50)
-            $this->errors['username max. 50 characters long'] = 'danger';
+            $this->errors['Username too long (max. 50 characters)'] = 'danger';
         if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false)
-            $this->errors['valid email is required'] = 'danger';
+            $this->errors['Valid email is required'] = 'danger';
+        if (strlen($data['gravatar']) > 255)
+            $this->errors['Gravatar too long (max. 255 characters)'] = 'danger';
         // Verify password errors only if a password was submitted
         if (isset($data['password']))
         {
-            if (strlen($data['password']) < 6)
-                $this->errors['new password must be at least 6 characters long'] = 'danger';
-            else if (preg_match('/.*[a-z]+.*/i', $data['password']) == 0)
-                $this->errors['new password needs at least 1 letter'] = 'danger';
-            else if (preg_match('/.*\d+.*/i', $data['password']) == 0)
-                $this->errors['new password needs at least 1 number'] = 'danger';
-            else if ($data['password'] != $data['pwdConfirm'])
-                $this->errors["passwords don't match"] = 'danger';
+            if (strlen($data['password']) < 6 || strlen($data['password']) > 255)
+                $this->errors['New password must be between 6-255 characters long'] = 'danger';
+            if (preg_match('/.*[a-z]+.*/i', $data['password']) == 0)
+                $this->errors['New password needs at least 1 letter'] = 'danger';
+            if (preg_match('/.*\d+.*/i', $data['password']) == 0)
+                $this->errors['New password needs at least 1 number'] = 'danger';
+            if ($data['password'] != $data['pwdConfirm'])
+                $this->errors["Passwords don't match"] = 'danger';
         }
     }
     /**
@@ -132,21 +134,23 @@ class User extends Model
     public function validateRegisterForm($data)
     {
         if (empty($data['username']))
-            $this->errors['name is required'] = 'danger';
+            $this->errors['Username is required'] = 'danger';
         if (strlen($data['username']) > 50)
-            $this->errors['username max. 50 characters long'] = 'danger';
+            $this->errors['Username too long (max. 50 characters)'] = 'danger';
         if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false)
-            $this->errors['valid email is required'] = 'danger';
+            $this->errors['Valid email is required'] = 'danger';
         if (empty($data['password']))
-            $this->errors['password is required'] = 'danger';
-        else if (strlen($data['password']) < 6)
-            $this->errors['password must be at least 6 characters long'] = 'danger';
+            $this->errors['Password is required'] = 'danger';
+        else if (strlen($data['password']) < 6 || strlen($data['password']) > 255)
+            $this->errors['Password must be between 6-255 characters long'] = 'danger';
         else if (preg_match('/.*[a-z]+.*/i', $data['password']) == 0)
-            $this->errors['password needs at least 1 letter'] = 'danger';
+            $this->errors['Password needs at least 1 letter'] = 'danger';
         else if (preg_match('/.*\d+.*/i', $data['password']) == 0)
-            $this->errors['password needs at least 1 number'] = 'danger';
+            $this->errors['Password needs at least 1 number'] = 'danger';
         else if ($data['password'] != $data['pwdConfirm'])
-            $this->errors["passwords don't match"] = 'danger';
+            $this->errors["Passwords don't match"] = 'danger';
+        else if (strlen($data['gravatar']) > 255)
+            $this->errors['Gravatar too long (max. 255 characters)'] = 'danger';
     }
 
     /**

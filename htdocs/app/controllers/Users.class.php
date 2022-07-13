@@ -220,11 +220,11 @@ class Users extends Controller
         else if ($this->isLoggedIn() && $_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
             $data = [
-                'action' => 'register',
+                'action'        => 'register',
                 'email'         => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
                 'username'      => filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'password' => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pwdConfirm' => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'gravatar'      => filter_var($_POST['gravatar'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'pushNotif'     => isset($_POST['pushNotif']) ? true : false,
                 'scripts' => [
@@ -245,7 +245,7 @@ class Users extends Controller
                 Flash::addFlashes(['That email is already taken' => 'danger']);
                 $this->render('users/settings', $data);
             }
-            else if ($this->userModel->edit($data, $_SESSION['user_id']) === false)
+            else if ($this->userModel->edit($data, $_SESSION['user_id']) == false)
             {
                 // Load FAULTY form
                 Flash::addFlashes($this->userModel->errors);
