@@ -103,7 +103,7 @@ class Users extends Controller
             if ($authenticatedUser) {
                 if ($authenticatedUser->confirmed) {
                     Flash::addFlashes([
-                        'Your account is already confirmed. Go log in!' => 'success'
+                        'Your account is already confirmed. Go log in' => 'success'
                     ]);
                 } else {
                     $data = [

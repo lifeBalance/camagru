@@ -160,9 +160,9 @@ class User extends Model
     public function validateLoginForm()
     {
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false)
-            $this->errors['email is required'] = 'danger';
+            $this->errors['Email is required'] = 'danger';
         if (empty($this->password))
-            $this->errors['password is required'] = 'danger';
+            $this->errors['Password is required'] = 'danger';
     }
 
     /**
@@ -181,14 +181,14 @@ class User extends Model
         $foundUser = $this->findByEmail($this->email);
         if ($foundUser) {
             if (!password_verify($this->password, $foundUser->pwd_hash)) {
-                $this->errors['wrong password'] = 'danger';
+                $this->errors['Wrong password'] = 'danger';
                 return false;
             }
             else {
                 return $foundUser;
             }
         } else {
-            $this->errors['user does not exist'] = 'danger';
+            $this->errors['User does not exist'] = 'danger';
             return false;
         }
     }
