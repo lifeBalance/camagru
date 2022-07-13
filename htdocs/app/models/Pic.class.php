@@ -45,17 +45,17 @@ class Pic extends Model
         return $db->query($sql)->fetchColumn();
     }
 
-    public function getPage($pgNumber)
+    public function getPage($pgNumber, $amount)
     {
         $db = static::getDB();
-        $posts_per_page = 4;
         // offset is zero-based
-        $offset = ($pgNumber - 1) * $posts_per_page;
+        $offset = ($pgNumber - 1) * $amount;
         $sql = 'SELECT * FROM pics
                 ORDER BY created_at DESC
-                LIMIT :offset, 4';
+                LIMIT :offset, :row_count';
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':row_count', $amount, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

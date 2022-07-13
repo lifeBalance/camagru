@@ -130,7 +130,7 @@ class Posts extends Controller
     {
         if (isset($args[0]) && is_numeric($args[0]))
         {
-            $postsPerPage = 4;
+            $postsPerPage = 5;
             $page = (int)$args[0];
             $pages = ceil($this->picModel->getAmountPics() / $postsPerPage);
             if ($page > $pages || $page < 0)
@@ -157,7 +157,7 @@ class Posts extends Controller
             array_push($data['scripts'], 'likes.js');
         }
         // Get pics to fill page
-        $pagePics = $this->picModel->getPage($page);
+        $pagePics = $this->picModel->getPage($page, $postsPerPage);
         // Iterate over all pics
         foreach($pagePics as $pic) {
             // Get all comments for each pic_id
