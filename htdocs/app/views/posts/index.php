@@ -9,6 +9,8 @@
                 require APPROOT . '/views/posts/card.php';
             }
             ?>
+
+            <?php require APPROOT . '/views/common/pagination.php'; ?>
         </div>
     </div>
 </section>

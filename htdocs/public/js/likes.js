@@ -4,10 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   hearts.forEach(heart => {
     heart.addEventListener('click', (e) => {
-      url = window.location.href + 'posts/like';
       data = new FormData();
       data.append('pic_id', e.target.id);
-      fetch(url, {
+      fetch('/posts/like', {
         method: 'POST',
         body: data,
       })

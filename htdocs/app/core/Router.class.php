@@ -25,22 +25,22 @@ class Router {
                     // Call the Controller/Action passing the parameters
                     call_user_func_array([$this->controller, $this->action], [$this->params]);
                 } else {
-                    $this->notfound();
+                    Router::notfound();
                 }
             } else {
-                $this->notfound();
+                Router::notfound();
             }
         } else {
-            // Default route
+            // Default route (First page of the gallery)
             require_once('../app/controllers/Posts.class.php');
             $this->controller   = new Posts ();
-            $this->action       = 'index';
-            $this->params       = [];
+            $this->action       = 'page';
+            $this->params       = [1];
             call_user_func_array([$this->controller, $this->action], [$this->params]);
         }
     }
 
-    protected function notfound()
+    static function notfound()
     {
         http_response_code(404);
         require_once('../app/views/404.php');

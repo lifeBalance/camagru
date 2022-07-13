@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return ;
       }
       data.append('comment', comment);
-      url = window.location.href + 'posts/comment';
-      fetch(url, {
+      fetch('/posts/comment', {
         method: 'POST',
         body: data
       })

@@ -37,6 +37,29 @@ class Pic extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAmountPics()
+    {
+        $db = static::getDB();
+        // Get the total amount of pics (rows in 'pics')
+        $sql = 'SELECT COUNT(*) FROM `pics`';
+        return $db->query($sql)->fetchColumn();
+    }
+
+    public function getPage($pgNumber)
+    {
+        $db = static::getDB();
+        $posts_per_page = 4;
+        // offset is zero-based
+        $offset = ($pgNumber - 1) * $posts_per_page;
+        $sql = 'SELECT * FROM pics
+                ORDER BY created_at DESC
+                LIMIT :offset, 4';
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getAuthorId($pic_id)
     {
         $db = static::getDB();

@@ -126,23 +126,40 @@ class Posts extends Controller
         $this->commentModel->new($data);
     }
 
-    public function index()
+    public function page($args)
     {
-        // Get all pics
-        $allPics = $this->picModel->getAll();
+        if (isset($args[0]) && is_numeric($args[0]))
+        {
+            $postsPerPage = 4;
+            $page = (int)$args[0];
+            $pages = ceil($this->picModel->getAmountPics() / $postsPerPage);
+            if ($page > $pages || $page < 0)
+            {
+                Router::notfound(); // Render 404
+            }
+        }
+        else
+        {
+            Router::notfound(); // Render 404
+        }
         $data = [
             'scripts' => [
                 'main.js',
                 'comments_modal.js',
+                'pagination.js',
             ],
+            'page'  => $page,
+            'pages'  => $pages,
             'posts' => [],
         ];
         if (isset($_SESSION['user_id']))
         {
             array_push($data['scripts'], 'likes.js');
         }
+        // Get pics to fill page
+        $pagePics = $this->picModel->getPage($page);
         // Iterate over all pics
-        foreach($allPics as $pic) {
+        foreach($pagePics as $pic) {
             // Get all comments for each pic_id
             $comments = $this->commentModel->getPicComments($pic['id']);
             $allComments = [];
