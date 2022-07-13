@@ -24,12 +24,12 @@
 
                 <div class="field">
                     <label for="password" class="label">New Password: </label>
-                    <input id="password" type="password" name="password" value="<?php echo $password; ?>" placeholder="Password" class="control input" autocomplete="new-password">
+                    <input id="password" type="password" name="password" placeholder="Password" class="control input" autocomplete="new-password">
                 </div>
 
                 <div class="field">
                     <label for="pwdConfirm" class="label">Confirm New Password: </label>
-                    <input id="pwdConfirm" type="password" name="pwdConfirm" value="<?php echo $pwdConfirm; ?>" placeholder="Confirm Password" class="control input" autocomplete="new-password">
+                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Confirm Password" class="control input" autocomplete="new-password">
                 </div>
 
                 <div class="columns is-vcentered">

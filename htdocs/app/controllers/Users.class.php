@@ -233,8 +233,6 @@ class Users extends Controller
             ];
             // If the form 'password' field was empty, don't pass to model
             if (strlen($data['password']) == 0) {
-                // var_dump('pwd was not set');
-                // die();
                 unset($data['password']);
                 unset($data['pwdConfirm']);
             }
