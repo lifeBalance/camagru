@@ -233,7 +233,7 @@ class Posts extends Controller
                 $post_owner_id = $this->picModel->getAuthorId($_POST['pic_id']);
                 $post_owner = $this->usrModel->findById($post_owner_id);
                 // Send mail to OP if she has push notif. enabled
-                if ($post_owner->push_notif) {
+                if ($post_owner->push_notif && $post_owner_id != $_SESSION['user_id']) {
                     Mail::notify([
                         'address'   =>  $post_owner->email,
                         'username'  =>  $_SESSION['username'],
