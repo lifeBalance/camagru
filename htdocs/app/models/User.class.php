@@ -111,7 +111,7 @@ class User extends Model
         if (strlen($data['username']) > 50)
             $this->errors['username max. 50 characters long'] = 'danger';
         if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false)
-            $this->errors['email is required'] = 'danger';
+            $this->errors['valid email is required'] = 'danger';
         if (empty($data['password']))
             $this->errors['password is required'] = 'danger';
         else if (strlen($data['password']) < 6)

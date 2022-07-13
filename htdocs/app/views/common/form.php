@@ -31,7 +31,7 @@
         <div class="control column is-half">
             <label for="pushNotif" class="checkbox">Email Notifications </label>
             <input id="pushNotif" type="checkbox"  
-            <?php if(isset($pushNotif)) echo $pushNotif; ?> name="pushNotif">
+            <?php if($pushNotif) echo 'checked'; ?> name="pushNotif">
         </div>
     </div>
 </form>

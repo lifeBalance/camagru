@@ -33,7 +33,7 @@ class Users extends Controller
                 'gravatar'      => filter_var($_POST['gravatar'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pushNotif'     => isset($_POST['pushNotif']) ? 'on' : '',
+                'pushNotif'     => isset($_POST['pushNotif']) ? true : false,
                 // 'profile_pic'   => , // Write logic to save a user profile pic
                 'scripts' => [
                     'main.js',
@@ -70,7 +70,7 @@ class Users extends Controller
                 'gravatar'      => '',
                 'password'      => '',
                 'pwdConfirm'    => '',
-                'pushNotif'     => 'on',
+                'pushNotif'     => true,
                 'scripts' => [
                     'main.js',
                 ],
@@ -209,7 +209,7 @@ class Users extends Controller
                 'gravatar'      => $user->profile_pic,
                 'password'      => '',
                 'pwdConfirm'    => '',
-                'pushNotif'     => ($user->push_notif) ? 'checked' : '',
+                'pushNotif'     => $user->push_notif,
                 'scripts' => [
                     'main.js',
                 ],
@@ -237,7 +237,7 @@ class Users extends Controller
                 $this->userModel->findByEmail($data['email']))
             {
                 // Load FAULTY form
-                Flash::addFlashes(['That email is already taken' => 'error']);
+                Flash::addFlashes(['That email is already taken' => 'danger']);
                 $this->render('users/settings', $data);
             }
             else if ($this->userModel->edit($data, $_SESSION['user_id']) === false)
