@@ -223,14 +223,21 @@ class Users extends Controller
                 'action' => 'register',
                 'email'         => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
                 'username'      => filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password' => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'pwdConfirm' => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 'gravatar'      => filter_var($_POST['gravatar'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'password'      => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pwdConfirm'    => filter_var($_POST['pwdConfirm'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'pushNotif'     => isset($_POST['pushNotif']) ? 'on' : '',
+                'pushNotif'     => isset($_POST['pushNotif']) ? true : false,
                 'scripts' => [
                     'main.js',
                 ],
             ];
+            // If the form 'password' field was empty, don't pass to model
+            if (strlen($data['password']) == 0) {
+                // var_dump('pwd was not set');
+                // die();
+                unset($data['password']);
+                unset($data['pwdConfirm']);
+            }
             $oldSettings = $this->userModel->findById($_SESSION['user_id']);
             // When email has been changed, check that new email doesn't already exist in the db
             if ($data['email'] != $oldSettings->email &&

@@ -64,11 +64,15 @@ class User extends Model
     public function edit($data, $id)
     {
         // Fill errors array (if there's any errors in the form) 
-        $this->validateRegisterForm($data);
+        $this->validateSettingsForm($data);
 
         // No errors in the form
         if (empty($this->errors)) {
-            $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
+            if (isset($data['password'])) {
+                $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
+            } else {
+                $pwd_hash = $this->findById($_SESSION['user_id'])->pwd_hash;
+            }
             if (isset($data['pushNotif']) && $data['pushNotif'] == 'on')
                 $notif = true;
             else
@@ -96,6 +100,27 @@ class User extends Model
             return false;
     }
 
+    public function validateSettingsForm($data)
+    {
+        if (empty($data['username']))
+            $this->errors['name is required'] = 'danger';
+        if (strlen($data['username']) > 50)
+            $this->errors['username max. 50 characters long'] = 'danger';
+        if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false)
+            $this->errors['valid email is required'] = 'danger';
+        // Verify password errors only if a password was submitted
+        if (isset($data['password']))
+        {
+            if (strlen($data['password']) < 6)
+                $this->errors['new password must be at least 6 characters long'] = 'danger';
+            else if (preg_match('/.*[a-z]+.*/i', $data['password']) == 0)
+                $this->errors['new password needs at least 1 letter'] = 'danger';
+            else if (preg_match('/.*\d+.*/i', $data['password']) == 0)
+                $this->errors['new password needs at least 1 number'] = 'danger';
+            else if ($data['password'] != $data['pwdConfirm'])
+                $this->errors["passwords don't match"] = 'danger';
+        }
+    }
     /**
      * Helper method to validate the (sanitized) fields in either the "register"
      * or the "settings" forms. fill the 'errors' property array in case of
