@@ -22,7 +22,7 @@ class Users extends Controller
     {
         // If user is logged in, redirect her to URLROOT
         if (isset($_SESSION['user_id'])) {
-            $this->redirect('/');
+            Controller::redirect('/');
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize data
@@ -58,7 +58,7 @@ class Users extends Controller
                 } else {
                     Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'danger']);
                 }
-                $this->redirect('/');
+                Controller::redirect('/');
             }
         // Not a POST request (user just reloaded page)
         } else {
@@ -126,7 +126,7 @@ class Users extends Controller
                             "Don't hold your breath waiting for the email, dawg!" => 'danger'
                         ]);
                 }
-                $this->redirect('/');
+                Controller::redirect('/');
             } else {
                 Flash::addFlashes($this->userModel->errors);
                 // Load EMPTY form 
@@ -165,10 +165,10 @@ class Users extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if ($this->userModel->verifyToken($token)) {
                 Flash::addFlashes(['Account activated. You can log in!' => 'success']);
-                $this->redirect('/login/new');
+                Controller::redirect('/login/new');
             } else {
                 Flash::addFlashes(['That token is a bullshit' => 'danger']);
-                $this->redirect('/');
+                Controller::redirect('/');
             }
         }
     }
@@ -283,14 +283,14 @@ class Users extends Controller
                             "Don't hold your breath waiting for the email, dawg!" => 'error'
                         ]);
                     }
-                    $this->redirect('/login/out');
+                    Controller::redirect('/login/kickout');
                     die();
                 }
-                $this->redirect('/');
+                Controller::redirect('/');
             }
         // Can't access the form if logged out!
         } else {
-            $this->redirect('/login/new');
+            Controller::redirect('/login/new');
         }
     }
 }

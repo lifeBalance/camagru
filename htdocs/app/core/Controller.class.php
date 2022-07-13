@@ -23,7 +23,7 @@ abstract class Controller
             die($viewFile . 'view does not exist!<br>');
     }
 
-    public function redirect($url) {
+    static function redirect($url) {
         header('Location: http://' . $_SERVER['HTTP_HOST'] . $url, true, 303);
     }
 }

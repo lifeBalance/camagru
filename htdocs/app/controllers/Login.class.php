@@ -96,10 +96,26 @@ class Login extends Controller
         }
         // Finally, destroy the session.
         session_destroy();
-        if ($_SERVER['HTTP_REFERER'] == URLROOT . '/users/settings')
-            $this->redirect('/login/flashnewsettings');
-        else
-            $this->redirect('/login/flashlogout');
+        // redirect to this method be able to shot flash
+        Controller::redirect('/login/flashlogout');
+    }
+
+    static function kickout()
+    {// Unset all of the session variables.
+        $_SESSION = array();
+
+        // If it's desired to kill the session, also delete the session cookie.
+        // Note: This will destroy the session, and not just the session data!
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        // Finally, destroy the session.
+        session_destroy();
+        Controller::redirect('/login/flashnewsettings');
     }
 
     /**
@@ -109,7 +125,7 @@ class Login extends Controller
     public function flashlogout()
     {
         Flash::addFlashes(['See ya later dawg!' => 'success']);
-        $this->redirect('/');
+        Controller::redirect('/');
     }
     /**
      * Helper function that calls 'addFlashes' to be able to inform the user
@@ -118,7 +134,7 @@ class Login extends Controller
     public function flashnewsettings()
     {
         Flash::addFlashes(['Confirm your account before login in!' => 'warning']);
-        $this->redirect('/');
+        Controller::redirect('/');
     }
 
     /**
