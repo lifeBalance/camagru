@@ -2,7 +2,7 @@
 
 <section class="section">
     <div class="columns is-centered">
-        <div class="column is-two-thirds">
+        <div class="column is-half">
             <?php require APPROOT . '/views/common/flashes.php'; ?>
 
             <h2 class="title">Login</h2>

@@ -2,7 +2,7 @@
 
 <section class="section">
     <div class="columns is-centered">
-        <div class="column is-two-thirds">
+        <div class="column is-half">
             <?php require APPROOT . '/views/common/flashes.php'; ?>
             <h2 class="title">Request new confirmation email</h2>
             <form action="<?php echo URLROOT; ?>/users/confirm" method="post">

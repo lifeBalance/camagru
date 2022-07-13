@@ -40,7 +40,7 @@ class Login extends Controller
             // Authentication success
             if ($authenticatedUser) {
                 if ($authenticatedUser->confirmed) {
-                    Flash::addFlashes(['login successful' => 'success']);
+                    Flash::addFlashes(['Login successful' => 'success']);
                     $this->createUserSession($authenticatedUser);
                     $this->redirect('/');
                 // Authenticated but email NOT CONFIRMED (can't let you in dawg)
@@ -124,7 +124,7 @@ class Login extends Controller
      */
     public function flashlogout()
     {
-        Flash::addFlashes(['See ya later dawg!' => 'success']);
+        Flash::addFlashes(['See ya later dawg' => 'success']);
         Controller::redirect('/');
     }
     /**
@@ -133,7 +133,7 @@ class Login extends Controller
      */
     public function flashnewsettings()
     {
-        Flash::addFlashes(['Confirm your account before login in!' => 'warning']);
+        Flash::addFlashes(['Confirm your account before logging in' => 'warning']);
         Controller::redirect('/');
     }
 
@@ -181,9 +181,9 @@ class Login extends Controller
                 ];
                 // Send email with token for pwd reset
                 if (Mail::send($data))
-                    Flash::addFlashes(['Reset password email is on its way!' => 'success']);
+                    Flash::addFlashes(['Reset password email is on its way' => 'success']);
                 else
-                    Flash::addFlashes(["Don't hold your breath waiting for that email!" => 'danger']);
+                    Flash::addFlashes(["Don't hold your breath waiting for that email" => 'danger']);
                 $this->redirect('/');
             } else {
                 Flash::addFlashes(['Wrong user!' => 'danger']);
@@ -233,10 +233,10 @@ class Login extends Controller
                 if ($this->userModel->validToken($data['token'])) {
                     // Update the password of user with that token
                     $this->userModel->updatePwd($data['token'], $data['password']);
-                    Flash::addFlashes(['Password has been changed!' => 'success']);
-                    Flash::addFlashes(['You can now log in!' => 'success']);
+                    Flash::addFlashes(['Password has been changed' => 'success']);
+                    Flash::addFlashes(['You can now log in' => 'success']);
                 } else
-                    Flash::addFlashes(['Invalid token!' => 'danger']);
+                    Flash::addFlashes(['Pfff, invalid token' => 'danger']);
                 $this->redirect('/');
             }
         } else {
@@ -247,7 +247,7 @@ class Login extends Controller
                 'token'     => $token
             ];
             if (!$this->userModel->validToken($data['token']))
-                Flash::addFlashes(['Invalid token!' => 'danger']);
+                Flash::addFlashes(['Ugh, invalid token' => 'danger']);
             $this->render('login/reset', $data);
         }
     }

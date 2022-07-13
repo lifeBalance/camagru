@@ -119,11 +119,11 @@ class Users extends Controller
                     $success = Mail::send($data);
                     if ($success) 
                         Flash::addFlashes([
-                            'Activation mail is on the way!' => 'success'
+                            'Activation mail is on the way' => 'success'
                         ]);
                     else
                         Flash::addFlashes([
-                            "Don't hold your breath waiting for the email, dawg!" => 'danger'
+                            "Don't hold your breath waiting for the email, dawg" => 'danger'
                         ]);
                 }
                 Controller::redirect('/');
@@ -164,7 +164,7 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if ($this->userModel->verifyToken($token)) {
-                Flash::addFlashes(['Account activated. You can log in!' => 'success']);
+                Flash::addFlashes(['Account activated. You can log in' => 'success']);
                 Controller::redirect('/login/new');
             } else {
                 Flash::addFlashes(['That token is a bullshit' => 'danger']);
@@ -278,7 +278,7 @@ class Users extends Controller
                     } else {
                         Flash::addFlashes([
                             'Your account settings have been updated' => 'warning',
-                            "Don't hold your breath waiting for the email, dawg!" => 'error'
+                            "Don't hold your breath waiting for the email, dawg" => 'error'
                         ]);
                     }
                     Controller::redirect('/login/kickout');
