@@ -58,6 +58,7 @@ class Login extends Controller
                     'password'  => '',
                     'scripts' => [
                         'main.js',
+                        'login.js',
                     ],
                 ];
                 $this->render('login/new', $data);
@@ -70,6 +71,7 @@ class Login extends Controller
                 'password'  => '',
                 'scripts' => [
                     'main.js',
+                    'login.js',
                 ],
             ];
             $this->render('login/new', $formData);

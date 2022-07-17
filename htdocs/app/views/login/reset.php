@@ -8,12 +8,12 @@
             <form action="<?php echo URLROOT . '/login/reset/' . $token ?>" method="post">
                 <div class="field">
                     <label for="password" class="label"><sup>*</sup>Password: </label>
-                    <input id="password" type="password" name="password" value="<?php echo $password; ?>" placeholder="Password" class="control input">
+                    <input id="password" type="password" name="password" value="<?php echo $password; ?>" placeholder="Password" class="control input" required>
                 </div>
 
                 <div class="field">
                     <label for="pwdConfirm" class="label"><sup>*</sup>Confirm Password: </label>
-                    <input id="pwdConfirm" type="password" name="pwdConfirm" value="<?php echo $pwdConfirm; ?>" placeholder="Confirm Password" class="control input">
+                    <input id="pwdConfirm" type="password" name="pwdConfirm" value="<?php echo $pwdConfirm; ?>" placeholder="Confirm Password" class="control input" required>
                 </div>
 
                 <div class="field">

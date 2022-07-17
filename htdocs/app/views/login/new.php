@@ -10,14 +10,15 @@
             <form action="<?php echo URLROOT; ?>/login/new" method="post">
                 <div class="field">
                     <label for="email" class="label"><sup>*</sup>Email: </label>
-                    <input type="email" name="email" value="<?php echo $email; ?>" class="control input" autocomplete="current-email">
+                    <input type="email" name="email" value="<?php echo $email; ?>" class="control input" autocomplete="current-email" required>
                 </div>
         
                 <div class="field">
                     <label for="password" class="label"><sup>*</sup>Password: </label>
-                    <input type="password" name="password" value="<?php echo $password; ?>" class="control input" autocomplete="current-password">
+                    <input type="password" name="password" value="<?php echo $password; ?>" class="control input" autocomplete="current-password" placeholder="Between 6-255 characters." required pattern="[0-9a-z]{6,255}">
+                    <p class="pwd-helper is-size-7" hidden><sup>*</sup>Must contain digits and lowercase-letters (6-255).</p>
                 </div>
-        
+
                 <div class="columns is-vcentered">
                     <div class="control column is-half">
                         <input type="submit" value="Login" class="control button is-primary">
