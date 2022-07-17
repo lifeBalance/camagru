@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form        = document.querySelector('form');
-  const submit      = document.querySelector('input[type="submit"]');
   const password    = document.getElementById('password');
   const pwdConfirm  = document.getElementById('pwdConfirm');
   const pwdHelper   = document.querySelector('.pwd-helper');
   const pwdHelper2  = document.querySelector('.pwd-helper2');
-  const pwdMatch    = document.querySelector('.pwd-match');
-  const pwdMatch2   = document.querySelector('.pwd-match2');
+  const gravatar    = document.getElementById('gravatar');
+  const gravHelper  = document.querySelector('.grav-helper');
   const username    = document.getElementById('username');
   const counter     = document.getElementById('counter');
   const span        = counter.firstElementChild;
@@ -20,34 +18,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  submit.addEventListener('click', (event) => {
-    event.preventDefault();
-    // reset messages after each click
-    pwdHelper.hidden = true;
-    pwdHelper2.hidden = true;
-    pwdMatch.hidden = true;
-    pwdMatch2.hidden = true;
-    if (!validate_pwd(password) || !validate_pwd(pwdConfirm)) {
-      if (!validate_pwd(password))
-        pwdHelper.hidden = false;
-      if (!validate_pwd(pwdConfirm))
-        pwdHelper2.hidden = false;
+  password.addEventListener('input', (e) => {
+    pwdHelper.hidden = true;  // hide it if there's not pattern mismatch!
+
+    if (password.validity.patternMismatch) {
+      pwdHelper.hidden = false;
       return;
     }
-    if (password.value === pwdConfirm.value) {
-      console.log('all good');
-      const submitEvent = new SubmitEvent('submit', { submitter: submit });
-      form.dispatchEvent(submitEvent);      // All good
-    } else {
-      pwdMatch.hidden = false;
-      pwdMatch2.hidden = false;
+  });
+
+  pwdConfirm.addEventListener('input', (e) => {
+    pwdHelper2.hidden = true;  // hide it if there's not pattern mismatch!
+
+    if (pwdConfirm.validity.patternMismatch) {
+      pwdHelper2.hidden = false;
+      return;
+    }
+  });
+
+  gravatar.addEventListener('input', (e) => {
+    gravHelper.hidden = true;  // hide it if there's no mismatch!
+
+    if (gravatar.validity.typeMismatch) {
+      gravHelper.hidden = false;
+      return;
     }
   });
 }); // End of 'DOMContentLoaded' event listener/handler
-
-function validate_pwd(field) {
-  if (field.value.match(/^[0-9a-z]{6,255}$/))
-    return true;
-  else
-    return false;
-}
