@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pwdConfirm  = document.getElementById('pwdConfirm');
   const pwdHelper   = document.querySelector('.pwd-helper');
   const pwdHelper2  = document.querySelector('.pwd-helper2');
+  const pwdMatch2   = document.querySelector('.pwd-match2');
   const gravatar    = document.getElementById('gravatar');
   const gravHelper  = document.querySelector('.grav-helper');
   const username    = document.getElementById('username');
@@ -28,10 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   pwdConfirm.addEventListener('input', (e) => {
-    pwdHelper2.hidden = true;  // hide it if there's not pattern mismatch!
+    pwdHelper2.hidden = true;  // hide it at the beginning
+    pwdMatch2.hidden = true;  // hide it at the beginning
 
     if (pwdConfirm.validity.patternMismatch) {
       pwdHelper2.hidden = false;
+      return;
+    }
+    if (pwdConfirm.value !== password.value) {
+      pwdMatch2.hidden = false;
+      pwdConfirm.classList.add('is-danger');
+      return;
+    } else {
+      pwdMatch2.hidden = true;
+      pwdConfirm.classList.remove('is-danger');
       return;
     }
   });
