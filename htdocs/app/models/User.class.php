@@ -141,15 +141,15 @@ class User extends Model
             $this->errors['Valid email is required'] = 'danger';
         if (empty($data['password']))
             $this->errors['Password is required'] = 'danger';
-        else if (strlen($data['password']) < 6 || strlen($data['password']) > 255)
+        if (strlen($data['password']) < 6 || strlen($data['password']) > 255)
             $this->errors['Password must be between 6-255 characters long'] = 'danger';
-        else if (preg_match('/.*[a-z]+.*/i', $data['password']) == 0)
+        if (preg_match('/.*[a-z]+.*/i', $data['password']) == 0)
             $this->errors['Password needs at least 1 letter'] = 'danger';
-        else if (preg_match('/.*\d+.*/i', $data['password']) == 0)
+        if (preg_match('/.*\d+.*/i', $data['password']) == 0)
             $this->errors['Password needs at least 1 number'] = 'danger';
-        else if ($data['password'] != $data['pwdConfirm'])
+        if ($data['password'] != $data['pwdConfirm'])
             $this->errors["Passwords don't match"] = 'danger';
-        else if (strlen($data['gravatar']) > 255)
+        if (strlen($data['gravatar']) > 255)
             $this->errors['Gravatar too long (max. 255 characters)'] = 'danger';
     }
 
