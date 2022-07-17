@@ -31,5 +31,7 @@ services:
   mysql:
     image: mysql:8.0.29-debian
     restart: always
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
     environment:
       MYSQL_ROOT_PASSWORD: 1234
