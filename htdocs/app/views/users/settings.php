@@ -9,27 +9,27 @@
             <form action="<?php echo URLROOT . '/users/settings' ?>" method="post">
                 <div class="field">
                     <label for="username" class="label">Username: </label>
-                    <input id="username" type="text" name="username" value="<?php echo $username; ?>" placeholder="username" class="control input" autocomplete="username">
+                    <input id="username" type="text" name="username" value="<?php echo $username; ?>" placeholder="username" class="control input" autocomplete="username" required minlength="1" maxlength="50">
                 </div>
 
                 <div class="field">
                     <label for="email" class="label">Email: </label>
-                    <input id="email" type="email" name="email" value="<?php echo $email; ?>" placeholder="email" class="control input" autocomplete="current-email">
+                    <input id="email" type="email" name="email" value="<?php echo $email; ?>" placeholder="email" class="control input" autocomplete="current-email" required>
                 </div>
 
                 <div class="field">
                     <label for="gravatar" class="label">Gravatar: </label>
-                    <input id="gravatar" type="text" name="gravatar" value="<?php echo $gravatar; ?>" placeholder="Between 0-255 characters." class="control input">
+                    <input id="gravatar" type="text" name="gravatar" value="<?php echo $gravatar; ?>" placeholder="Between 0-255 characters." class="control input" maxlength="255">
                 </div>
 
                 <div class="field">
                     <label for="password" class="label">New Password: </label>
-                    <input id="password" type="password" name="password" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password">
+                    <input id="password" type="password" name="password" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password" minlength="6" maxlength="255" required>
                 </div>
 
                 <div class="field">
                     <label for="pwdConfirm" class="label">Confirm New Password: </label>
-                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password">
+                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password" minlength="6" maxlength="255" required>
                 </div>
 
                 <div class="columns is-vcentered">

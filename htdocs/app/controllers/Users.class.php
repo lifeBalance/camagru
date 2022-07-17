@@ -37,6 +37,7 @@ class Users extends Controller
                 // 'profile_pic'   => , // Write logic to save a user profile pic
                 'scripts' => [
                     'main.js',
+                    'register.js',
                 ],
             ];
             $user = $this->userModel->new($data);
@@ -54,9 +55,9 @@ class Users extends Controller
                     'token'         => $this->userModel->generateToken($user->email)
                 ];
                 if (Mail::send($mail_data)) {
-                    Flash::addFlashes(['Activation mail is on the way!' => 'success']);
+                    Flash::addFlashes(['Activation mail is on the way' => 'success']);
                 } else {
-                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg!" => 'danger']);
+                    Flash::addFlashes(["Don't hold your breath waiting for the email, dawg" => 'danger']);
                 }
                 Controller::redirect('/');
             }
@@ -73,6 +74,7 @@ class Users extends Controller
                 'pushNotif'     => true,
                 'scripts' => [
                     'main.js',
+                    'register.js',
                 ],
             ];
             $this->render('users/register', $data);
