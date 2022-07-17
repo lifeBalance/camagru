@@ -11,5 +11,7 @@
         </div>
     </div>
 
-    <div class="content"><?php echo $comment['content'] ?></div>
+    <div class="content">
+        <p style="word-wrap: break-word;"><?php echo $comment['content'] ?></p>
+    </div>
 </div>
