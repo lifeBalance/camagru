@@ -15,6 +15,7 @@
                 <div class="columns is-vcentered">
                     <div class="control column is-half">
                         <input type="submit" value="Submit" class="control button is-primary">
+                        <a class="control button is-white" href="/">Cancel</a>
                     </div>
 
                     <div class="control column is-half">
