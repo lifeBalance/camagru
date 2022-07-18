@@ -13,7 +13,8 @@
 
                 <div class="field">
                     <label for="password" class="label"><sup>*</sup>Password: </label>
-                    <input type="password" name="password" value="<?php echo $password; ?>" class="control input" autocomplete="current-password">
+                    <input type="password" name="password" value="<?php echo $password; ?>" class="control input" autocomplete="current-password" required  pattern="[0-9a-z]{6,255}">
+                    <p class="pwd-helper is-size-7" hidden><sup>*</sup>Must contain digits and lowercase-letters (6-255).</p>
                 </div>
 
                 <div class="columns is-vcentered">

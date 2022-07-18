@@ -115,7 +115,8 @@ class Users extends Controller
                         'action'        => 'activate',
                         'token'         => $this->userModel->generateToken($sanitizedForm['email']),
                         'scripts'   => [
-                            'main.js'
+                            'main.js',
+                            'new_confirmation.js',
                         ],
                     ];
                     $success = Mail::send($data);
@@ -136,7 +137,8 @@ class Users extends Controller
                     'email'     => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
                     'password'  => '',
                     'scripts'   => [
-                        'main.js'
+                        'main.js',
+                        'new_confirmation.js',
                     ],
                 ];
                 $this->render('users/confirm', $formData);
@@ -147,7 +149,8 @@ class Users extends Controller
                 'email'     => '',
                 'password'  => '',
                 'scripts'   => [
-                    'main.js'
+                    'main.js',
+                    'new_confirmation.js',
                 ],
             ];
             $this->render('users/confirm', $formData);
