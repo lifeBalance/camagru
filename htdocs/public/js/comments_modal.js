@@ -62,9 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       .then(comment => {
         // console.log(comment) // for checking back-end errors
-        newComment =
-`<hr>
-<div>
+        const commentsQty = document.getElementById(`comments-qty-${postId}`);
+        let amountOfComments = parseInt(commentsQty.textContent);
+        let newComment = '';
+        // Put a horizontal rule only if there's more than one comment
+        if (amountOfComments > 1) {
+          newComment = '<hr>';
+        }
+        newComment +=
+`<div>
   <div class="media mb-1">
     <div class="media-left">
       <figure class="image is-48x48">
@@ -96,10 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
         span.textContent = 255 - box.value.length;
         // Remove the danger on input (just in case)
         box.classList.remove('is-danger');
-
-        const commentsQty = document.getElementById(`comments-qty-${postId}`);
-        let val = parseInt(commentsQty.textContent) + 1;
-        commentsQty.textContent = val;
+        // Increase the comments counter
+        commentsQty.textContent = amountOfComments + 1;
         // console.log(comment); // Testing answer from server
       })
       .catch((error) => {
