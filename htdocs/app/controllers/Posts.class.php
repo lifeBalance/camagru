@@ -251,6 +251,7 @@ class Posts extends Controller
             }
         }
     }
+
     // Add function to delete a post (comment mb?)
     public function delete()
     {

@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const openModals = document.querySelectorAll('.open-modal');
-  const closeButtons = document.querySelectorAll('.delete') || false;
-  const formBtns = document.querySelectorAll('.comment-btn');
+  const openModals    = document.querySelectorAll('.open-modal');
+  const closeButtons  = document.querySelectorAll('.delete') || false;
+  const formBtns      = document.querySelectorAll('.comment-btn');
+  const commentBoxes  = document.querySelectorAll('input[type="text"]');
 
   // Functions to open and close a modal
   function openModal($el) {
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       data = new FormData();
       data.append('pic_id', postId);
       // Traverse up to the text input to get the comment
-      let comment = e.target.previousElementSibling.value;
+      let comment = e.target.previousElementSibling.previousElementSibling.value;
       if (comment.length == 0) {
         alert('No empty comments son!');
         return ;
@@ -76,14 +77,26 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 
-  <div class="content">${comment.comment}</div>
+  <div class="content">
+    <p style="word-wrap: break-word;">
+      ${comment.comment}
+    </p>
+  </div>
 </div>`;
         // Select section with the comments
         commentsSection = document.querySelector(`[data-id=section-${postId}]`);
         // Insert new comment (with Ajax data) at the end of the secion
         commentsSection.insertAdjacentHTML('beforeend', newComment);
         // Clear the text input
-        e.target.previousElementSibling.value = '';
+        const box = e.target.previousElementSibling.previousElementSibling;
+        box.value = '';
+        // Reset the counter
+        const counter = box.nextElementSibling;
+        const span    = counter.firstElementChild;
+        span.textContent = 255 - box.value.length;
+        // Remove the danger on input (just in case)
+        box.classList.remove('is-danger');
+
         const commentsQty = document.getElementById(`comments-qty-${postId}`);
         let val = parseInt(commentsQty.textContent) + 1;
         commentsQty.textContent = val;
@@ -95,4 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  commentBoxes.forEach(box => {
+    box.addEventListener('keyup', (e) => {
+      const counter = box.nextElementSibling;
+      const span    = counter.firstElementChild;
+
+      span.textContent = 255 - box.value.length;
+      if ((255 - box.value.length) === 0) {
+        box.classList.add('is-danger');
+      } else {
+        box.classList.remove('is-danger');
+      }
+    });
+  });
 });
