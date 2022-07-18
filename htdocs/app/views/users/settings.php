@@ -26,13 +26,13 @@
 
                 <div class="field">
                     <label for="password" class="label">New Password: </label>
-                    <input id="password" type="password" name="password" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password" minlength="6" maxlength="255" required pattern="[0-9a-z]{6,255}">
+                    <input id="password" type="password" name="password" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password" pattern="[0-9a-z]{6,255}">
                     <p class="pwd-helper is-size-7" hidden><sup>*</sup>Must contain digits and lowercase-letters (6-255).</p>
                 </div>
 
                 <div class="field">
                     <label for="pwdConfirm" class="label">Confirm New Password: </label>
-                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password" minlength="6" maxlength="255" required pattern="[0-9a-z]{6,255}">
+                    <input id="pwdConfirm" type="password" name="pwdConfirm" placeholder="Between 6-255 characters." class="control input" autocomplete="new-password" pattern="[0-9a-z]{6,255}">
                     <p class="pwd-helper2 is-size-7" hidden><sup>*</sup>Must contain digits and lowercase-letters (6-255).</p>
                     <p class="pwd-match2 is-size-7" hidden><sup>*</sup>Passwords don't match.</p>
                 </div>
