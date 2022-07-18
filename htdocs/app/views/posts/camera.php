@@ -24,7 +24,8 @@
             <form id="form" action="<?php echo URLROOT . '/posts/camera'; ?>" hidden>
               <div class="field mt-5">
                 <label for="comment" class="label">Your comment:</label>
-                <textarea id="comment" placeholder="Write soming about your image, dawg!" class="textarea"></textarea>
+                <textarea id="comment" placeholder="Write soming about your image, dawg!" class="textarea" maxlength="255" placeholder="Max. 255 characters"></textarea>
+                <p class="is-size-7"><span class="count" id="counter">255</span> characters left.</p>
               </div>
               <div class="field">
                 <input id="submit" type="submit" value="Upload" class="control button is-primary">

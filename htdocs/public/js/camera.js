@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const context     = canvas.getContext('2d');
   let   formData;
   let   initialized = false;
+  // Character counter (comment text area)
+  const counter     = document.getElementById('counter');
+  // const span        = counter.firstElementChild;
 
   video.addEventListener(
     'canplay',
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check that the user wrote some comment
     if (comment.value == '') {
-      window.alert('Gotta write some comment, son!');
+      comment.classList.add('is-danger');
       return ;
     } else {
       formData.append('comment', comment.value);
@@ -89,6 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Error:', error);
     });
   }); // End of 'submit' event listener/handler
+
+  // Add character counter to comment form
+  comment.addEventListener('keyup', (e) => {
+    counter.textContent = 255 - comment.value.length;
+    if ((255 - comment.value.length) === 0) {
+      comment.classList.add('is-danger');
+    } else {
+      comment.classList.remove('is-danger');
+    }
+  });
 
   // Let's get the party started!
   startStream();

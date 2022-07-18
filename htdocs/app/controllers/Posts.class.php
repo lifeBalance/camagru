@@ -46,12 +46,12 @@ class Posts extends Controller
                 $this->write_post_data($data);
 
                 Flash::addFlashes([
-                    'Pic uploaded!' => 'success'
+                    'Pic uploaded' => 'success'
                 ]);
             }
         } else {
             Flash::addFlashes([
-                'Select a sticker please!' => 'warning'
+                'Select a sticker please' => 'warning'
             ]);
             // Send down the user's gallery
             if (isset($_SESSION['user_id'])) {
@@ -81,6 +81,18 @@ class Posts extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($_POST['img']) {
+                $comment = filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                // Check in case someone tampered front-end validation
+                if (strlen($comment) <= 0) {
+                    Flash::addFlashes([
+                        'Invalid post' => 'danger'
+                    ]);
+                    return;
+                }
+                // Truncate the comment if it's too long
+                if (strlen($comment) > 255) {
+                    $comment = substr($comment, 0, 255);
+                }
                 // Generate unique filename
                 $name = uniqid();
 
@@ -92,7 +104,7 @@ class Posts extends Controller
 
                 // Pic intel
                 $data = [
-                    'comment'       => filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'comment'       => $comment,
                     'filename'      => $name,
                     'stickers'      => $_POST['stickers']
                 ];
@@ -102,12 +114,12 @@ class Posts extends Controller
                 // echo json_encode($data);
                 // exit();
                 Flash::addFlashes([
-                    'Pic uploaded!' => 'success'
+                    'Pic uploaded' => 'success'
                 ]);
             }
         } else {
             Flash::addFlashes([
-                'Select a sticker please!' => 'warning'
+                'Select a sticker please' => 'warning'
             ]);
             // Send down the user's gallery
             $data['user_pics'] = $this->picModel->getAllFrom($_SESSION['user_id']);
