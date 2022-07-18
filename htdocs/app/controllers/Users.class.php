@@ -217,6 +217,7 @@ class Users extends Controller
                 'pushNotif'     => $user->push_notif,
                 'scripts' => [
                     'main.js',
+                    'validate_settings.js',
                 ],
             ];
             $this->render('users/settings', $formData);
@@ -234,6 +235,7 @@ class Users extends Controller
                 'pushNotif'     => isset($_POST['pushNotif']) ? true : false,
                 'scripts' => [
                     'main.js',
+                    'validate_settings.js',
                 ],
             ];
             // If the form 'password' field was empty, don't pass to model
