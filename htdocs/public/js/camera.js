@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let   initialized = false;
   // Character counter (comment text area)
   const counter     = document.getElementById('counter');
-  // const span        = counter.firstElementChild;
 
   video.addEventListener(
     'canplay',

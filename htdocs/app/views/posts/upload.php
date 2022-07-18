@@ -24,7 +24,8 @@
             <div id="controls" hidden>
               <div class="field">
                 <label for="comment" class="label">Your comment:</label>
-                <textarea name="comment" id="comment" placeholder="Write soming about your image, dawg!" class="textarea is-primary"></textarea>
+                <textarea name="comment" id="comment" placeholder="Write soming about your image, dawg!" class="textarea is-primary"  maxlength="255" minlength="0"></textarea>
+                <p class="is-size-7"><span class="count" id="counter">255</span> characters left.</p>
               </div>
 
               <div class="field">
