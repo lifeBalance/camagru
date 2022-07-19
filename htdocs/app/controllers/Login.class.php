@@ -221,6 +221,15 @@ class Login extends Controller
         // The router reads: URL/controller/action/args
         $token = $args[0]; // Router put args in an array (even if only 1)
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Measures against front-end tampering
+            $post_keys = ['password', 'pwdConfirm'];
+            foreach($post_keys as $k) {
+                if (!isset($_POST[$k]) || strlen($_POST[$k]) == 0) {
+                    Flash::addFlashes(['Fuck off' => 'danger']);
+                    Controller::redirect('/');
+                    exit;   // We don't want to run the code before!
+                }
+            }
             // Sanitize form
             $data = [
                 'password' => filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),

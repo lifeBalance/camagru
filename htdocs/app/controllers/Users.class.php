@@ -25,6 +25,17 @@ class Users extends Controller
             Controller::redirect('/');
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Measures against front-end tampering
+            $post_keys = [
+                'email', 'username', 'password', 'pwdConfirm', 'gravatar'
+            ];
+            foreach($post_keys as $k) {
+                if (!isset($_POST[$k]) || ($k != 'gravatar' && strlen($_POST[$k]) == 0)) {
+                    Flash::addFlashes(['Fuck off' => 'danger']);
+                    Controller::redirect('/');
+                    exit;   // We don't want to run the code before!
+                }
+            }
             // Sanitize data
             $data = [
                 'action' => 'register',
@@ -224,6 +235,17 @@ class Users extends Controller
         }
         // If it's logged in: POST request
         else if ($this->isLoggedIn() && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Measures against front-end tampering
+            $post_keys = [
+                'email', 'username', 'gravatar'
+            ];
+            foreach($post_keys as $k) {
+                if (!isset($_POST[$k]) || ($k != 'gravatar' && strlen($_POST[$k]) == 0)) {
+                    Flash::addFlashes(['Something  went wrong' => 'danger']);
+                    Controller::redirect('/');
+                    exit;   // We don't want to run the code before!
+                }
+            }
             // Sanitize data
             $data = [
                 'action'        => 'register',

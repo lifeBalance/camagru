@@ -29,6 +29,10 @@ class User extends Model
                 $this->errors['User with that email already exists'] = 'error';
                 return false;
             }
+            if ($data['password'] != $data['pwdConfirm']) {
+                $this->errors['Passwords do not match'] = 'error';
+                return false;
+            }
             $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT);
             if (isset($data['pushNotif']) && $data['pushNotif'] == 'on')
                 $notif = true;
