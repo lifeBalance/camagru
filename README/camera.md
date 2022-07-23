@@ -41,4 +41,4 @@ After posting the screenshot using `fetch`, we just have to invoke [file_put_con
 <!-- navigation -->
 [home]: ../README.md
 [back]: ./email.md
-[next]: ../README.md
+[next]: ./site_snapshots.md
