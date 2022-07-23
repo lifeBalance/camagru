@@ -7,7 +7,7 @@ The goal of this project is to build a small web application that allows you to 
 ![graded](./README/images/graded.png "A hundie!")
 
 ## My approach
-During the PHP piscine, I remember my frustration and sense of lost (😿) while doing the **first rush**. So when I started this project, I knew for sure I wasn't going to jump into coding without a proper strategy.
+During the PHP piscine, I remember my frustration and sense of being lost (😿) while doing the **first rush** (a small e-commerce site). So when I started this project, I knew for sure I wasn't going to jump into coding without a proper strategy.
 
 <p align="center"><img src="./README/images/yoda.jpg" height="250" /></p>
 
@@ -33,7 +33,7 @@ Next are the notes I wrote while doing this project (expect lots of memes and no
 * [Sending mail](./README/email.md)
 
 - [] Learn how to use [PHP namespaces](https://www.php.net/manual/en/language.namespaces.php).
-
+- [] Update the notes to final version (stopped writing properly in the middle of the proj).
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
 
