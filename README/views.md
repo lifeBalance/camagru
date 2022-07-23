@@ -13,4 +13,4 @@ Views are **stupid**, they don't contain any logic to deal with the database, th
 <!-- navigation -->
 [home]: ../README.md
 [back]: ./controller_class.md
-[next]: #
+[next]: ./camera.md
