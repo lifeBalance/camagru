@@ -34,6 +34,7 @@ Next are the notes I wrote while doing this project (expect lots of memes and no
 
 - [] Learn how to use [PHP namespaces](https://www.php.net/manual/en/language.namespaces.php).
 - [] Update the notes to final version (stopped writing properly in the middle of the proj).
+- [] Look into [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/).
 ---
 [:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
 
