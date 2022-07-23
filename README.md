@@ -31,7 +31,7 @@ Next are the notes I wrote while doing this project (expect lots of memes and no
 * [Views](./README/views.md)
 * [Webcam Snapshots](./README/camera.md)
 * [Sending mail](./README/email.md)
-* [Site screenshots](./README/screenshots)
+* [Site screenshots](./README/site_snapshots.md)
 
 - [] Learn how to use [PHP namespaces](https://www.php.net/manual/en/language.namespaces.php).
 - [] Update the notes to final version (stopped writing properly in the middle of the proj).
