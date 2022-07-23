@@ -1,13 +1,13 @@
 # MVC
-[Model-View-Controller](https://developer.mozilla.org/en-US/docs/Glossary/MVC) is a software design pattern that emphasizes the [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns) between the [business logic](https://en.wikipedia.org/wiki/Business_logic) of our application (stuff that interacts with your database) and the [user interface](https://en.wikipedia.org/wiki/User_interface) (the front-end of your app).
-
-Some practical advantages of this approach are:
+[Model-View-Controller](https://developer.mozilla.org/en-US/docs/Glossary/MVC) is a software design pattern that emphasizes the [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns) between the [business logic](https://en.wikipedia.org/wiki/Business_logic) of our application (stuff that interacts with your database) and the [user interface](https://en.wikipedia.org/wiki/User_interface) (the front-end of your app). Some practical advantages of this approach are:
 
 * Code **reuse**: the core MVC logic can be reused once and again in other projects. Also, quite often, it's turned into a Web framework, which can be made available to the open source community.
 
-* Code **organization**: All the bad rap that PHP has gotten over the years, was due to developers writing code without a plan (or according to one that only them could understand).
+* Code **organization**: All the bad rap that PHP has gotten over the years, was due to developers writing code without a plan (or according to one that only them could understand 𓂀).
 
-* **Maintainable** code: if your browser is informing you about an SQL syntax error, you know exactly what folder and files where to look for it. Any new developer that is added to the team, knows at once where everything goes (assuming that she's familiar with MVC). Also, since the app's UI is kept in different folders (views), designers can be working on the **UI** without messing with files that contain backend functionality.
+* If offers a set of **conventions** that serve as a common ground for developer teams. Any new developer that is added to the team, knows at once where everything goes (assuming that she's familiar with MVC). Also, since the app's UI is kept in different folders (views), designers can be working on the **UI** without messing with files that contain backend functionality.
+
+* **Maintainable** code: if your browser is informing you about an SQL syntax error, you know exactly in what folder and files to look for it.
 
 ## Do I need it?
 If you find yourself mixing up logic to access the database and displaying the retrieved data, all in the same file, you're violating one of the most basic principles of software development: **separation of concerns**. At the beginning of a project, it's tempting to start coding fast, mixing up business and presentation logic all together.

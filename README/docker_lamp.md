@@ -1,17 +1,17 @@
-# A LAMP stack
-A [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) stack is one of the most common software stacks for many of the web's most popular applications. Each letter in the acronym stands for one of its four open-source building blocks:
+# The LAMP stack
+The [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) stack is one of the most common [software stacks](https://en.wikipedia.org/wiki/Solution_stack) for building web applications. Each letter in the acronym stands for one of its four open-source building blocks:
 
 * [Linux](https://en.wikipedia.org/wiki/LAMP_(software_bundle)#Linux) for the operating system.
 * [Apache](https://en.wikipedia.org/wiki/Apache_HTTP_Server) HTTP Server
 * [MySQL](https://en.wikipedia.org/wiki/MySQL) for the relational database management system
 * [PHP](https://en.wikipedia.org/wiki/PHP).
 
-> Nowadays LAMP refers to a generic software stack model where its components are largely interchangeable. For example, [MariaDB](https://mariadb.org/) instead of MySQL, and [Python](https://www.python.org/) instead of PHP.
+> Nowadays LAMP refers to a generic software stack model where its components are largely interchangeable. For example, [MariaDB](https://mariadb.org/) instead of MySQL, and [Python](https://www.python.org/) (or even [Perl](https://www.perl.org/)) instead of PHP.
 
 <img src="./images/stack.jpg" height="250" />
 
 # Setting up a LAMP Docker container
-The point of using a [Docker container](https://www.docker.com/resources/what-container/) is to avoid issues at deployment. In other words, to avoid incidents when we move our Web app from our **development machine** to the **server**.
+I chose [Docker container](https://www.docker.com/resources/what-container/) to avoid issues at deployment (actually evaluation). In other words, to avoid incidents when we move our Web app from our **development machine** to the **server**.
 
 > Let's assume **Docker** is already **installed** in our development machine.
 
@@ -62,11 +62,11 @@ For testing purposes, we'll create a basic `index.php` file in our `./app` folde
 In order to test out our small set up, we have two choices:
 
 * Use the original `docker-compose up` command.
-* Or make use of the [version 2](https://docs.docker.com/compose/cli-command/) `docker compose upp`, which integrates the compose features into the `docker` platform.
+* Or make use of the [version 2](https://docs.docker.com/compose/cli-command/) `docker compose up`, which integrates the compose features into the `docker` platform.
 
 > Don't forget to make sure the `docker` service is running: ` sudo systemctl start docker`
 
-If you face some `/var/run/docker.sock: connect: permission denied.` issue try adding your user to the `docker` group:
+If you face some `/var/run/docker.sock: connect: permission denied.` issue (I was working on Linux, not likely to find that in macOS) try adding your user to the `docker` group:
 ```
 sudo usermod -a -G docker $USER
 ```
@@ -126,6 +126,8 @@ Once you've finished the configuration don't forget to `Ctrl + c` and:
 docker compose down
 docker compose up
 ```
+
+> Or even better, use `docker compose restart`❗.
 
 After this we should be able of pointing our browser to http://localhost:8081/ and start manipulating our database.
 
