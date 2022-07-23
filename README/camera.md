@@ -34,3 +34,11 @@ These are the steps I took:
 After posting the screenshot using `fetch`, we just have to invoke [file_put_contents](https://www.php.net/manual/en/function.file-put-contents.php) with [file_get_contents](https://www.php.net/manual/en/function.file-get-contents.php) as a second argument.
 
 > Remember, `file_get_contents` needs `data:image/png;base64`, at the beginning of the data, or else will fail. (That's why we didn't trim it when appending the data to the `FormData` instance in our `fetch` operation.
+
+---
+[:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
+
+<!-- navigation -->
+[home]: ../README.md
+[back]: ./email.md
+[next]: ../README.md

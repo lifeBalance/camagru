@@ -145,3 +145,11 @@ The last part of the puzzle was to set the email headers in [mail()](https://www
 ```
 $headers .= 'Date: ' . date("r") . "\r\n";
 ```
+
+---
+[:arrow_backward:][back] ║ [:house:][home] ║ [:arrow_forward:][next]
+
+<!-- navigation -->
+[home]: ../README.md
+[back]: ./views.md
+[next]: ./camera.md
